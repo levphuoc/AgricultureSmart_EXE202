@@ -21,22 +21,39 @@ namespace AgricultureSmart.Repositories.Entities
 
         [Required]
         [StringLength(500)]
-        public string Title { get; set; }
+        public string Title { get; set; } // Tiêu đề yêu cầu
+
+        [Required]
+        [StringLength(100)]
+        public string Category { get; set; } // Danh mục
+
+        [Required]
+        [StringLength(100)]
+        public string CropType { get; set; } // Loại cây trồng
+
+        [Required]
+        [StringLength(200)]
+        public string Location { get; set; } // Vị trí
 
         [Required]
         [Column(TypeName = "nvarchar(max)")]
-        public string Description { get; set; }
+        public string Description { get; set; } // Mô tả chi tiết
+
+        [StringLength(100)]
+        public string Priority { get; set; } // Mức độ ưu tiên: "low", "medium", "high", "urgent"
+
+        [StringLength(50)]
+        public string ContactMethod { get; set; } // Phương thức liên hệ: "Điện thoại", "Email", v.v.
+
+        [StringLength(100)]
+        public string PhoneNumber { get; set; } // Số điện thoại
 
         [StringLength(500)]
-        public string ImageUrl { get; set; }
+        public string ImageUrl { get; set; } // Hình ảnh minh họa
 
         [Required]
         [StringLength(20)]
         public string Status { get; set; } // "open", "assigned", "in_progress", "resolved", "closed"
-
-        [Required]
-        [StringLength(20)]
-        public string Priority { get; set; } // "low", "medium", "high", "urgent"
 
         public DateTime CreatedAt { get; set; }
 

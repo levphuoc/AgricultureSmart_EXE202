@@ -112,7 +112,7 @@ namespace AgricultureSmart.Repositories.DbAgriContext
                 .HasForeignKey<Farmer>(f => f.UserId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            // EngineerFarmerAssignment relationships (ĐÃ SỬA)
+            // EngineerFarmerAssignment relationships
             modelBuilder.Entity<EngineerFarmerAssignment>()
                 .HasOne(efa => efa.Engineer)
                 .WithMany(e => e.EngineerFarmerAssignments)
@@ -130,7 +130,7 @@ namespace AgricultureSmart.Repositories.DbAgriContext
                 .HasOne(b => b.Author)
                 .WithMany(u => u.Blogs)
                 .HasForeignKey(b => b.AuthorId)
-                .OnDelete(DeleteBehavior.Restrict); // ✅ THAY ĐỔI: Cascade -> Restrict
+                .OnDelete(DeleteBehavior.Restrict); 
 
             modelBuilder.Entity<Blog>()
                 .HasOne(b => b.Category)
@@ -138,7 +138,7 @@ namespace AgricultureSmart.Repositories.DbAgriContext
                 .HasForeignKey(b => b.CategoryId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            // Ticket relationships (ĐÃ SỬA)
+            // Ticket relationships 
             modelBuilder.Entity<Ticket>()
                 .HasOne(t => t.Farmer)
                 .WithMany(f => f.Tickets)
@@ -149,20 +149,19 @@ namespace AgricultureSmart.Repositories.DbAgriContext
                 .HasOne(t => t.AssignedEngineer)
                 .WithMany(e => e.AssignedTickets)
                 .HasForeignKey(t => t.AssignedEngineerId)
-                .OnDelete(DeleteBehavior.SetNull); // OK - SetNull không gây conflict
+                .OnDelete(DeleteBehavior.SetNull);
 
-            // TicketComment relationships (ĐÃ SỬA)
             modelBuilder.Entity<TicketComment>()
                 .HasOne(tc => tc.Ticket)
                 .WithMany(t => t.Comments)
                 .HasForeignKey(tc => tc.TicketId)
-                .OnDelete(DeleteBehavior.Cascade); // OK - chỉ có 1 path đến TicketComment
+                .OnDelete(DeleteBehavior.Cascade); 
 
             modelBuilder.Entity<TicketComment>()
                 .HasOne(tc => tc.User)
                 .WithMany(u => u.TicketComments)
                 .HasForeignKey(tc => tc.UserId)
-                .OnDelete(DeleteBehavior.Restrict); // ✅ GIỮ NGUYÊN Restrict
+                .OnDelete(DeleteBehavior.Restrict); 
 
             // Configure default values
             modelBuilder.Entity<Users>()
