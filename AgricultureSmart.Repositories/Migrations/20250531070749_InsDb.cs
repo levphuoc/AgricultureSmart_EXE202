@@ -274,11 +274,11 @@ namespace AgricultureSmart.Repositories.Migrations
                 columns: new[] { "Id", "CreatedAt", "Description", "IsActive", "Name", "Slug" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2025, 5, 31, 5, 57, 27, 708, DateTimeKind.Utc).AddTicks(4826), "Các bài viết về bệnh hại trên cây trồng và cách phòng trị", true, "Bệnh cây trồng", "benh-cay-trong" },
-                    { 2, new DateTime(2025, 5, 31, 5, 57, 27, 708, DateTimeKind.Utc).AddTicks(4829), "Hướng dẫn kỹ thuật trồng trọt và chăm sóc cây", true, "Kỹ thuật canh tác", "ky-thuat-canh-tac" },
-                    { 3, new DateTime(2025, 5, 31, 5, 57, 27, 708, DateTimeKind.Utc).AddTicks(4832), "Thông tin về các loại phân bón và cách sử dụng", true, "Phân bón", "phan-bon" },
-                    { 4, new DateTime(2025, 5, 31, 5, 57, 27, 708, DateTimeKind.Utc).AddTicks(4834), "Hướng dẫn sử dụng thuốc BVTV an toàn", true, "Thuốc bảo vệ thực vật", "thuoc-bao-ve-thuc-vat" },
-                    { 5, new DateTime(2025, 5, 31, 5, 57, 27, 708, DateTimeKind.Utc).AddTicks(4837), "Lịch thời vụ và mùa vụ canh tác", true, "Thời vụ", "thoi-vu" }
+                    { 1, new DateTime(2025, 5, 31, 7, 7, 48, 805, DateTimeKind.Utc).AddTicks(4752), "Các bài viết về bệnh hại trên cây trồng và cách phòng trị", true, "Bệnh cây trồng", "benh-cay-trong" },
+                    { 2, new DateTime(2025, 5, 31, 7, 7, 48, 805, DateTimeKind.Utc).AddTicks(4755), "Hướng dẫn kỹ thuật trồng trọt và chăm sóc cây", true, "Kỹ thuật canh tác", "ky-thuat-canh-tac" },
+                    { 3, new DateTime(2025, 5, 31, 7, 7, 48, 805, DateTimeKind.Utc).AddTicks(4758), "Thông tin về các loại phân bón và cách sử dụng", true, "Phân bón", "phan-bon" },
+                    { 4, new DateTime(2025, 5, 31, 7, 7, 48, 805, DateTimeKind.Utc).AddTicks(4760), "Hướng dẫn sử dụng thuốc BVTV an toàn", true, "Thuốc bảo vệ thực vật", "thuoc-bao-ve-thuc-vat" },
+                    { 5, new DateTime(2025, 5, 31, 7, 7, 48, 805, DateTimeKind.Utc).AddTicks(4763), "Lịch thời vụ và mùa vụ canh tác", true, "Thời vụ", "thoi-vu" }
                 });
 
             migrationBuilder.InsertData(
@@ -286,20 +286,20 @@ namespace AgricultureSmart.Repositories.Migrations
                 columns: new[] { "Id", "CreatedAt", "Description", "Name" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2025, 5, 31, 5, 57, 27, 708, DateTimeKind.Utc).AddTicks(4535), "System Administrator", "Admin" },
-                    { 2, new DateTime(2025, 5, 31, 5, 57, 27, 708, DateTimeKind.Utc).AddTicks(4540), "Agricultural Engineer", "Engineer" },
-                    { 3, new DateTime(2025, 5, 31, 5, 57, 27, 708, DateTimeKind.Utc).AddTicks(4543), "Farmer User", "Farmer" }
+                    { 1, new DateTime(2025, 5, 31, 7, 7, 48, 805, DateTimeKind.Utc).AddTicks(4462), "System Administrator", "Admin" },
+                    { 2, new DateTime(2025, 5, 31, 7, 7, 48, 805, DateTimeKind.Utc).AddTicks(4467), "Agricultural Engineer", "Engineer" },
+                    { 3, new DateTime(2025, 5, 31, 7, 7, 48, 805, DateTimeKind.Utc).AddTicks(4469), "Farmer User", "Farmer" }
                 });
 
             migrationBuilder.InsertData(
                 table: "Users",
                 columns: new[] { "Id", "Address", "CreatedAt", "Email", "IsActive", "Password", "PhoneNumber", "UpdatedAt", "UserName" },
-                values: new object[] { 1, "System Address", new DateTime(2025, 5, 31, 5, 57, 27, 708, DateTimeKind.Utc).AddTicks(4909), "admin@agricultural.com", true, "admin123", "0000000000", new DateTime(2025, 5, 31, 5, 57, 27, 708, DateTimeKind.Utc).AddTicks(4910), "admin" });
+                values: new object[] { 1, "System Address", new DateTime(2025, 5, 31, 7, 7, 48, 805, DateTimeKind.Utc).AddTicks(4829), "admin@agricultural.com", true, "hashed_value_of_admin123", "0000000000", new DateTime(2025, 5, 31, 7, 7, 48, 805, DateTimeKind.Utc).AddTicks(4830), "admin" });
 
             migrationBuilder.InsertData(
                 table: "UserRoles",
                 columns: new[] { "Id", "CreatedAt", "RoleId", "UserId" },
-                values: new object[] { 1, new DateTime(2025, 5, 31, 5, 57, 27, 708, DateTimeKind.Utc).AddTicks(4967), 1, 1 });
+                values: new object[] { 1, new DateTime(2025, 5, 31, 7, 7, 48, 805, DateTimeKind.Utc).AddTicks(4890), 1, 1 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_BlogCategories_Name",
