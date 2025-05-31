@@ -1,4 +1,6 @@
 using AgricultureSmart.Repositories.DbAgriContext;
+using AgricultureSmart.Repositories.Repositories.Interfaces;
+using AgricultureSmart.Repositories.Repositories;
 using AgricultureSmart.Services.Interfaces;
 using AgricultureSmart.Services.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -51,6 +53,8 @@ namespace AgricultureSmart.API
             // Add controllers
             services.AddControllers();
 
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
             // Configure CORS if needed
             services.AddCors(options =>
             {
@@ -94,10 +98,13 @@ namespace AgricultureSmart.API
                 });
             });
 
+            services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+
             // Register Services
             services.AddScoped<IAuthServices, AuthService>();
             services.AddScoped<IBlogService, BlogService>();
             services.AddScoped<IBlogCategoryService, BlogCategoryService>();
+            services.AddScoped<ITicketService, TicketService>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

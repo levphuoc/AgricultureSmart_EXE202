@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AgricultureSmart.Repositories.Migrations
 {
     [DbContext(typeof(AgricultureSmartDbContext))]
-    [Migration("20250531070749_InsDb")]
-    partial class InsDb
+    [Migration("20250531185418_InitDb")]
+    partial class InitDb
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -138,7 +138,7 @@ namespace AgricultureSmart.Repositories.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2025, 5, 31, 7, 7, 48, 805, DateTimeKind.Utc).AddTicks(4752),
+                            CreatedAt = new DateTime(2025, 5, 31, 18, 54, 18, 596, DateTimeKind.Utc).AddTicks(935),
                             Description = "Các bài viết về bệnh hại trên cây trồng và cách phòng trị",
                             IsActive = true,
                             Name = "Bệnh cây trồng",
@@ -147,7 +147,7 @@ namespace AgricultureSmart.Repositories.Migrations
                         new
                         {
                             Id = 2,
-                            CreatedAt = new DateTime(2025, 5, 31, 7, 7, 48, 805, DateTimeKind.Utc).AddTicks(4755),
+                            CreatedAt = new DateTime(2025, 5, 31, 18, 54, 18, 596, DateTimeKind.Utc).AddTicks(936),
                             Description = "Hướng dẫn kỹ thuật trồng trọt và chăm sóc cây",
                             IsActive = true,
                             Name = "Kỹ thuật canh tác",
@@ -156,7 +156,7 @@ namespace AgricultureSmart.Repositories.Migrations
                         new
                         {
                             Id = 3,
-                            CreatedAt = new DateTime(2025, 5, 31, 7, 7, 48, 805, DateTimeKind.Utc).AddTicks(4758),
+                            CreatedAt = new DateTime(2025, 5, 31, 18, 54, 18, 596, DateTimeKind.Utc).AddTicks(938),
                             Description = "Thông tin về các loại phân bón và cách sử dụng",
                             IsActive = true,
                             Name = "Phân bón",
@@ -165,7 +165,7 @@ namespace AgricultureSmart.Repositories.Migrations
                         new
                         {
                             Id = 4,
-                            CreatedAt = new DateTime(2025, 5, 31, 7, 7, 48, 805, DateTimeKind.Utc).AddTicks(4760),
+                            CreatedAt = new DateTime(2025, 5, 31, 18, 54, 18, 596, DateTimeKind.Utc).AddTicks(939),
                             Description = "Hướng dẫn sử dụng thuốc BVTV an toàn",
                             IsActive = true,
                             Name = "Thuốc bảo vệ thực vật",
@@ -174,7 +174,7 @@ namespace AgricultureSmart.Repositories.Migrations
                         new
                         {
                             Id = 5,
-                            CreatedAt = new DateTime(2025, 5, 31, 7, 7, 48, 805, DateTimeKind.Utc).AddTicks(4763),
+                            CreatedAt = new DateTime(2025, 5, 31, 18, 54, 18, 596, DateTimeKind.Utc).AddTicks(940),
                             Description = "Lịch thời vụ và mùa vụ canh tác",
                             IsActive = true,
                             Name = "Thời vụ",
@@ -334,21 +334,21 @@ namespace AgricultureSmart.Repositories.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2025, 5, 31, 7, 7, 48, 805, DateTimeKind.Utc).AddTicks(4462),
+                            CreatedAt = new DateTime(2025, 5, 31, 18, 54, 18, 596, DateTimeKind.Utc).AddTicks(804),
                             Description = "System Administrator",
                             Name = "Admin"
                         },
                         new
                         {
                             Id = 2,
-                            CreatedAt = new DateTime(2025, 5, 31, 7, 7, 48, 805, DateTimeKind.Utc).AddTicks(4467),
+                            CreatedAt = new DateTime(2025, 5, 31, 18, 54, 18, 596, DateTimeKind.Utc).AddTicks(807),
                             Description = "Agricultural Engineer",
                             Name = "Engineer"
                         },
                         new
                         {
                             Id = 3,
-                            CreatedAt = new DateTime(2025, 5, 31, 7, 7, 48, 805, DateTimeKind.Utc).AddTicks(4469),
+                            CreatedAt = new DateTime(2025, 5, 31, 18, 54, 18, 596, DateTimeKind.Utc).AddTicks(808),
                             Description = "Farmer User",
                             Name = "Farmer"
                         });
@@ -365,8 +365,23 @@ namespace AgricultureSmart.Repositories.Migrations
                     b.Property<int?>("AssignedEngineerId")
                         .HasColumnType("int");
 
+                    b.Property<string>("Category")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("ContactMethod")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("CropType")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -380,11 +395,21 @@ namespace AgricultureSmart.Repositories.Migrations
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
 
+                    b.Property<string>("Location")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("PhoneNumber")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
                     b.Property<string>("Priority")
                         .IsRequired()
                         .ValueGeneratedOnAdd()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
                         .HasDefaultValue("medium");
 
                     b.Property<DateTime?>("ResolvedAt")
@@ -476,7 +501,7 @@ namespace AgricultureSmart.Repositories.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2025, 5, 31, 7, 7, 48, 805, DateTimeKind.Utc).AddTicks(4890),
+                            CreatedAt = new DateTime(2025, 5, 31, 18, 54, 18, 596, DateTimeKind.Utc).AddTicks(1020),
                             RoleId = 1,
                             UserId = 1
                         });
@@ -546,12 +571,12 @@ namespace AgricultureSmart.Repositories.Migrations
                         {
                             Id = 1,
                             Address = "System Address",
-                            CreatedAt = new DateTime(2025, 5, 31, 7, 7, 48, 805, DateTimeKind.Utc).AddTicks(4829),
+                            CreatedAt = new DateTime(2025, 5, 31, 18, 54, 18, 596, DateTimeKind.Utc).AddTicks(998),
                             Email = "admin@agricultural.com",
                             IsActive = true,
-                            Password = "hashed_value_of_admin123",
+                            Password = "admin123",
                             PhoneNumber = "0000000000",
-                            UpdatedAt = new DateTime(2025, 5, 31, 7, 7, 48, 805, DateTimeKind.Utc).AddTicks(4830),
+                            UpdatedAt = new DateTime(2025, 5, 31, 18, 54, 18, 596, DateTimeKind.Utc).AddTicks(999),
                             UserName = "admin"
                         });
                 });
