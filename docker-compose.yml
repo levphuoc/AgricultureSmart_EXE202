@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  webapp:
+    build:
+      dockerfile: Dockerfile
+    image: agriculture-app
+    ports:
+      - "5000:7165"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=AgricultureSmart;User=sa;Password=YourStrong!Passw0rd;TrustServerCertificate=true;
+    depends_on:
+      - sqlserver
+
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: sqlserver
+    ports:
+      - "1433:1433"
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=YourStrong!Passw0rd
+    volumes:
+      - sql_data:/var/opt/mssql
+
+volumes:
+  sql_data:

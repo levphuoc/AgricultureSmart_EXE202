@@ -3,11 +3,16 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.9.34728.123
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AgricultureSmart.API", "AgricultureSmart.API\AgricultureSmart.API.csproj", "{324ED5E2-77DD-4076-8F48-E1A8CE3EE530}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AgricultureSmart.API", "AgricultureSmart.API\AgricultureSmart.API.csproj", "{324ED5E2-77DD-4076-8F48-E1A8CE3EE530}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AgricultureSmart.Repositories", "AgricultureSmart.Repositories\AgricultureSmart.Repositories.csproj", "{4351CF99-2D26-4B0D-BF57-5363164C7413}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AgricultureSmart.Repositories", "AgricultureSmart.Repositories\AgricultureSmart.Repositories.csproj", "{4351CF99-2D26-4B0D-BF57-5363164C7413}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AgricultureSmart.Services", "AgricultureSmart.Services\AgricultureSmart.Services.csproj", "{3C3792A7-A180-4AA1-BF45-50261FDE78C5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AgricultureSmart.Services", "AgricultureSmart.Services\AgricultureSmart.Services.csproj", "{3C3792A7-A180-4AA1-BF45-50261FDE78C5}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{216C84E1-DB4E-4FD5-807C-8DC8E05E2F0F}"
+	ProjectSection(SolutionItems) = preProject
+		docker-compose.yml = docker-compose.yml
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
