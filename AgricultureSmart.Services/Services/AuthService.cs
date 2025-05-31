@@ -26,7 +26,7 @@ namespace AgricultureSmart.Services.Services
             _configuration = configuration;
         }
 
-        public async Task<(bool Success, string Message, Users User)> RegisterUserAsync(string username, string email, string password, string address, string phoneNumber)
+        public async Task<(bool Success, string Message, Users User)> RegisterUserAsync(string username, string email, string password, string address, string phoneNumber, int roleId = 3)
         {
             if (await _context.Users.AnyAsync(u => u.UserName == username))
             {
@@ -36,6 +36,13 @@ namespace AgricultureSmart.Services.Services
             if (await _context.Users.AnyAsync(u => u.Email == email))
             {
                 return (false, "Email already exists", null);
+            }
+
+            // Validate that the roleId is either Engineer (2) or Farmer (3)
+            if (roleId != 2 && roleId != 3)
+            {
+                // Default to Farmer if invalid role is provided
+                roleId = 3;
             }
 
             var hashedPassword = HashPassword(password);
@@ -55,12 +62,59 @@ namespace AgricultureSmart.Services.Services
             await _context.Users.AddAsync(user);
             await _context.SaveChangesAsync();
 
+            // Assign the selected role to the user
+            var userRole = new UserRole
+            {
+                UserId = user.Id,
+                RoleId = roleId,
+                CreatedAt = DateTime.UtcNow
+            };
+
+            await _context.UserRoles.AddAsync(userRole);
+            await _context.SaveChangesAsync();
+
+            // Create the appropriate profile based on the role
+            if (roleId == 2) // Engineer
+            {
+                var engineer = new Engineer
+                {
+                    UserId = user.Id,
+                    CreatedAt = DateTime.UtcNow,
+                    UpdatedAt = DateTime.UtcNow,
+                    Bio = $"Engineer profile for {username}",  // Default Bio to avoid NULL
+                    Specialization = "General",  // Default Specialization
+                    ExperienceYears = 0,  // Default ExperienceYears
+                    Certification = "[]"  // Default empty JSON array for certifications
+                };
+                await _context.Engineers.AddAsync(engineer);
+            }
+            else if (roleId == 3) // Farmer
+            {
+                var farmer = new Farmer
+                {
+                    UserId = user.Id,
+                    CreatedAt = DateTime.UtcNow,
+                    UpdatedAt = DateTime.UtcNow,
+                    FarmLocation = "Not specified",  // Default FarmLocation
+                    FarmSize = 0,  // Default FarmSize
+                    CropTypes = "[]",  // Default empty JSON array for crop types
+                    FarmingExperienceYears = 0  // Default FarmingExperienceYears
+                };
+                await _context.Farmers.AddAsync(farmer);
+            }
+
+            await _context.SaveChangesAsync();
+
             return (true, "User registered successfully", user);
         }
 
         public async Task<(bool Success, string Message, Users User, string Token, DateTime Expiration)> LoginAsync(string username, string password)
         {
-            var user = await _context.Users.FirstOrDefaultAsync(u => u.UserName == username);
+            var user = await _context.Users
+                .Include(u => u.UserRoles)
+                .ThenInclude(ur => ur.Role)
+                .FirstOrDefaultAsync(u => u.UserName == username);
+                
             if (user == null)
             {
                 return (false, "User not found", null, null, DateTime.MinValue);
@@ -71,21 +125,29 @@ namespace AgricultureSmart.Services.Services
                 return (false, "Invalid password", null, null, DateTime.MinValue);
             }
 
-            var token = GenerateJwtToken(user);
+            // Check if the user has a valid role (Engineer or Farmer)
+            var userRole = user.UserRoles.FirstOrDefault(ur => ur.RoleId == 2 || ur.RoleId == 3);
+            if (userRole == null)
+            {
+                return (false, "User does not have a valid role", null, null, DateTime.MinValue);
+            }
+
+            var token = GenerateJwtToken(user, userRole.Role.Name);
             var expiration = DateTime.UtcNow.AddMinutes(Convert.ToDouble(_configuration["JWT:TokenValidityInMinutes"]));
 
             return (true, "Login successful", user, token, expiration);
         }
 
-        private string GenerateJwtToken(Users user)
+        private string GenerateJwtToken(Users user, string roleName)
         {
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:Secret"]));
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
-            var claims = new[]
+            var claims = new List<Claim>
             {
                 new Claim(ClaimTypes.Name, user.UserName),
                 new Claim(ClaimTypes.Email, user.Email),
+                new Claim(ClaimTypes.Role, roleName),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
             };
 

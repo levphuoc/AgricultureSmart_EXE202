@@ -28,6 +28,9 @@ namespace AgricultureSmart.API.Models
         
         [Phone]
         public string PhoneNumber { get; set; }
+
+        [Range(0, 3, ErrorMessage = "Role must be either Engineer (2) or Farmer (3), or 0 for default")]
+        public int RoleId { get; set; } = 3; // Default to Farmer role
     }
 
     public class JwtResponse
@@ -36,5 +39,6 @@ namespace AgricultureSmart.API.Models
         public DateTime Expiration { get; set; }
         public string Username { get; set; }
         public string Email { get; set; }
+        public string Role { get; set; }
     }
 } 

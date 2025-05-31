@@ -26,12 +26,16 @@ namespace AgricultureSmart.API.Controllers
                 return BadRequest(ModelState);
             }
 
+            // Use the RoleId from the model if provided, otherwise default to Farmer (3)
+            int roleId = model.RoleId != 0 ? model.RoleId : 3;
+
             var result = await _authService.RegisterUserAsync(
                 model.Username,
                 model.Email,
                 model.Password,
                 model.Address,
-                model.PhoneNumber);
+                model.PhoneNumber,
+                roleId);
 
             if (!result.Success)
             {
@@ -56,12 +60,16 @@ namespace AgricultureSmart.API.Controllers
                 return Unauthorized(new { Message = result.Message });
             }
 
+            // Get the role name from the user's roles
+            var role = result.User.UserRoles?.FirstOrDefault(ur => ur.RoleId == 2 || ur.RoleId == 3)?.Role?.Name ?? "";
+
             return Ok(new JwtResponse
             {
                 Token = result.Token,
                 Expiration = result.Expiration,
                 Username = result.User.UserName,
-                Email = result.User.Email
+                Email = result.User.Email,
+                Role = role
             });
         }
 

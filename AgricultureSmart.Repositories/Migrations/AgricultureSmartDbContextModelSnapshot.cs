@@ -135,7 +135,7 @@ namespace AgricultureSmart.Repositories.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2025, 5, 29, 12, 54, 2, 196, DateTimeKind.Utc).AddTicks(1663),
+                            CreatedAt = new DateTime(2025, 5, 31, 5, 57, 27, 708, DateTimeKind.Utc).AddTicks(4826),
                             Description = "Các bài viết về bệnh hại trên cây trồng và cách phòng trị",
                             IsActive = true,
                             Name = "Bệnh cây trồng",
@@ -144,7 +144,7 @@ namespace AgricultureSmart.Repositories.Migrations
                         new
                         {
                             Id = 2,
-                            CreatedAt = new DateTime(2025, 5, 29, 12, 54, 2, 196, DateTimeKind.Utc).AddTicks(1666),
+                            CreatedAt = new DateTime(2025, 5, 31, 5, 57, 27, 708, DateTimeKind.Utc).AddTicks(4829),
                             Description = "Hướng dẫn kỹ thuật trồng trọt và chăm sóc cây",
                             IsActive = true,
                             Name = "Kỹ thuật canh tác",
@@ -153,7 +153,7 @@ namespace AgricultureSmart.Repositories.Migrations
                         new
                         {
                             Id = 3,
-                            CreatedAt = new DateTime(2025, 5, 29, 12, 54, 2, 196, DateTimeKind.Utc).AddTicks(1668),
+                            CreatedAt = new DateTime(2025, 5, 31, 5, 57, 27, 708, DateTimeKind.Utc).AddTicks(4832),
                             Description = "Thông tin về các loại phân bón và cách sử dụng",
                             IsActive = true,
                             Name = "Phân bón",
@@ -162,7 +162,7 @@ namespace AgricultureSmart.Repositories.Migrations
                         new
                         {
                             Id = 4,
-                            CreatedAt = new DateTime(2025, 5, 29, 12, 54, 2, 196, DateTimeKind.Utc).AddTicks(1669),
+                            CreatedAt = new DateTime(2025, 5, 31, 5, 57, 27, 708, DateTimeKind.Utc).AddTicks(4834),
                             Description = "Hướng dẫn sử dụng thuốc BVTV an toàn",
                             IsActive = true,
                             Name = "Thuốc bảo vệ thực vật",
@@ -171,7 +171,7 @@ namespace AgricultureSmart.Repositories.Migrations
                         new
                         {
                             Id = 5,
-                            CreatedAt = new DateTime(2025, 5, 29, 12, 54, 2, 196, DateTimeKind.Utc).AddTicks(1671),
+                            CreatedAt = new DateTime(2025, 5, 31, 5, 57, 27, 708, DateTimeKind.Utc).AddTicks(4837),
                             Description = "Lịch thời vụ và mùa vụ canh tác",
                             IsActive = true,
                             Name = "Thời vụ",
@@ -331,21 +331,21 @@ namespace AgricultureSmart.Repositories.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2025, 5, 29, 12, 54, 2, 196, DateTimeKind.Utc).AddTicks(1460),
+                            CreatedAt = new DateTime(2025, 5, 31, 5, 57, 27, 708, DateTimeKind.Utc).AddTicks(4535),
                             Description = "System Administrator",
                             Name = "Admin"
                         },
                         new
                         {
                             Id = 2,
-                            CreatedAt = new DateTime(2025, 5, 29, 12, 54, 2, 196, DateTimeKind.Utc).AddTicks(1463),
+                            CreatedAt = new DateTime(2025, 5, 31, 5, 57, 27, 708, DateTimeKind.Utc).AddTicks(4540),
                             Description = "Agricultural Engineer",
                             Name = "Engineer"
                         },
                         new
                         {
                             Id = 3,
-                            CreatedAt = new DateTime(2025, 5, 29, 12, 54, 2, 196, DateTimeKind.Utc).AddTicks(1465),
+                            CreatedAt = new DateTime(2025, 5, 31, 5, 57, 27, 708, DateTimeKind.Utc).AddTicks(4543),
                             Description = "Farmer User",
                             Name = "Farmer"
                         });
@@ -473,7 +473,7 @@ namespace AgricultureSmart.Repositories.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2025, 5, 29, 12, 54, 2, 196, DateTimeKind.Utc).AddTicks(1755),
+                            CreatedAt = new DateTime(2025, 5, 31, 5, 57, 27, 708, DateTimeKind.Utc).AddTicks(4967),
                             RoleId = 1,
                             UserId = 1
                         });
@@ -543,12 +543,12 @@ namespace AgricultureSmart.Repositories.Migrations
                         {
                             Id = 1,
                             Address = "System Address",
-                            CreatedAt = new DateTime(2025, 5, 29, 12, 54, 2, 196, DateTimeKind.Utc).AddTicks(1717),
+                            CreatedAt = new DateTime(2025, 5, 31, 5, 57, 27, 708, DateTimeKind.Utc).AddTicks(4909),
                             Email = "admin@agricultural.com",
                             IsActive = true,
                             Password = "admin123",
                             PhoneNumber = "0000000000",
-                            UpdatedAt = new DateTime(2025, 5, 29, 12, 54, 2, 196, DateTimeKind.Utc).AddTicks(1718),
+                            UpdatedAt = new DateTime(2025, 5, 31, 5, 57, 27, 708, DateTimeKind.Utc).AddTicks(4910),
                             UserName = "admin"
                         });
                 });
