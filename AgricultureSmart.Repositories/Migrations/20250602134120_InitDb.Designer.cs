@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AgricultureSmart.Repositories.Migrations
 {
     [DbContext(typeof(AgricultureSmartDbContext))]
-    [Migration("20250531185418_InitDb")]
+    [Migration("20250602134120_InitDb")]
     partial class InitDb
     {
         /// <inheritdoc />
@@ -138,7 +138,7 @@ namespace AgricultureSmart.Repositories.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2025, 5, 31, 18, 54, 18, 596, DateTimeKind.Utc).AddTicks(935),
+                            CreatedAt = new DateTime(2025, 6, 2, 13, 41, 19, 992, DateTimeKind.Utc).AddTicks(6581),
                             Description = "Các bài viết về bệnh hại trên cây trồng và cách phòng trị",
                             IsActive = true,
                             Name = "Bệnh cây trồng",
@@ -147,7 +147,7 @@ namespace AgricultureSmart.Repositories.Migrations
                         new
                         {
                             Id = 2,
-                            CreatedAt = new DateTime(2025, 5, 31, 18, 54, 18, 596, DateTimeKind.Utc).AddTicks(936),
+                            CreatedAt = new DateTime(2025, 6, 2, 13, 41, 19, 992, DateTimeKind.Utc).AddTicks(6582),
                             Description = "Hướng dẫn kỹ thuật trồng trọt và chăm sóc cây",
                             IsActive = true,
                             Name = "Kỹ thuật canh tác",
@@ -156,7 +156,7 @@ namespace AgricultureSmart.Repositories.Migrations
                         new
                         {
                             Id = 3,
-                            CreatedAt = new DateTime(2025, 5, 31, 18, 54, 18, 596, DateTimeKind.Utc).AddTicks(938),
+                            CreatedAt = new DateTime(2025, 6, 2, 13, 41, 19, 992, DateTimeKind.Utc).AddTicks(6584),
                             Description = "Thông tin về các loại phân bón và cách sử dụng",
                             IsActive = true,
                             Name = "Phân bón",
@@ -165,7 +165,7 @@ namespace AgricultureSmart.Repositories.Migrations
                         new
                         {
                             Id = 4,
-                            CreatedAt = new DateTime(2025, 5, 31, 18, 54, 18, 596, DateTimeKind.Utc).AddTicks(939),
+                            CreatedAt = new DateTime(2025, 6, 2, 13, 41, 19, 992, DateTimeKind.Utc).AddTicks(6585),
                             Description = "Hướng dẫn sử dụng thuốc BVTV an toàn",
                             IsActive = true,
                             Name = "Thuốc bảo vệ thực vật",
@@ -174,12 +174,88 @@ namespace AgricultureSmart.Repositories.Migrations
                         new
                         {
                             Id = 5,
-                            CreatedAt = new DateTime(2025, 5, 31, 18, 54, 18, 596, DateTimeKind.Utc).AddTicks(940),
+                            CreatedAt = new DateTime(2025, 6, 2, 13, 41, 19, 992, DateTimeKind.Utc).AddTicks(6586),
                             Description = "Lịch thời vụ và mùa vụ canh tác",
                             IsActive = true,
                             Name = "Thời vụ",
                             Slug = "thoi-vu"
                         });
+                });
+
+            modelBuilder.Entity("AgricultureSmart.Repositories.Entities.Cart", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETUTCDATE()");
+
+                    b.Property<decimal>("TotalAmount")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("decimal(10, 2)")
+                        .HasDefaultValue(0m);
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETUTCDATE()");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
+
+                    b.ToTable("Carts", (string)null);
+                });
+
+            modelBuilder.Entity("AgricultureSmart.Repositories.Entities.CartItem", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CartId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETUTCDATE()");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("TotalPrice")
+                        .HasColumnType("decimal(10, 2)");
+
+                    b.Property<decimal>("UnitPrice")
+                        .HasColumnType("decimal(10, 2)");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETUTCDATE()");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CartId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("CartItems", (string)null);
                 });
 
             modelBuilder.Entity("AgricultureSmart.Repositories.Entities.Engineer", b =>
@@ -301,6 +377,264 @@ namespace AgricultureSmart.Repositories.Migrations
                     b.ToTable("Farmers", (string)null);
                 });
 
+            modelBuilder.Entity("AgricultureSmart.Repositories.Entities.Order", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETUTCDATE()");
+
+                    b.Property<string>("OrderNumber")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<DateTime?>("PaidAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("PaymentMethod")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("PaymentStatus")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .HasDefaultValue("pending");
+
+                    b.Property<string>("ShippingAddress")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .HasDefaultValue("pending");
+
+                    b.Property<decimal>("TotalAmount")
+                        .HasColumnType("decimal(10, 2)");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETUTCDATE()");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrderNumber")
+                        .IsUnique()
+                        .HasDatabaseName("IX_Orders_OrderNumber");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Orders", (string)null);
+                });
+
+            modelBuilder.Entity("AgricultureSmart.Repositories.Entities.OrderItem", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("OrderId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("TotalPrice")
+                        .HasColumnType("decimal(10, 2)");
+
+                    b.Property<decimal>("UnitPrice")
+                        .HasColumnType("decimal(10, 2)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrderId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("OrderItems", (string)null);
+                });
+
+            modelBuilder.Entity("AgricultureSmart.Repositories.Entities.Product", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETUTCDATE()");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal?>("DiscountPrice")
+                        .HasColumnType("decimal(10, 2)");
+
+                    b.Property<string>("ImageUrl")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<bool>("IsActive")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(true);
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(10, 2)");
+
+                    b.Property<string>("SKU")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<int>("Stock")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(0);
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETUTCDATE()");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CategoryId");
+
+                    b.HasIndex("SKU")
+                        .IsUnique()
+                        .HasDatabaseName("IX_Products_SKU");
+
+                    b.ToTable("Products", (string)null);
+                });
+
+            modelBuilder.Entity("AgricultureSmart.Repositories.Entities.ProductCategory", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETUTCDATE()");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsActive")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(true);
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<string>("Slug")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Name")
+                        .IsUnique()
+                        .HasDatabaseName("IX_ProductCategories_Name");
+
+                    b.HasIndex("Slug")
+                        .IsUnique()
+                        .HasDatabaseName("IX_ProductCategories_Slug");
+
+                    b.ToTable("ProductCategories", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CreatedAt = new DateTime(2025, 6, 2, 13, 41, 19, 992, DateTimeKind.Utc).AddTicks(6610),
+                            Description = "Các loại hạt giống cây trồng",
+                            IsActive = true,
+                            Name = "Hạt giống",
+                            Slug = "hat-giong"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CreatedAt = new DateTime(2025, 6, 2, 13, 41, 19, 992, DateTimeKind.Utc).AddTicks(6612),
+                            Description = "Các loại phân bón hữu cơ và vô cơ",
+                            IsActive = true,
+                            Name = "Phân bón",
+                            Slug = "phan-bon"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            CreatedAt = new DateTime(2025, 6, 2, 13, 41, 19, 992, DateTimeKind.Utc).AddTicks(6614),
+                            Description = "Thuốc bảo vệ thực vật",
+                            IsActive = true,
+                            Name = "Thuốc BVTV",
+                            Slug = "thuoc-bvtv"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            CreatedAt = new DateTime(2025, 6, 2, 13, 41, 19, 992, DateTimeKind.Utc).AddTicks(6615),
+                            Description = "Các dụng cụ và thiết bị nông nghiệp",
+                            IsActive = true,
+                            Name = "Dụng cụ nông nghiệp",
+                            Slug = "dung-cu-nong-nghiep"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            CreatedAt = new DateTime(2025, 6, 2, 13, 41, 19, 992, DateTimeKind.Utc).AddTicks(6616),
+                            Description = "Máy móc thiết bị nông nghiệp",
+                            IsActive = true,
+                            Name = "Máy móc",
+                            Slug = "may-moc"
+                        });
+                });
+
             modelBuilder.Entity("AgricultureSmart.Repositories.Entities.Role", b =>
                 {
                     b.Property<int>("Id")
@@ -334,21 +668,21 @@ namespace AgricultureSmart.Repositories.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2025, 5, 31, 18, 54, 18, 596, DateTimeKind.Utc).AddTicks(804),
+                            CreatedAt = new DateTime(2025, 6, 2, 13, 41, 19, 992, DateTimeKind.Utc).AddTicks(6429),
                             Description = "System Administrator",
                             Name = "Admin"
                         },
                         new
                         {
                             Id = 2,
-                            CreatedAt = new DateTime(2025, 5, 31, 18, 54, 18, 596, DateTimeKind.Utc).AddTicks(807),
+                            CreatedAt = new DateTime(2025, 6, 2, 13, 41, 19, 992, DateTimeKind.Utc).AddTicks(6432),
                             Description = "Agricultural Engineer",
                             Name = "Engineer"
                         },
                         new
                         {
                             Id = 3,
-                            CreatedAt = new DateTime(2025, 5, 31, 18, 54, 18, 596, DateTimeKind.Utc).AddTicks(808),
+                            CreatedAt = new DateTime(2025, 6, 2, 13, 41, 19, 992, DateTimeKind.Utc).AddTicks(6433),
                             Description = "Farmer User",
                             Name = "Farmer"
                         });
@@ -501,7 +835,7 @@ namespace AgricultureSmart.Repositories.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2025, 5, 31, 18, 54, 18, 596, DateTimeKind.Utc).AddTicks(1020),
+                            CreatedAt = new DateTime(2025, 6, 2, 13, 41, 19, 992, DateTimeKind.Utc).AddTicks(6665),
                             RoleId = 1,
                             UserId = 1
                         });
@@ -571,14 +905,96 @@ namespace AgricultureSmart.Repositories.Migrations
                         {
                             Id = 1,
                             Address = "System Address",
-                            CreatedAt = new DateTime(2025, 5, 31, 18, 54, 18, 596, DateTimeKind.Utc).AddTicks(998),
+                            CreatedAt = new DateTime(2025, 6, 2, 13, 41, 19, 992, DateTimeKind.Utc).AddTicks(6642),
                             Email = "admin@agricultural.com",
                             IsActive = true,
                             Password = "admin123",
                             PhoneNumber = "0000000000",
-                            UpdatedAt = new DateTime(2025, 5, 31, 18, 54, 18, 596, DateTimeKind.Utc).AddTicks(999),
+                            UpdatedAt = new DateTime(2025, 6, 2, 13, 41, 19, 992, DateTimeKind.Utc).AddTicks(6642),
                             UserName = "admin"
                         });
+                });
+
+            modelBuilder.Entity("AgricultureSmart.Repositories.Entities.Wallet", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<decimal>("Balance")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("decimal(18, 2)")
+                        .HasDefaultValue(0m);
+
+                    b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETUTCDATE()");
+
+                    b.Property<string>("Currency")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .HasDefaultValue("VND");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETUTCDATE()");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
+
+                    b.ToTable("Wallets", (string)null);
+                });
+
+            modelBuilder.Entity("AgricultureSmart.Repositories.Entities.WalletTransaction", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("decimal(18, 2)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETUTCDATE()");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<string>("ReferenceId")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<int>("WalletId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("WalletId");
+
+                    b.ToTable("WalletTransactions", (string)null);
                 });
 
             modelBuilder.Entity("AgricultureSmart.Repositories.Entities.Blog", b =>
@@ -598,6 +1014,36 @@ namespace AgricultureSmart.Repositories.Migrations
                     b.Navigation("Author");
 
                     b.Navigation("Category");
+                });
+
+            modelBuilder.Entity("AgricultureSmart.Repositories.Entities.Cart", b =>
+                {
+                    b.HasOne("AgricultureSmart.Repositories.Entities.Users", "User")
+                        .WithOne("Cart")
+                        .HasForeignKey("AgricultureSmart.Repositories.Entities.Cart", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("AgricultureSmart.Repositories.Entities.CartItem", b =>
+                {
+                    b.HasOne("AgricultureSmart.Repositories.Entities.Cart", "Cart")
+                        .WithMany("CartItems")
+                        .HasForeignKey("CartId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("AgricultureSmart.Repositories.Entities.Product", "Product")
+                        .WithMany("CartItems")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Cart");
+
+                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("AgricultureSmart.Repositories.Entities.Engineer", b =>
@@ -639,6 +1085,47 @@ namespace AgricultureSmart.Repositories.Migrations
                         .IsRequired();
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("AgricultureSmart.Repositories.Entities.Order", b =>
+                {
+                    b.HasOne("AgricultureSmart.Repositories.Entities.Users", "User")
+                        .WithMany("Orders")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("AgricultureSmart.Repositories.Entities.OrderItem", b =>
+                {
+                    b.HasOne("AgricultureSmart.Repositories.Entities.Order", "Order")
+                        .WithMany("OrderItems")
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("AgricultureSmart.Repositories.Entities.Product", "Product")
+                        .WithMany("OrderItems")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Order");
+
+                    b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("AgricultureSmart.Repositories.Entities.Product", b =>
+                {
+                    b.HasOne("AgricultureSmart.Repositories.Entities.ProductCategory", "Category")
+                        .WithMany("Products")
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Category");
                 });
 
             modelBuilder.Entity("AgricultureSmart.Repositories.Entities.Ticket", b =>
@@ -697,9 +1184,36 @@ namespace AgricultureSmart.Repositories.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("AgricultureSmart.Repositories.Entities.Wallet", b =>
+                {
+                    b.HasOne("AgricultureSmart.Repositories.Entities.Users", "User")
+                        .WithOne("Wallet")
+                        .HasForeignKey("AgricultureSmart.Repositories.Entities.Wallet", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("AgricultureSmart.Repositories.Entities.WalletTransaction", b =>
+                {
+                    b.HasOne("AgricultureSmart.Repositories.Entities.Wallet", "Wallet")
+                        .WithMany("Transactions")
+                        .HasForeignKey("WalletId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Wallet");
+                });
+
             modelBuilder.Entity("AgricultureSmart.Repositories.Entities.BlogCategory", b =>
                 {
                     b.Navigation("Blogs");
+                });
+
+            modelBuilder.Entity("AgricultureSmart.Repositories.Entities.Cart", b =>
+                {
+                    b.Navigation("CartItems");
                 });
 
             modelBuilder.Entity("AgricultureSmart.Repositories.Entities.Engineer", b =>
@@ -716,6 +1230,23 @@ namespace AgricultureSmart.Repositories.Migrations
                     b.Navigation("Tickets");
                 });
 
+            modelBuilder.Entity("AgricultureSmart.Repositories.Entities.Order", b =>
+                {
+                    b.Navigation("OrderItems");
+                });
+
+            modelBuilder.Entity("AgricultureSmart.Repositories.Entities.Product", b =>
+                {
+                    b.Navigation("CartItems");
+
+                    b.Navigation("OrderItems");
+                });
+
+            modelBuilder.Entity("AgricultureSmart.Repositories.Entities.ProductCategory", b =>
+                {
+                    b.Navigation("Products");
+                });
+
             modelBuilder.Entity("AgricultureSmart.Repositories.Entities.Role", b =>
                 {
                     b.Navigation("UserRoles");
@@ -730,15 +1261,28 @@ namespace AgricultureSmart.Repositories.Migrations
                 {
                     b.Navigation("Blogs");
 
+                    b.Navigation("Cart")
+                        .IsRequired();
+
                     b.Navigation("Engineer")
                         .IsRequired();
 
                     b.Navigation("Farmer")
                         .IsRequired();
 
+                    b.Navigation("Orders");
+
                     b.Navigation("TicketComments");
 
                     b.Navigation("UserRoles");
+
+                    b.Navigation("Wallet")
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("AgricultureSmart.Repositories.Entities.Wallet", b =>
+                {
+                    b.Navigation("Transactions");
                 });
 #pragma warning restore 612, 618
         }
