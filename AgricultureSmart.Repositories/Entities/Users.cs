@@ -34,6 +34,9 @@ namespace AgricultureSmart.Repositories.Entities
         public virtual ICollection<TicketComment> TicketComments { get; set; }
         public virtual Engineer Engineer { get; set; }
         public virtual Farmer Farmer { get; set; }
+        public virtual ICollection<Order> Orders { get; set; }
+        public virtual Cart Cart { get; set; }
+        public virtual Wallet Wallet { get; set; }
 
     }
 }

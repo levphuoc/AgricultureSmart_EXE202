@@ -15,6 +15,7 @@ namespace AgricultureSmart.Repositories.DbAgriContext
         {
         }
 
+        // Existing DbSets
         public DbSet<Users> Users { get; set; }
         public DbSet<Role> Roles { get; set; }
         public DbSet<UserRole> UserRoles { get; set; }
@@ -26,11 +27,21 @@ namespace AgricultureSmart.Repositories.DbAgriContext
         public DbSet<Ticket> Tickets { get; set; }
         public DbSet<TicketComment> TicketComments { get; set; }
 
+        // New DbSets for E-commerce functionality
+        public DbSet<ProductCategory> ProductCategories { get; set; }
+        public DbSet<Product> Products { get; set; }
+        public DbSet<Cart> Carts { get; set; }
+        public DbSet<CartItem> CartItems { get; set; }
+        public DbSet<Order> Orders { get; set; }
+        public DbSet<OrderItem> OrderItems { get; set; }
+        public DbSet<Wallet> Wallets { get; set; }
+        public DbSet<WalletTransaction> WalletTransactions { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
-            // Configure table names
+            // Configure existing table names
             modelBuilder.Entity<Users>().ToTable("Users");
             modelBuilder.Entity<Role>().ToTable("Roles");
             modelBuilder.Entity<UserRole>().ToTable("UserRoles");
@@ -42,7 +53,17 @@ namespace AgricultureSmart.Repositories.DbAgriContext
             modelBuilder.Entity<Ticket>().ToTable("Tickets");
             modelBuilder.Entity<TicketComment>().ToTable("TicketComments");
 
-            // Configure unique constraints
+            // Configure new table names
+            modelBuilder.Entity<ProductCategory>().ToTable("ProductCategories");
+            modelBuilder.Entity<Product>().ToTable("Products");
+            modelBuilder.Entity<Cart>().ToTable("Carts");
+            modelBuilder.Entity<CartItem>().ToTable("CartItems");
+            modelBuilder.Entity<Order>().ToTable("Orders");
+            modelBuilder.Entity<OrderItem>().ToTable("OrderItems");
+            modelBuilder.Entity<Wallet>().ToTable("Wallets");
+            modelBuilder.Entity<WalletTransaction>().ToTable("WalletTransactions");
+
+            // Configure existing unique constraints
             modelBuilder.Entity<Users>()
                 .HasIndex(u => u.Email)
                 .IsUnique()
@@ -78,6 +99,27 @@ namespace AgricultureSmart.Repositories.DbAgriContext
                 .IsUnique()
                 .HasDatabaseName("IX_Blogs_Slug");
 
+            // Configure new unique constraints
+            modelBuilder.Entity<ProductCategory>()
+                .HasIndex(pc => pc.Name)
+                .IsUnique()
+                .HasDatabaseName("IX_ProductCategories_Name");
+
+            modelBuilder.Entity<ProductCategory>()
+                .HasIndex(pc => pc.Slug)
+                .IsUnique()
+                .HasDatabaseName("IX_ProductCategories_Slug");
+
+            modelBuilder.Entity<Product>()
+                .HasIndex(p => p.SKU)
+                .IsUnique()
+                .HasDatabaseName("IX_Products_SKU");
+
+            modelBuilder.Entity<Order>()
+                .HasIndex(o => o.OrderNumber)
+                .IsUnique()
+                .HasDatabaseName("IX_Orders_OrderNumber");
+
             // Configure composite unique constraint for active assignments
             modelBuilder.Entity<EngineerFarmerAssignment>()
                 .HasIndex(efa => new { efa.EngineerId, efa.FarmerId, efa.IsActive })
@@ -85,7 +127,7 @@ namespace AgricultureSmart.Repositories.DbAgriContext
                 .HasDatabaseName("IX_EngineerFarmerAssignments_Unique_Active")
                 .HasFilter("[IsActive] = 1");
 
-
+            // Configure existing relationships
             modelBuilder.Entity<UserRole>()
                 .HasOne(ur => ur.User)
                 .WithMany(u => u.UserRoles)
@@ -98,14 +140,14 @@ namespace AgricultureSmart.Repositories.DbAgriContext
                 .HasForeignKey(ur => ur.RoleId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            // User-Engineer relationship (OK)
+            // User-Engineer relationship
             modelBuilder.Entity<Engineer>()
                 .HasOne(e => e.User)
                 .WithOne(u => u.Engineer)
                 .HasForeignKey<Engineer>(e => e.UserId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            // User-Farmer relationship (OK)
+            // User-Farmer relationship
             modelBuilder.Entity<Farmer>()
                 .HasOne(f => f.User)
                 .WithOne(u => u.Farmer)
@@ -130,7 +172,7 @@ namespace AgricultureSmart.Repositories.DbAgriContext
                 .HasOne(b => b.Author)
                 .WithMany(u => u.Blogs)
                 .HasForeignKey(b => b.AuthorId)
-                .OnDelete(DeleteBehavior.Restrict); 
+                .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Blog>()
                 .HasOne(b => b.Category)
@@ -138,12 +180,12 @@ namespace AgricultureSmart.Repositories.DbAgriContext
                 .HasForeignKey(b => b.CategoryId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            // Ticket relationships 
+            // Ticket relationships
             modelBuilder.Entity<Ticket>()
                 .HasOne(t => t.Farmer)
                 .WithMany(f => f.Tickets)
                 .HasForeignKey(t => t.FarmerId)
-                .OnDelete(DeleteBehavior.Restrict); 
+                .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Ticket>()
                 .HasOne(t => t.AssignedEngineer)
@@ -155,15 +197,75 @@ namespace AgricultureSmart.Repositories.DbAgriContext
                 .HasOne(tc => tc.Ticket)
                 .WithMany(t => t.Comments)
                 .HasForeignKey(tc => tc.TicketId)
-                .OnDelete(DeleteBehavior.Cascade); 
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<TicketComment>()
                 .HasOne(tc => tc.User)
                 .WithMany(u => u.TicketComments)
                 .HasForeignKey(tc => tc.UserId)
-                .OnDelete(DeleteBehavior.Restrict); 
+                .OnDelete(DeleteBehavior.Restrict);
 
-            // Configure default values
+            // Configure new E-commerce relationships
+
+            // Product relationships
+            modelBuilder.Entity<Product>()
+                .HasOne(p => p.Category)
+                .WithMany(pc => pc.Products)
+                .HasForeignKey(p => p.CategoryId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // Cart relationships
+            modelBuilder.Entity<Cart>()
+                .HasOne(c => c.User)
+                .WithOne(u => u.Cart)
+                .HasForeignKey<Cart>(c => c.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<CartItem>()
+                .HasOne(ci => ci.Cart)
+                .WithMany(c => c.CartItems)
+                .HasForeignKey(ci => ci.CartId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<CartItem>()
+                .HasOne(ci => ci.Product)
+                .WithMany(p => p.CartItems)
+                .HasForeignKey(ci => ci.ProductId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // Order relationships
+            modelBuilder.Entity<Order>()
+                .HasOne(o => o.User)
+                .WithMany(u => u.Orders)
+                .HasForeignKey(o => o.UserId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<OrderItem>()
+                .HasOne(oi => oi.Order)
+                .WithMany(o => o.OrderItems)
+                .HasForeignKey(oi => oi.OrderId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<OrderItem>()
+                .HasOne(oi => oi.Product)
+                .WithMany(p => p.OrderItems)
+                .HasForeignKey(oi => oi.ProductId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // Wallet relationships
+            modelBuilder.Entity<Wallet>()
+                .HasOne(w => w.User)
+                .WithOne(u => u.Wallet)
+                .HasForeignKey<Wallet>(w => w.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<WalletTransaction>()
+                .HasOne(wt => wt.Wallet)
+                .WithMany(w => w.Transactions)
+                .HasForeignKey(wt => wt.WalletId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            // Configure existing default values
             modelBuilder.Entity<Users>()
                 .Property(u => u.IsActive)
                 .HasDefaultValue(true);
@@ -200,20 +302,101 @@ namespace AgricultureSmart.Repositories.DbAgriContext
                 .Property(b => b.ViewCount)
                 .HasDefaultValue(0);
 
+            // Configure new default values
+            modelBuilder.Entity<ProductCategory>()
+                .Property(pc => pc.IsActive)
+                .HasDefaultValue(true);
+
+            modelBuilder.Entity<ProductCategory>()
+                .Property(pc => pc.CreatedAt)
+                .HasDefaultValueSql("GETUTCDATE()");
+
+            modelBuilder.Entity<Product>()
+                .Property(p => p.IsActive)
+                .HasDefaultValue(true);
+
+            modelBuilder.Entity<Product>()
+                .Property(p => p.Stock)
+                .HasDefaultValue(0);
+
+            modelBuilder.Entity<Product>()
+                .Property(p => p.CreatedAt)
+                .HasDefaultValueSql("GETUTCDATE()");
+
+            modelBuilder.Entity<Product>()
+                .Property(p => p.UpdatedAt)
+                .HasDefaultValueSql("GETUTCDATE()");
+
+            modelBuilder.Entity<Cart>()
+                .Property(c => c.TotalAmount)
+                .HasDefaultValue(0);
+
+            modelBuilder.Entity<Cart>()
+                .Property(c => c.CreatedAt)
+                .HasDefaultValueSql("GETUTCDATE()");
+
+            modelBuilder.Entity<Cart>()
+                .Property(c => c.UpdatedAt)
+                .HasDefaultValueSql("GETUTCDATE()");
+
+            modelBuilder.Entity<CartItem>()
+                .Property(ci => ci.CreatedAt)
+                .HasDefaultValueSql("GETUTCDATE()");
+
+            modelBuilder.Entity<CartItem>()
+                .Property(ci => ci.UpdatedAt)
+                .HasDefaultValueSql("GETUTCDATE()");
+
+            modelBuilder.Entity<Order>()
+                .Property(o => o.Status)
+                .HasDefaultValue("pending");
+
+            modelBuilder.Entity<Order>()
+                .Property(o => o.PaymentStatus)
+                .HasDefaultValue("pending");
+
+            modelBuilder.Entity<Order>()
+                .Property(o => o.CreatedAt)
+                .HasDefaultValueSql("GETUTCDATE()");
+
+            modelBuilder.Entity<Order>()
+                .Property(o => o.UpdatedAt)
+                .HasDefaultValueSql("GETUTCDATE()");
+
+            modelBuilder.Entity<Wallet>()
+                .Property(w => w.Balance)
+                .HasDefaultValue(0);
+
+            modelBuilder.Entity<Wallet>()
+                .Property(w => w.Currency)
+                .HasDefaultValue("VND");
+
+            modelBuilder.Entity<Wallet>()
+                .Property(w => w.CreatedAt)
+                .HasDefaultValueSql("GETUTCDATE()");
+
+            modelBuilder.Entity<Wallet>()
+                .Property(w => w.UpdatedAt)
+                .HasDefaultValueSql("GETUTCDATE()");
+
+            modelBuilder.Entity<WalletTransaction>()
+                .Property(wt => wt.CreatedAt)
+                .HasDefaultValueSql("GETUTCDATE()");
+
             // Seed initial data
             SeedData(modelBuilder);
         }
 
         private void SeedData(ModelBuilder modelBuilder)
         {
-            // Seed roles
+            // Seed existing roles
             modelBuilder.Entity<Role>().HasData(
                 new Role { Id = 1, Name = "Admin", Description = "System Administrator", CreatedAt = DateTime.UtcNow },
                 new Role { Id = 2, Name = "Engineer", Description = "Agricultural Engineer", CreatedAt = DateTime.UtcNow },
                 new Role { Id = 3, Name = "Farmer", Description = "Farmer User", CreatedAt = DateTime.UtcNow }
             );
 
-            // Seed blog categories
+            // Seed existing blog categories
             modelBuilder.Entity<BlogCategory>().HasData(
                 new BlogCategory { Id = 1, Name = "Bệnh cây trồng", Description = "Các bài viết về bệnh hại trên cây trồng và cách phòng trị", Slug = "benh-cay-trong", IsActive = true, CreatedAt = DateTime.UtcNow },
                 new BlogCategory { Id = 2, Name = "Kỹ thuật canh tác", Description = "Hướng dẫn kỹ thuật trồng trọt và chăm sóc cây", Slug = "ky-thuat-canh-tac", IsActive = true, CreatedAt = DateTime.UtcNow },
@@ -222,7 +405,16 @@ namespace AgricultureSmart.Repositories.DbAgriContext
                 new BlogCategory { Id = 5, Name = "Thời vụ", Description = "Lịch thời vụ và mùa vụ canh tác", Slug = "thoi-vu", IsActive = true, CreatedAt = DateTime.UtcNow }
             );
 
-            // Seed default admin user (password should be hashed in real application)
+            // Seed new product categories
+            modelBuilder.Entity<ProductCategory>().HasData(
+                new ProductCategory { Id = 1, Name = "Hạt giống", Description = "Các loại hạt giống cây trồng", Slug = "hat-giong", IsActive = true, CreatedAt = DateTime.UtcNow },
+                new ProductCategory { Id = 2, Name = "Phân bón", Description = "Các loại phân bón hữu cơ và vô cơ", Slug = "phan-bon", IsActive = true, CreatedAt = DateTime.UtcNow },
+                new ProductCategory { Id = 3, Name = "Thuốc BVTV", Description = "Thuốc bảo vệ thực vật", Slug = "thuoc-bvtv", IsActive = true, CreatedAt = DateTime.UtcNow },
+                new ProductCategory { Id = 4, Name = "Dụng cụ nông nghiệp", Description = "Các dụng cụ và thiết bị nông nghiệp", Slug = "dung-cu-nong-nghiep", IsActive = true, CreatedAt = DateTime.UtcNow },
+                new ProductCategory { Id = 5, Name = "Máy móc", Description = "Máy móc thiết bị nông nghiệp", Slug = "may-moc", IsActive = true, CreatedAt = DateTime.UtcNow }
+            );
+
+            // Seed default admin user
             modelBuilder.Entity<Users>().HasData(
                 new Users
                 {

@@ -1,4 +1,7 @@
 ﻿using AgricultureSmart.Repositories.Entities;
+using AgricultureSmart.Services.Models.AssignmentModel;
+using AgricultureSmart.Services.Models.EngineerModel;
+using AgricultureSmart.Services.Models.FarmerModels;
 using AgricultureSmart.Services.Models.TicketModels;
 using AutoMapper;
 using System;
@@ -16,6 +19,18 @@ namespace AgricultureSmart.Services.Mappings
             CreateMap<Ticket, TicketViewModel>().ReverseMap();
             CreateMap<CreateTicketModel, Ticket>().ReverseMap();
             CreateMap<UpdateTicketModel, Ticket>().ReverseMap();
+
+            CreateMap<Farmer, FarmerViewModel>().ReverseMap();
+            CreateMap<CreateFarmerModel, Farmer>().ReverseMap();
+            CreateMap<UpdateFarmerModel, Farmer>().ReverseMap();
+
+            CreateMap<Engineer, EngineerViewModel>().ReverseMap();
+            CreateMap<CreateEngineerModel, Engineer>().ReverseMap();
+            CreateMap<UpdateEngineerModel, Engineer>().ReverseMap();
+
+            CreateMap<EngineerFarmerAssignment, EngineerFarmerAssignmentViewModel>().ReverseMap();
+            CreateMap<CreateAssignmentModel, EngineerFarmerAssignment>().ReverseMap();
+            CreateMap<UpdateAssignmentModel, EngineerFarmerAssignment>().ReverseMap();
         }
     }
 }

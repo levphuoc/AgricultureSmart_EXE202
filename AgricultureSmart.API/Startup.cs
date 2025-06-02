@@ -105,6 +105,9 @@ namespace AgricultureSmart.API
             services.AddScoped<IBlogService, BlogService>();
             services.AddScoped<IBlogCategoryService, BlogCategoryService>();
             services.AddScoped<ITicketService, TicketService>();
+            services.AddScoped<IFarmerService, FarmerService>();
+            services.AddScoped<IEngineerService, EngineerService>();
+            services.AddScoped<IEngineerFarmerAssignmentService, EngineerFarmerAssignmentService>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
