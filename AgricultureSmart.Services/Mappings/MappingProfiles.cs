@@ -2,6 +2,7 @@
 using AgricultureSmart.Services.Models.AssignmentModel;
 using AgricultureSmart.Services.Models.EngineerModel;
 using AgricultureSmart.Services.Models.FarmerModels;
+using AgricultureSmart.Services.Models.ProductCategoryModels;
 using AgricultureSmart.Services.Models.TicketModels;
 using AutoMapper;
 using System;
@@ -31,6 +32,12 @@ namespace AgricultureSmart.Services.Mappings
             CreateMap<EngineerFarmerAssignment, EngineerFarmerAssignmentViewModel>().ReverseMap();
             CreateMap<CreateAssignmentModel, EngineerFarmerAssignment>().ReverseMap();
             CreateMap<UpdateAssignmentModel, EngineerFarmerAssignment>().ReverseMap();
+
+            // ProductCategory mappings
+            CreateMap<ProductCategory, ProductCategoryDto>().ReverseMap();
+            CreateMap<CreateProductCategoryDto, ProductCategory>()
+                .ForMember(dest => dest.CreatedAt, opt => opt.MapFrom(src => DateTime.UtcNow));
+            CreateMap<UpdateProductCategoryDto, ProductCategory>();
         }
     }
 }
