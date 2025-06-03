@@ -1,5 +1,6 @@
 ﻿using AgricultureSmart.Repositories.Entities;
 using AgricultureSmart.Services.Models.AssignmentModel;
+using AgricultureSmart.Services.Models.CartModels;
 using AgricultureSmart.Services.Models.EngineerModel;
 using AgricultureSmart.Services.Models.FarmerModels;
 using AgricultureSmart.Services.Models.ProductCategoryModels;
@@ -46,6 +47,15 @@ namespace AgricultureSmart.Services.Mappings
                 .ForMember(dest => dest.CreatedAt, opt => opt.MapFrom(src => DateTime.UtcNow))
                 .ForMember(dest => dest.UpdatedAt, opt => opt.MapFrom(src => DateTime.UtcNow));
             CreateMap<UpdateProductDto, Product>()
+                .ForMember(dest => dest.UpdatedAt, opt => opt.MapFrom(src => DateTime.UtcNow));
+                
+            // Cart mappings
+            CreateMap<Cart, CartDto>();
+            
+            // CartItem mappings
+            CreateMap<CartItem, CartItemDto>();
+            CreateMap<AddToCartDto, CartItem>()
+                .ForMember(dest => dest.CreatedAt, opt => opt.MapFrom(src => DateTime.UtcNow))
                 .ForMember(dest => dest.UpdatedAt, opt => opt.MapFrom(src => DateTime.UtcNow));
         }
     }
