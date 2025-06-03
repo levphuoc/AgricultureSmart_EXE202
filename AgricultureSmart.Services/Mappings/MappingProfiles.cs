@@ -3,6 +3,7 @@ using AgricultureSmart.Services.Models.AssignmentModel;
 using AgricultureSmart.Services.Models.EngineerModel;
 using AgricultureSmart.Services.Models.FarmerModels;
 using AgricultureSmart.Services.Models.ProductCategoryModels;
+using AgricultureSmart.Services.Models.ProductModels;
 using AgricultureSmart.Services.Models.TicketModels;
 using AutoMapper;
 using System;
@@ -38,6 +39,14 @@ namespace AgricultureSmart.Services.Mappings
             CreateMap<CreateProductCategoryDto, ProductCategory>()
                 .ForMember(dest => dest.CreatedAt, opt => opt.MapFrom(src => DateTime.UtcNow));
             CreateMap<UpdateProductCategoryDto, ProductCategory>();
+
+            // Product mappings
+            CreateMap<Product, ProductDto>();
+            CreateMap<CreateProductDto, Product>()
+                .ForMember(dest => dest.CreatedAt, opt => opt.MapFrom(src => DateTime.UtcNow))
+                .ForMember(dest => dest.UpdatedAt, opt => opt.MapFrom(src => DateTime.UtcNow));
+            CreateMap<UpdateProductDto, Product>()
+                .ForMember(dest => dest.UpdatedAt, opt => opt.MapFrom(src => DateTime.UtcNow));
         }
     }
 }

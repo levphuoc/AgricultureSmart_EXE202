@@ -102,6 +102,7 @@ namespace AgricultureSmart.API
 
             // Register Repositories
             services.AddScoped<IProductCategoryRepository, ProductCategoryRepository>();
+            services.AddScoped<IProductRepository, ProductRepository>();
 
             // Register Services
             services.AddScoped<IAuthServices, AuthService>();
@@ -112,6 +113,7 @@ namespace AgricultureSmart.API
             services.AddScoped<IEngineerService, EngineerService>();
             services.AddScoped<IEngineerFarmerAssignmentService, EngineerFarmerAssignmentService>();
             services.AddScoped<IProductCategoryService, ProductCategoryService>();
+            services.AddScoped<IProductService, ProductService>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
