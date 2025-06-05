@@ -196,5 +196,102 @@ namespace AgricultureSmart.Services.Services
                 };
             }
         }
+        public async Task<ServiceResponse<TicketViewModel>> UpdateStatusAsync(UpdateTicketStatusModel model)
+        {
+            try
+            {
+                var ticket = await _ticketRepo.GetByIdAsync(model.Id);
+                if (ticket == null)
+                {
+                    return new ServiceResponse<TicketViewModel>
+                    {
+                        Success = false,
+                        Message = "Ticket not found."
+                    };
+                }
+
+                // Validate status
+                if (!TicketStatusConstants.ValidStatuses.Contains(model.Status))
+                {
+                    return new ServiceResponse<TicketViewModel>
+                    {
+                        Success = false,
+                        Message = $"Invalid status: {model.Status}"
+                    };
+                }
+
+                // Validate status transition
+                if (!IsValidStatusTransition(ticket.Status, model.Status))
+                {
+                    return new ServiceResponse<TicketViewModel>
+                    {
+                        Success = false,
+                        Message = $"Invalid status transition from '{ticket.Status}' to '{model.Status}'"
+                    };
+                }
+
+                // Validate assigned engineer when status is "assigned"
+                if (model.Status == TicketStatusConstants.Assigned && !model.AssignedEngineerId.HasValue)
+                {
+                    return new ServiceResponse<TicketViewModel>
+                    {
+                        Success = false,
+                        Message = "AssignedEngineerId is required when status is 'assigned'"
+                    };
+                }
+
+                // Update ticket properties
+                var oldStatus = ticket.Status;
+                ticket.Status = model.Status;
+                ticket.UpdatedAt = DateTime.UtcNow;
+
+                // Set assigned engineer if provided
+                if (model.AssignedEngineerId.HasValue)
+                {
+                    ticket.AssignedEngineerId = model.AssignedEngineerId.Value;
+                }
+
+                // Set resolved date if status is resolved
+                if (model.Status == TicketStatusConstants.Resolved && oldStatus != TicketStatusConstants.Resolved)
+                {
+                    ticket.ResolvedAt = DateTime.UtcNow;
+                }
+
+                // Clear resolved date if moving away from resolved status
+                if (oldStatus == TicketStatusConstants.Resolved && model.Status != TicketStatusConstants.Resolved)
+                {
+                    ticket.ResolvedAt = null;
+                }
+
+                await _ticketRepo.UpdateAsync(ticket);
+
+                var updatedTicket = await GetByIdAsync(ticket.Id);
+
+                return new ServiceResponse<TicketViewModel>
+                {
+                    Data = updatedTicket,
+                    Message = $"Ticket status updated from '{oldStatus}' to '{model.Status}' successfully."
+                };
+            }
+            catch (Exception ex)
+            {
+                return new ServiceResponse<TicketViewModel>
+                {
+                    Success = false,
+                    Message = $"Error updating ticket status: {ex.Message}"
+                };
+            }
+        }
+
+        private bool IsValidStatusTransition(string currentStatus, string newStatus)
+        {
+            if (currentStatus == newStatus)
+                return true;
+
+            if (!TicketStatusConstants.ValidTransitions.ContainsKey(currentStatus))
+                return false;
+
+            return TicketStatusConstants.ValidTransitions[currentStatus].Contains(newStatus);
+        }
     }
 }
