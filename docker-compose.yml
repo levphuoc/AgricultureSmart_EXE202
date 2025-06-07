@@ -2,9 +2,7 @@ version: '3.8'
 
 services:
   webapp:
-    build:
-      dockerfile: Dockerfile
-    image: agriculture-app
+    image: ducminh1710/exe201:latest
     ports:
       - "5000:7165"
     environment:
