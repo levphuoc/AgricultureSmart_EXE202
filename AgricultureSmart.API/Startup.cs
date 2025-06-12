@@ -105,6 +105,9 @@ namespace AgricultureSmart.API
             services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped<ICartRepository, CartRepository>();
             services.AddScoped<ICartItemRepository, CartItemRepository>();
+            services.AddScoped<IOrderRepository, OrderRepository>();
+            services.AddScoped<IOrderItemRepository, OrderItemRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();
 
             // Register Services
             services.AddScoped<IAuthServices, AuthService>();
@@ -117,6 +120,7 @@ namespace AgricultureSmart.API
             services.AddScoped<IProductCategoryService, ProductCategoryService>();
             services.AddScoped<IProductService, ProductService>();
             services.AddScoped<ICartService, CartService>();
+            services.AddScoped<IOrderService, OrderService>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

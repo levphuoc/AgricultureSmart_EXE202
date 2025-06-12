@@ -10,6 +10,10 @@ namespace AgricultureSmart.Repositories.Repositories.Interfaces
 {
     public interface IUserRepository : IGenericRepository<Users>
     {
-     
+        Task<Users?> GetByEmailAsync(string email);
+        Task<Users?> GetByUsernameAsync(string username);
+        Task<bool> EmailExistsAsync(string email);
+        Task<bool> UsernameExistsAsync(string username);
+        Task<bool> PhoneNumberExistsAsync(string phoneNumber);
     }
 }
