@@ -60,16 +60,13 @@ namespace AgricultureSmart.API.Controllers
                 return Unauthorized(new { Message = result.Message });
             }
 
-            // Get the role name from the user's roles
-            var role = result.User.UserRoles?.FirstOrDefault(ur => ur.RoleId == 2 || ur.RoleId == 3)?.Role?.Name ?? "";
-
             return Ok(new JwtResponse
             {
                 Token = result.Token,
                 Expiration = result.Expiration,
                 Username = result.User.UserName,
                 Email = result.User.Email,
-                Role = role
+                Role = result.RoleName
             });
         }
 

@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
+using System.Security.Claims;
 
 namespace AgricultureSmart.API
 {
@@ -46,12 +47,15 @@ namespace AgricultureSmart.API
                     ValidIssuer = Configuration["JWT:ValidIssuer"],
                     ValidAudience = Configuration["JWT:ValidAudience"],
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["JWT:Secret"])),
-                    ClockSkew = TimeSpan.Zero
+                    ClockSkew = TimeSpan.Zero,
+                    RoleClaimType = ClaimTypes.Role,
+                    NameClaimType = ClaimTypes.Name
                 };
             });
 
             // Add controllers
             services.AddControllers();
+            services.AddAuthorization();
 
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
@@ -105,6 +109,13 @@ namespace AgricultureSmart.API
             services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped<ICartRepository, CartRepository>();
             services.AddScoped<ICartItemRepository, CartItemRepository>();
+            services.AddScoped<IOrderRepository, OrderRepository>();
+            services.AddScoped<IOrderItemRepository, OrderItemRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<INewsRepository, NewsRepository>();
+            services.AddScoped<INewsCategoryRepository, NewsCategoryRepository>();
+            services.AddScoped<IReviewRepository, ReviewRepository>();
+
 
             // Register Services
             services.AddScoped<IAuthServices, AuthService>();
@@ -117,6 +128,10 @@ namespace AgricultureSmart.API
             services.AddScoped<IProductCategoryService, ProductCategoryService>();
             services.AddScoped<IProductService, ProductService>();
             services.AddScoped<ICartService, CartService>();
+            services.AddScoped<IOrderService, OrderService>();
+            services.AddScoped<INewsCategoryService, NewsCategoryService>();
+            services.AddScoped<INewsService, NewsService>();
+            services.AddScoped<IReviewService, ReviewService>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

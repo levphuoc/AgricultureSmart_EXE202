@@ -297,5 +297,40 @@ namespace AgricultureSmart.Services.Services
                 throw;
             }
         }
+
+        public async Task<ProductListResponse> GetFilteredProductsAsync(
+            int pageNumber,
+            int pageSize,
+            string? name = null,
+            string? description = null,
+            string? categoryName = null,
+            bool? isActive = null,
+            bool sortByDiscountPrice = false)
+        {
+            try
+            {
+                var (products, totalCount) = await _repository.GetFilteredProductsAsync(
+                    pageNumber,
+                    pageSize,
+                    name,
+                    description,
+                    categoryName,
+                    isActive,
+                    sortByDiscountPrice);
+
+                return new ProductListResponse
+                {
+                    Items = _mapper.Map<List<ProductDto>>(products),
+                    TotalCount = totalCount,
+                    PageNumber = pageNumber,
+                    PageSize = pageSize
+                };
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error getting filtered products");
+                throw;
+            }
+        }
     }
 } 

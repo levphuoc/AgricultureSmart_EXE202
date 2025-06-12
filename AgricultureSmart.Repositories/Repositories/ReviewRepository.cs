@@ -1,0 +1,54 @@
+﻿using AgricultureSmart.Repositories.DbAgriContext;
+using AgricultureSmart.Repositories.Entities;
+using AgricultureSmart.Repositories.Repositories.Interfaces;
+using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace AgricultureSmart.Repositories.Repositories
+{
+    public class ReviewRepository : IReviewRepository
+    {
+        private readonly AgricultureSmartDbContext _context;
+
+        public ReviewRepository(AgricultureSmartDbContext context)
+        {
+            _context = context;
+        }
+
+        public async Task<IEnumerable<Review>> GetAllAsync(int page, int pageSize)
+        {
+            return await _context.Reviews
+                .OrderByDescending(r => r.CreatedAt)
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+        }
+
+        public async Task<Review?> GetByIdAsync(int id)
+        {
+            return await _context.Reviews.FirstOrDefaultAsync(r => r.Id == id);
+        }
+
+        public async Task AddAsync(Review review)
+        {
+            await _context.Reviews.AddAsync(review);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task UpdateAsync(Review review)
+        {
+            _context.Reviews.Update(review);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task DeleteAsync(Review review)
+        {
+            _context.Reviews.Remove(review);
+            await _context.SaveChangesAsync();
+        }
+    }
+}
