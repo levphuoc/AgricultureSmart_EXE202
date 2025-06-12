@@ -128,7 +128,10 @@ namespace AgricultureSmart.API
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Agriculture Smart API v1"));
             }
 
-            app.UseHttpsRedirection();
+            //if (!env.IsProduction())
+            //{
+            //    app.UseHttpsRedirection();
+            //}
             app.UseRouting();
             app.UseCors("AllowAll");
             

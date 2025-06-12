@@ -4,7 +4,7 @@ services:
   webapp:
     image: ducminh1710/exe201:latest
     ports:
-      - "5000:7165"
+      - "5146:5146" 
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=AgricultureSmart;User=sa;Password=YourStrong!Passw0rd;TrustServerCertificate=true;

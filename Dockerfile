@@ -20,5 +20,6 @@ RUN dotnet publish "AgricultureSmart.API.csproj" -c Release -o /app/publish
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-EXPOSE 80
+ENV ASPNETCORE_URLS=http://+:5146
+EXPOSE 5146
 ENTRYPOINT ["dotnet", "AgricultureSmart.API.dll"]
