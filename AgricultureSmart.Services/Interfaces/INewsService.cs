@@ -1,0 +1,19 @@
+﻿using AgricultureSmart.Services.Models.NewModels;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace AgricultureSmart.Services.Interfaces
+{
+    public interface INewsService
+    {
+        Task<IEnumerable<NewsDto>> GetAllAsync(int page, int pageSize);
+        Task<IEnumerable<NewsDto>> SearchAsync(string title, string author, int? categoryId, int page, int pageSize);
+        Task<NewsDto> GetByIdAsync(int id);
+        Task<NewsDto> CreateAsync(NewsCreateDto dto);
+        Task<bool> UpdateAsync(int id, NewsUpdateDto dto);
+        Task<bool> DeleteAsync(int id);
+    }
+}

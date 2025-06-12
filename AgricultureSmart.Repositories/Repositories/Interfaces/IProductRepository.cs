@@ -13,5 +13,14 @@ namespace AgricultureSmart.Repositories.Repositories.Interfaces
         Task<IEnumerable<Product>> GetActiveProductsAsync();
         Task<IEnumerable<Product>> SearchProductsAsync(string searchTerm);
         Task<bool> SkuExistsAsync(string sku, int? excludeId = null);
+
+        Task<(IEnumerable<Product> Products, int TotalCount)> GetFilteredProductsAsync(
+            int pageNumber,
+            int pageSize,
+            string? name = null,
+            string? description = null,
+            string? categoryName = null,
+            bool? isActive = null,
+            bool sortByDiscountPrice = false);
     }
 } 

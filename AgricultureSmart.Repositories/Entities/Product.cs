@@ -53,5 +53,6 @@ namespace AgricultureSmart.Repositories.Entities
 
         public virtual ICollection<CartItem> CartItems { get; set; }
         public virtual ICollection<OrderItem> OrderItems { get; set; }
+        public virtual ICollection<Review> Reviews { get; set; }
     }
 }
