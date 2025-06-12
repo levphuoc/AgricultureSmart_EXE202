@@ -3,6 +3,7 @@ using AgricultureSmart.Services.Models.AssignmentModel;
 using AgricultureSmart.Services.Models.CartModels;
 using AgricultureSmart.Services.Models.EngineerModel;
 using AgricultureSmart.Services.Models.FarmerModels;
+using AgricultureSmart.Services.Models.OrderModels;
 using AgricultureSmart.Services.Models.ProductCategoryModels;
 using AgricultureSmart.Services.Models.ProductModels;
 using AgricultureSmart.Services.Models.TicketModels;
@@ -57,6 +58,12 @@ namespace AgricultureSmart.Services.Mappings
             CreateMap<AddToCartDto, CartItem>()
                 .ForMember(dest => dest.CreatedAt, opt => opt.MapFrom(src => DateTime.UtcNow))
                 .ForMember(dest => dest.UpdatedAt, opt => opt.MapFrom(src => DateTime.UtcNow));
+                
+            // Order mappings
+            CreateMap<Order, OrderDto>();
+            
+            // OrderItem mappings
+            CreateMap<OrderItem, OrderItemDto>();
         }
     }
 }
