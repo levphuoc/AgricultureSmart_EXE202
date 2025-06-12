@@ -108,34 +108,35 @@ namespace AgricultureSmart.Services.Services
             return (true, "User registered successfully", user);
         }
 
-        public async Task<(bool Success, string Message, Users User, string Token, DateTime Expiration)> LoginAsync(string username, string password)
+        public async Task<(bool Success, string Message, Users User, string Token, DateTime Expiration, string RoleName)> LoginAsync(string username, string password)
         {
             var user = await _context.Users
                 .Include(u => u.UserRoles)
                 .ThenInclude(ur => ur.Role)
                 .FirstOrDefaultAsync(u => u.UserName == username);
-                
+
             if (user == null)
             {
-                return (false, "User not found", null, null, DateTime.MinValue);
+                return (false, "User not found", null, null, DateTime.MinValue, null);
             }
 
             if (!VerifyPassword(password, user.Password))
             {
-                return (false, "Invalid password", null, null, DateTime.MinValue);
+                return (false, "Invalid password", null, null, DateTime.MinValue, null);
             }
 
-            // Check if the user has a valid role (Engineer or Farmer)
-            var userRole = user.UserRoles.FirstOrDefault(ur => ur.RoleId == 2 || ur.RoleId == 3);
+            var userRole = user.UserRoles.FirstOrDefault(ur => ur.RoleId == 1 || ur.RoleId == 2 || ur.RoleId == 3);
             if (userRole == null)
             {
-                return (false, "User does not have a valid role", null, null, DateTime.MinValue);
+                return (false, "User does not have a valid role", null, null, DateTime.MinValue, null);
             }
 
-            var token = GenerateJwtToken(user, userRole.Role.Name);
+            var roleName = userRole.Role?.Name ?? "";
+
+            var token = GenerateJwtToken(user, roleName);
             var expiration = DateTime.UtcNow.AddMinutes(Convert.ToDouble(_configuration["JWT:TokenValidityInMinutes"]));
 
-            return (true, "Login successful", user, token, expiration);
+            return (true, "Login successful", user, token, expiration, roleName);
         }
 
         private string GenerateJwtToken(Users user, string roleName)
@@ -172,8 +173,11 @@ namespace AgricultureSmart.Services.Services
 
         private bool VerifyPassword(string password, string hashedPassword)
         {
+            // So sánh password đã hash với hashedPassword (mật khẩu đã được hash trước đó)
             var hashedInputPassword = HashPassword(password);
-            return hashedInputPassword == hashedPassword;
+
+            // Cho phép so sánh trực tiếp nếu hashedPassword là mật khẩu gốc (trường hợp cũ chưa mã hóa)
+            return hashedInputPassword == hashedPassword || password == hashedPassword;
         }
     }
 }

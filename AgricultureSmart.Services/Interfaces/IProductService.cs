@@ -1,3 +1,4 @@
+using AgricultureSmart.Repositories.Entities;
 using AgricultureSmart.Services.Models.ProductModels;
 using System;
 using System.Collections.Generic;
@@ -23,5 +24,14 @@ namespace AgricultureSmart.Services.Interfaces
         Task<ProductListResponse> GetPagedAsync(int pageNumber, int pageSize, string? searchTerm = null);
         Task<ProductListResponse> GetPagedByCategoryAsync(int categoryId, int pageNumber, int pageSize);
         Task<ProductListResponse> GetPagedActiveAsync(int pageNumber, int pageSize);
+
+        Task<ProductListResponse> GetFilteredProductsAsync(
+            int pageNumber,
+            int pageSize,
+            string? name = null,
+            string? description = null,
+            string? categoryName = null,
+            bool? isActive = null,
+            bool sortByDiscountPrice = false);
     }
 } 

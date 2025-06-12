@@ -3,9 +3,12 @@ using AgricultureSmart.Services.Models.AssignmentModel;
 using AgricultureSmart.Services.Models.CartModels;
 using AgricultureSmart.Services.Models.EngineerModel;
 using AgricultureSmart.Services.Models.FarmerModels;
+using AgricultureSmart.Services.Models.NewCategoryModels;
+using AgricultureSmart.Services.Models.NewModels;
 using AgricultureSmart.Services.Models.OrderModels;
 using AgricultureSmart.Services.Models.ProductCategoryModels;
 using AgricultureSmart.Services.Models.ProductModels;
+using AgricultureSmart.Services.Models.ReviewModels;
 using AgricultureSmart.Services.Models.TicketModels;
 using AutoMapper;
 using System;
@@ -32,6 +35,19 @@ namespace AgricultureSmart.Services.Mappings
             CreateMap<CreateEngineerModel, Engineer>().ReverseMap();
             CreateMap<UpdateEngineerModel, Engineer>().ReverseMap();
 
+            CreateMap<News, NewsDto>()
+            .ForMember(dest => dest.CategoryName, opt => opt.MapFrom(src => src.Category.Name));
+            CreateMap<NewsCreateDto, News>();
+            CreateMap<NewsUpdateDto, News>();
+
+            CreateMap<NewsCategory, NewsCategoryDto>().ReverseMap();
+            CreateMap<NewsCategoryCreateDto, NewsCategory>().ReverseMap();
+            CreateMap<NewsCategoryUpdateDto, NewsCategory>().ReverseMap();
+
+            CreateMap<Review, ReviewDto>().ReverseMap();
+            CreateMap<ReviewCreateDto, Review>().ReverseMap();
+            CreateMap<ReviewUpdateDto, Review>().ReverseMap();
+
             CreateMap<EngineerFarmerAssignment, EngineerFarmerAssignmentViewModel>().ReverseMap();
             CreateMap<CreateAssignmentModel, EngineerFarmerAssignment>().ReverseMap();
             CreateMap<UpdateAssignmentModel, EngineerFarmerAssignment>().ReverseMap();
@@ -41,6 +57,7 @@ namespace AgricultureSmart.Services.Mappings
             CreateMap<CreateProductCategoryDto, ProductCategory>()
                 .ForMember(dest => dest.CreatedAt, opt => opt.MapFrom(src => DateTime.UtcNow));
             CreateMap<UpdateProductCategoryDto, ProductCategory>();
+            CreateMap<Product, ProductFilterRequest>().ReverseMap();
 
             // Product mappings
             CreateMap<Product, ProductDto>();

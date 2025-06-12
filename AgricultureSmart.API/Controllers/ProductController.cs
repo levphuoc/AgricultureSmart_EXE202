@@ -6,6 +6,8 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 namespace AgricultureSmart.API.Controllers
 {
@@ -198,6 +200,54 @@ namespace AgricultureSmart.API.Controllers
         {
             var exists = await _productService.SkuExistsAsync(sku, excludeId);
             return Ok(exists);
+        }
+
+        /// <summary>
+        /// Get filtered products for regular users (only active products)
+        /// </summary>
+        [HttpGet("public")]
+        [AllowAnonymous]
+        public async Task<ActionResult<ProductListResponse>> GetPublicProducts([FromQuery] ProductFilterRequest request)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            // Force IsActive to true for public endpoint
+            var products = await _productService.GetFilteredProductsAsync(
+                request.PageNumber,
+                request.PageSize,
+                request.Name,
+                request.Description,
+                request.CategoryName,
+                isActive: true,
+                request.SortByDiscountPrice);
+
+            return Ok(products);
+        }
+
+        /// <summary>
+        /// Get filtered products for admin users (both active and inactive products)
+        /// </summary>
+        [HttpGet("admin")]
+        public async Task<ActionResult<ProductListResponse>> GetAdminProducts([FromQuery] ProductFilterRequest request)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var products = await _productService.GetFilteredProductsAsync(
+                request.PageNumber,
+                request.PageSize,
+                request.Name,
+                request.Description,
+                request.CategoryName,
+                request.IsActive,
+                request.SortByDiscountPrice);
+
+            return Ok(products);
         }
     }
 } 

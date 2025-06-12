@@ -74,5 +74,60 @@ namespace AgricultureSmart.Repositories.Repositories
                 .Include(p => p.Category)
                 .ToListAsync();
         }
+
+        public async Task<(IEnumerable<Product> Products, int TotalCount)> GetFilteredProductsAsync(
+            int pageNumber,
+            int pageSize,
+            string? name = null,
+            string? description = null,
+            string? categoryName = null,
+            bool? isActive = null,
+            bool sortByDiscountPrice = false)
+        {
+            IQueryable<Product> query = _dbSet.Include(p => p.Category);
+
+            // Apply filters
+            if (!string.IsNullOrWhiteSpace(name))
+            {
+                query = query.Where(p => p.Name.Contains(name));
+            }
+
+            if (!string.IsNullOrWhiteSpace(description))
+            {
+                query = query.Where(p => p.Description.Contains(description));
+            }
+
+            if (!string.IsNullOrWhiteSpace(categoryName))
+            {
+                query = query.Where(p => p.Category.Name.Contains(categoryName));
+            }
+
+            if (isActive.HasValue)
+            {
+                query = query.Where(p => p.IsActive == isActive.Value);
+            }
+
+            // Get total count before pagination
+            int totalCount = await query.CountAsync();
+
+            // Apply sorting
+            if (sortByDiscountPrice)
+            {
+                query = query.OrderByDescending(p => p.DiscountPrice)
+                             .ThenByDescending(p => p.Price);
+            }
+            else
+            {
+                query = query.OrderByDescending(p => p.CreatedAt);
+            }
+
+            // Apply pagination
+            var products = await query
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            return (products, totalCount);
+        }
     }
 } 

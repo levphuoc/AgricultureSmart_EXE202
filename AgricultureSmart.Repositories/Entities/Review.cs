@@ -8,31 +8,39 @@ using System.Threading.Tasks;
 
 namespace AgricultureSmart.Repositories.Entities
 {
-    public class Wallet
+    public class Review
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
         [Required]
+        public int ProductId { get; set; }
+
+        [Required]
         public int UserId { get; set; }
 
         [Required]
-        [Column(TypeName = "decimal(18, 2)")]
-        public decimal Balance { get; set; }
+        [StringLength(255)]
+        public string UserName { get; set; }
 
         [Required]
-        [StringLength(50)]
-        public string Currency { get; set; } // VND, USD, etc.
+        [Range(1, 5)]
+        public int ReviewValue { get; set; } // Rating from 1 to 5
+
+        [Required]
+        [Column(TypeName = "nvarchar(max)")]
+        public string ReviewMessage { get; set; }
 
         public DateTime CreatedAt { get; set; }
 
         public DateTime UpdatedAt { get; set; }
 
         // Navigation properties
+        [ForeignKey("ProductId")]
+        public virtual Product Product { get; set; }
+
         [ForeignKey("UserId")]
         public virtual Users User { get; set; }
-
-        public virtual ICollection<WalletTransaction> Transactions { get; set; }
     }
 }
