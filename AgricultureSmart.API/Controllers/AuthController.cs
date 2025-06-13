@@ -302,8 +302,8 @@ namespace AgricultureSmart.API.Controllers
             {
                 Expires = DateTimeOffset.UtcNow.AddHours(1), // 1 gi? cho access token
                 HttpOnly = true, // B?o m?t - ch? server truy c?p ???c
-                Secure = false, // Do ?ang dev trên localhost
-                SameSite = SameSiteMode.Lax,
+                Secure = true, // Do ?ang dev trên localhost
+                SameSite = SameSiteMode.None,
                 Path = "/"
             });
         }
@@ -315,7 +315,7 @@ namespace AgricultureSmart.API.Controllers
                 Expires = DateTimeOffset.UtcNow.AddDays(30), // 30 ngày cho refresh token
                 HttpOnly = true, // B?o m?t - ch? server truy c?p ???c
                 Secure = false, // Do ?ang dev trên localhost
-                SameSite = SameSiteMode.Lax,
+                SameSite = SameSiteMode.None,
                 Path = "/"
             });
         }
@@ -326,8 +326,8 @@ namespace AgricultureSmart.API.Controllers
             {
                 Expires = DateTimeOffset.UtcNow.AddDays(-1), // Set th?i gian trong quá kh? ?? xóa
                 HttpOnly = true,
-                Secure = false,
-                SameSite = SameSiteMode.Lax,
+                Secure = true,
+                SameSite = SameSiteMode.None,
                 Path = "/"
             });
 
@@ -335,8 +335,8 @@ namespace AgricultureSmart.API.Controllers
             {
                 Expires = DateTimeOffset.UtcNow.AddDays(-1), // Set th?i gian trong quá kh? ?? xóa
                 HttpOnly = true,
-                Secure = false,
-                SameSite = SameSiteMode.Lax,
+                Secure = true,
+                SameSite = SameSiteMode.None,
                 Path = "/"
             });
         }
