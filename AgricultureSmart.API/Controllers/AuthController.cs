@@ -278,7 +278,7 @@ namespace AgricultureSmart.API.Controllers
             {
                 HttpOnly = true,
                 Secure = false, 
-                SameSite = SameSiteMode.Lax, 
+                SameSite = SameSiteMode.None, 
                 Expires = expires,
                 Path = "/"
             };
