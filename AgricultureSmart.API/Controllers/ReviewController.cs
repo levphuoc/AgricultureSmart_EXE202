@@ -49,5 +49,12 @@ namespace AgricultureSmart.API.Controllers
             var success = await _service.DeleteAsync(id);
             return success ? Ok(new { message = "Xóa đánh giá thành công" }) : NotFound(new { message = "Không tìm thấy đánh giá để xóa" });
         }
+
+        [HttpGet("product/{productId}")]
+        public async Task<IActionResult> GetByProductId(int productId)
+        {
+            var result = await _service.GetByProductIdAsync(productId);
+            return Ok(new { message = "Lấy danh sách đánh giá theo sản phẩm thành công", data = result });
+        }
     }
 }

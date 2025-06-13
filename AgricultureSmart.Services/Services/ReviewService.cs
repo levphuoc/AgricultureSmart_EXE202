@@ -64,5 +64,11 @@ namespace AgricultureSmart.Services.Services
             await _repository.DeleteAsync(review);
             return true;
         }
+        public async Task<IEnumerable<ReviewDto>> GetByProductIdAsync(int productId)
+        {
+            var reviews = await _repository.GetByProductIdAsync(productId);
+            return _mapper.Map<IEnumerable<ReviewDto>>(reviews);
+        }
+
     }
 }

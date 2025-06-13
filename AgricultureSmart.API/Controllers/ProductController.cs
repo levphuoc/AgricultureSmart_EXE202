@@ -69,8 +69,8 @@ namespace AgricultureSmart.API.Controllers
         // GET: api/Product/paged?pageNumber=1&pageSize=10&searchTerm=seed
         [HttpGet("paged")]
         public async Task<ActionResult<ProductListResponse>> GetPagedProducts(
-            [FromQuery] int pageNumber = 1, 
-            [FromQuery] int pageSize = 10, 
+            [FromQuery] int pageNumber = 1,
+            [FromQuery] int pageSize = 10,
             [FromQuery] string? searchTerm = null)
         {
             if (pageNumber < 1 || pageSize < 1)
@@ -86,7 +86,7 @@ namespace AgricultureSmart.API.Controllers
         [HttpGet("category/{categoryId}/paged")]
         public async Task<ActionResult<ProductListResponse>> GetPagedProductsByCategory(
             int categoryId,
-            [FromQuery] int pageNumber = 1, 
+            [FromQuery] int pageNumber = 1,
             [FromQuery] int pageSize = 10)
         {
             if (pageNumber < 1 || pageSize < 1)
@@ -108,7 +108,7 @@ namespace AgricultureSmart.API.Controllers
         // GET: api/Product/active/paged?pageNumber=1&pageSize=10
         [HttpGet("active/paged")]
         public async Task<ActionResult<ProductListResponse>> GetPagedActiveProducts(
-            [FromQuery] int pageNumber = 1, 
+            [FromQuery] int pageNumber = 1,
             [FromQuery] int pageSize = 10)
         {
             if (pageNumber < 1 || pageSize < 1)
@@ -206,7 +206,6 @@ namespace AgricultureSmart.API.Controllers
         /// Get filtered products for regular users (only active products)
         /// </summary>
         [HttpGet("public")]
-        [AllowAnonymous]
         public async Task<ActionResult<ProductListResponse>> GetPublicProducts([FromQuery] ProductFilterRequest request)
         {
             if (!ModelState.IsValid)
@@ -231,6 +230,7 @@ namespace AgricultureSmart.API.Controllers
         /// Get filtered products for admin users (both active and inactive products)
         /// </summary>
         [HttpGet("admin")]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult<ProductListResponse>> GetAdminProducts([FromQuery] ProductFilterRequest request)
         {
             if (!ModelState.IsValid)
@@ -250,4 +250,4 @@ namespace AgricultureSmart.API.Controllers
             return Ok(products);
         }
     }
-} 
+}
