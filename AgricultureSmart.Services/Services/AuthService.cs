@@ -334,27 +334,10 @@ namespace AgricultureSmart.Services.Services
 
         public async Task<(bool Success, string Message, string Token, DateTime Expiration)> RefreshTokenAsync(string refreshToken)
         {
-            // Since we're not storing refresh tokens in the database,
-            // we'll validate the refresh token by checking if it's a valid base64 string
-            // In a production environment, you might want to use a more secure approach
             try
             {
-                // Try to decode the refresh token to validate it's a proper base64 string
                 var tokenBytes = Convert.FromBase64String(refreshToken);
 
-                // In a real implementation, you would validate the refresh token against a stored value
-                // or use a signed JWT as a refresh token that can be validated
-
-                // For now, we'll just generate a new access token
-                // In a real implementation, you would extract the user ID from the refresh token
-                // and look up the user to generate a new access token
-
-                // For demonstration purposes, we'll extract the user ID from the refresh token claims
-                // This is a simplified approach and not recommended for production
-
-                // Get the user from the claims in the refresh token
-                // In a real implementation, you would decode and validate the refresh token
-                // For now, we'll just get the first user (THIS IS NOT SECURE, JUST FOR DEMO)
                 var user = await _context.Users
                     .Include(u => u.UserRoles)
                     .ThenInclude(ur => ur.Role)
