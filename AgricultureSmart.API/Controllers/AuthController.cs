@@ -258,10 +258,12 @@ namespace AgricultureSmart.API.Controllers
 
         private CookieOptions BuildCookieOptions(DateTime expires)
         {
+            bool secure = HttpContext.Request.IsHttps;
+
             return new CookieOptions
             {
                 HttpOnly = true,
-                Secure = true,   // Cookie is sent only over HTTPS — should be true in production (set to false only during local development without HTTPS)
+                Secure = secure,   // Cookie is sent only over HTTPS — should be true in production (set to false only during local development without HTTPS)
                 SameSite = SameSiteMode.None,
                 Expires = expires,
                 Path = "/"
