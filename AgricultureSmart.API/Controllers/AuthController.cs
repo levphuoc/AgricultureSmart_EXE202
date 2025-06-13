@@ -1,91 +1,5 @@
 /*using AgricultureSmart.API.Models;
 using AgricultureSmart.Services.Interfaces;
-using AgricultureSmart.Services.Services;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
-
-namespace AgricultureSmart.API.Controllers
-{
-    [Route("api/[controller]")]
-    [ApiController]
-    public class AuthController : ControllerBase
-    {
-        private readonly IAuthServices _authService;
-
-        public AuthController(IAuthServices authService)
-        {
-            _authService = authService;
-        }
-
-        [HttpPost("register")]
-        public async Task<IActionResult> Register([FromBody] RegisterModel model)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            // Use the RoleId from the model if provided, otherwise default to Farmer (3)
-            int roleId = model.RoleId != 0 ? model.RoleId : 3;
-
-            var result = await _authService.RegisterUserAsync(
-                model.Username,
-                model.Email,
-                model.Password,
-                model.Address,
-                model.PhoneNumber,
-                roleId);
-
-            if (!result.Success)
-            {
-                return BadRequest(new { Message = result.Message });
-            }
-
-            return Ok(new { Message = result.Message });
-        }
-
-        [HttpPost("login")]
-        public async Task<IActionResult> Login([FromBody] LoginModel model)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            var result = await _authService.LoginAsync(model.Username, model.Password);
-
-            if (!result.Success)
-            {
-                return Unauthorized(new { Message = result.Message });
-            }
-
-            return Ok(new JwtResponse
-            {
-                Token = result.Token,
-                Expiration = result.Expiration,
-                Username = result.User.UserName,
-                Email = result.User.Email,
-                Role = result.RoleName
-            });
-        }
-
-        [HttpPost("logout")]
-        [Authorize]
-        public IActionResult Logout()
-        {
-            // Since we're using JWT without refresh tokens, the actual token invalidation
-            // happens on the client side by removing the stored token.
-            // This endpoint is provided for any additional server-side logout logic.
-            
-            return Ok(new { Message = "Logged out successfully" });
-        }
-    }
-} *//*
-
-
-using AgricultureSmart.API.Models;
-using AgricultureSmart.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -276,7 +190,7 @@ namespace AgricultureSmart.API.Controllers
             {
                 HttpOnly = true,
                 Secure = true, 
-                SameSite = SameSiteMode.Strict,
+                SameSite = SameSiteMode.None,
                 Expires = expires,
                 Path = "/"
             };
@@ -292,8 +206,8 @@ namespace AgricultureSmart.API.Controllers
             Response.Cookies.Append("refreshToken", token, BuildCookieOptions(expiration));
         }
     }
-}
-*/
+}*/
+
 
 using AgricultureSmart.API.Models;
 using AgricultureSmart.Services.Interfaces;
@@ -382,61 +296,49 @@ namespace AgricultureSmart.API.Controllers
             return Ok(new { Message = "Logged out successfully" });
         }
 
-        // ? FIXED: Cookie Options ?? tránh b? màu vàng và m?t cookie
-        private CookieOptions BuildCookieOptions(DateTime expires, bool isRefreshToken = false)
-        {
-
-            return new CookieOptions
-            {
-                HttpOnly = true,
-
-                // ? FIX: Ch? set Secure khi th?c s? dùng HTTPS
-                Secure = true,
-
-                // ? FIX: SameSite policy phù h?p
-                SameSite = SameSiteMode.None,
-
-                // ? FIX: Set th?i gian expires c? th? (không ph?i session cookie)
-                Expires = expires,
-
-                // ? FIX: Path rõ ràng
-                Path = "/",
-
-                // ? FIX: Domain cho cross-origin (n?u c?n)
-                // Domain = isDevelopment ? null : ".yourdomain.com"
-            };
-        }
-
         private void SetAccessTokenCookie(string token, DateTime expiration)
         {
-            var cookieOptions = BuildCookieOptions(expiration, false);
-            Response.Cookies.Append("accessToken", token, cookieOptions);
-
-            // ? Log ?? debug
-            Console.WriteLine($"Setting accessToken cookie - Expires: {expiration}, Secure: {cookieOptions.Secure}, SameSite: {cookieOptions.SameSite}");
+            Response.Cookies.Append("accessToken", token, new CookieOptions
+            {
+                Expires = DateTimeOffset.UtcNow.AddHours(1), // 1 gi? cho access token
+                HttpOnly = true, // B?o m?t - ch? server truy c?p ???c
+                Secure = false, // Do ?ang dev trên localhost
+                SameSite = SameSiteMode.Lax,
+                Path = "/"
+            });
         }
 
         private void SetRefreshTokenCookie(string token, DateTime expiration)
         {
-            var cookieOptions = BuildCookieOptions(expiration, true);
-            Response.Cookies.Append("refreshToken", token, cookieOptions);
-
-            // ? Log ?? debug
-            Console.WriteLine($"Setting refreshToken cookie - Expires: {expiration}, Secure: {cookieOptions.Secure}, SameSite: {cookieOptions.SameSite}");
+            Response.Cookies.Append("refreshToken", token, new CookieOptions
+            {
+                Expires = DateTimeOffset.UtcNow.AddDays(30), // 30 ngày cho refresh token
+                HttpOnly = true, // B?o m?t - ch? server truy c?p ???c
+                Secure = false, // Do ?ang dev trên localhost
+                SameSite = SameSiteMode.Lax,
+                Path = "/"
+            });
         }
 
         private void ClearAuthCookies()
         {
-            var cookieOptions = new CookieOptions
+            Response.Cookies.Append("accessToken", "", new CookieOptions
             {
-                Path = "/",
+                Expires = DateTimeOffset.UtcNow.AddDays(-1), // Set th?i gian trong quá kh? ?? xóa
                 HttpOnly = true,
+                Secure = false,
                 SameSite = SameSiteMode.Lax,
-                Expires = DateTime.UtcNow.AddDays(-1) // ? Set th?i gian trong quá kh? ?? xóa
-            };
+                Path = "/"
+            });
 
-            Response.Cookies.Delete("accessToken", cookieOptions);
-            Response.Cookies.Delete("refreshToken", cookieOptions);
+            Response.Cookies.Append("refreshToken", "", new CookieOptions
+            {
+                Expires = DateTimeOffset.UtcNow.AddDays(-1), // Set th?i gian trong quá kh? ?? xóa
+                HttpOnly = true,
+                Secure = false,
+                SameSite = SameSiteMode.Lax,
+                Path = "/"
+            });
         }
 
         [HttpGet("check-auth")]
@@ -456,4 +358,5 @@ namespace AgricultureSmart.API.Controllers
         }
     }
 }
+
 
