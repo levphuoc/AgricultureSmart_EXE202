@@ -47,7 +47,7 @@ namespace AgricultureSmart.API
                     ValidIssuer = Configuration["JWT:ValidIssuer"],
                     ValidAudience = Configuration["JWT:ValidAudience"],
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["JWT:Secret"])),
-                    /*ClockSkew = TimeSpan.Zero,*/
+                    ClockSkew = TimeSpan.Zero,
                     RoleClaimType = "http://schemas.microsoft.com/ws/2008/06/identity/claims/role"
 
                 };
@@ -57,7 +57,10 @@ namespace AgricultureSmart.API
                 {
                     OnMessageReceived = context =>
                     {
-                        context.Token = context.Request.Cookies["accessToken"];
+                        if (context.Request.Cookies.ContainsKey("accessToken"))
+                        {
+                            context.Token = context.Request.Cookies["accessToken"];
+                        }
                         return Task.CompletedTask;
                     }
                 };
@@ -157,6 +160,7 @@ namespace AgricultureSmart.API
             //{
             //    app.UseHttpsRedirection();
             //}
+            app.UseHttpsRedirection();
             app.UseRouting();
             app.UseCors("AllowAll");
             
