@@ -14,5 +14,6 @@ namespace AgricultureSmart.Services.Interfaces
         Task<ReviewDto> CreateAsync(ReviewCreateDto dto);
         Task<bool> UpdateAsync(int id, ReviewUpdateDto dto);
         Task<bool> DeleteAsync(int id);
+        Task<IEnumerable<ReviewDto>> GetByProductIdAsync(int productId);
     }
 }

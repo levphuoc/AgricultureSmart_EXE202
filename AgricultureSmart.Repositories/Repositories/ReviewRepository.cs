@@ -50,5 +50,12 @@ namespace AgricultureSmart.Repositories.Repositories
             _context.Reviews.Remove(review);
             await _context.SaveChangesAsync();
         }
+        public async Task<IEnumerable<Review>> GetByProductIdAsync(int productId)
+        {
+            return await _context.Reviews
+                .Where(r => r.ProductId == productId)
+                .OrderByDescending(r => r.CreatedAt)
+                .ToListAsync();
+        }
     }
 }

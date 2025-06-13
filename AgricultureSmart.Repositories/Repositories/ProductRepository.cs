@@ -113,12 +113,15 @@ namespace AgricultureSmart.Repositories.Repositories
             // Apply sorting
             if (sortByDiscountPrice)
             {
-                query = query.OrderByDescending(p => p.DiscountPrice)
-                             .ThenByDescending(p => p.Price);
+                query = query
+                    .Where(p => p.DiscountPrice != null) 
+                    .OrderByDescending(p => p.DiscountPrice)
+                    .ThenByDescending(p => p.Price);
             }
             else
             {
-                query = query.OrderByDescending(p => p.CreatedAt);
+                query = query
+                    .OrderByDescending(p => p.CreatedAt); 
             }
 
             // Apply pagination
