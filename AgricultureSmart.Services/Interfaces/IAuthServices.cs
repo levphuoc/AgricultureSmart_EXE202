@@ -11,5 +11,7 @@ namespace AgricultureSmart.Services.Interfaces
     {
         Task<(bool Success, string Message, Users User)> RegisterUserAsync(string username, string email, string password, string address, string phoneNumber, int roleId = 3);
         Task<(bool Success, string Message, Users User, string Token, DateTime Expiration, string RoleName)> LoginAsync(string username, string password);
+        string GenerateRefreshToken();
+        Task<(bool Success, string Message, string Token, DateTime Expiration)> RefreshTokenAsync(string refreshToken);
     }
 }

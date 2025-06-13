@@ -51,6 +51,16 @@ namespace AgricultureSmart.API
                     RoleClaimType = "http://schemas.microsoft.com/ws/2008/06/identity/claims/role"
 
                 };
+
+                // Configure JWT Bearer to read token from cookie
+                options.Events = new JwtBearerEvents
+                {
+                    OnMessageReceived = context =>
+                    {
+                        context.Token = context.Request.Cookies["accessToken"];
+                        return Task.CompletedTask;
+                    }
+                };
             });
 
             // Add controllers
