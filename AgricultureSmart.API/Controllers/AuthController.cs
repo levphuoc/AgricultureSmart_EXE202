@@ -272,13 +272,11 @@ namespace AgricultureSmart.API.Controllers
 
         private CookieOptions BuildCookieOptions(DateTime expires)
         {
-            bool isHttps = HttpContext.Request.IsHttps;
-
             return new CookieOptions
             {
                 HttpOnly = true,
-                Secure = isHttps, 
-                SameSite = isHttps ? SameSiteMode.None : SameSiteMode.Lax,
+                Secure = true, 
+                SameSite = SameSiteMode.None,
                 Expires = expires,
                 Path = "/"
             };
