@@ -317,32 +317,6 @@ namespace AgricultureSmart.API.Controllers
             _configuration = configuration;
         }
 
-        [HttpPost("register")]
-        public async Task<IActionResult> Register([FromBody] RegisterModel model)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            int roleId = model.RoleId != 0 ? model.RoleId : 3;
-
-            var result = await _authService.RegisterUserAsync(
-                model.Username,
-                model.Email,
-                model.Password,
-                model.Address,
-                model.PhoneNumber,
-                roleId);
-
-            if (!result.Success)
-            {
-                return BadRequest(new { Message = result.Message });
-            }
-
-            return Ok(new { Message = result.Message });
-        }
-
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginModel model)
         {
@@ -358,15 +332,14 @@ namespace AgricultureSmart.API.Controllers
                 return Unauthorized(new { Message = result.Message });
             }
 
-            // Set access token in HTTP-only cookie
+            // ? Set Access Token Cookie v?i th?i gian c? th?
             SetAccessTokenCookie(result.Token, result.Expiration);
 
-            // Generate and set refresh token in HTTP-only cookie
+            // ? Set Refresh Token Cookie v?i th?i gian dài h?n
             var refreshToken = _authService.GenerateRefreshToken();
-            var refreshTokenExpiration = DateTime.UtcNow.AddDays(7); // 7 days for refresh token
+            var refreshTokenExpiration = DateTime.UtcNow.AddDays(30); // 30 ngày
             SetRefreshTokenCookie(refreshToken, refreshTokenExpiration);
 
-            // Return user info without exposing tokens in response body
             return Ok(new JwtResponse
             {
                 Username = result.User.UserName,
@@ -379,28 +352,24 @@ namespace AgricultureSmart.API.Controllers
         [HttpPost("refresh-token")]
         public async Task<IActionResult> RefreshToken()
         {
-            // Get the refresh token from the cookie
             if (!Request.Cookies.TryGetValue("refreshToken", out var refreshToken))
             {
                 return Unauthorized(new { Message = "Refresh token not found" });
             }
 
-            // Validate the refresh token and generate new tokens
             var result = await _authService.RefreshTokenAsync(refreshToken);
 
             if (!result.Success)
             {
-                // Clear cookies if refresh token is invalid
                 ClearAuthCookies();
                 return Unauthorized(new { Message = result.Message });
             }
 
-            // Set new access token in HTTP-only cookie
+            // ? Set cookie m?i v?i th?i gian m?i
             SetAccessTokenCookie(result.Token, result.Expiration);
 
-            // Set new refresh token in HTTP-only cookie
             var newRefreshToken = _authService.GenerateRefreshToken();
-            var refreshTokenExpiration = DateTime.UtcNow.AddDays(7);
+            var refreshTokenExpiration = DateTime.UtcNow.AddDays(30);
             SetRefreshTokenCookie(newRefreshToken, refreshTokenExpiration);
 
             return Ok(new { Message = "Token refreshed successfully" });
@@ -409,10 +378,54 @@ namespace AgricultureSmart.API.Controllers
         [HttpPost("logout")]
         public IActionResult Logout()
         {
-            // Clear the auth cookies
             ClearAuthCookies();
-
             return Ok(new { Message = "Logged out successfully" });
+        }
+
+        // ? FIXED: Cookie Options ?? tránh b? màu vàng và m?t cookie
+        private CookieOptions BuildCookieOptions(DateTime expires, bool isRefreshToken = false)
+        {
+            var isHttps = HttpContext.Request.IsHttps;
+            var isDevelopment = HttpContext.RequestServices
+                .GetRequiredService<IWebHostEnvironment>().IsDevelopment();
+
+            return new CookieOptions
+            {
+                HttpOnly = true,
+
+                // ? FIX: Ch? set Secure khi th?c s? dùng HTTPS
+                Secure = isHttps && !isDevelopment,
+
+                // ? FIX: SameSite policy phù h?p
+                SameSite = isDevelopment ? SameSiteMode.Lax : SameSiteMode.None,
+
+                // ? FIX: Set th?i gian expires c? th? (không ph?i session cookie)
+                Expires = expires,
+
+                // ? FIX: Path rõ ràng
+                Path = "/",
+
+                // ? FIX: Domain cho cross-origin (n?u c?n)
+                // Domain = isDevelopment ? null : ".yourdomain.com"
+            };
+        }
+
+        private void SetAccessTokenCookie(string token, DateTime expiration)
+        {
+            var cookieOptions = BuildCookieOptions(expiration, false);
+            Response.Cookies.Append("accessToken", token, cookieOptions);
+
+            // ? Log ?? debug
+            Console.WriteLine($"Setting accessToken cookie - Expires: {expiration}, Secure: {cookieOptions.Secure}, SameSite: {cookieOptions.SameSite}");
+        }
+
+        private void SetRefreshTokenCookie(string token, DateTime expiration)
+        {
+            var cookieOptions = BuildCookieOptions(expiration, true);
+            Response.Cookies.Append("refreshToken", token, cookieOptions);
+
+            // ? Log ?? debug
+            Console.WriteLine($"Setting refreshToken cookie - Expires: {expiration}, Secure: {cookieOptions.Secure}, SameSite: {cookieOptions.SameSite}");
         }
 
         private void ClearAuthCookies()
@@ -420,51 +433,30 @@ namespace AgricultureSmart.API.Controllers
             var cookieOptions = new CookieOptions
             {
                 Path = "/",
+                HttpOnly = true,
                 SameSite = SameSiteMode.Lax,
-                HttpOnly = true
+                Expires = DateTime.UtcNow.AddDays(-1) // ? Set th?i gian trong quá kh? ?? xóa
             };
 
             Response.Cookies.Delete("accessToken", cookieOptions);
             Response.Cookies.Delete("refreshToken", cookieOptions);
         }
 
-        [HttpGet("check-cookies")]
-        public IActionResult CheckCookies()
+        [HttpGet("check-auth")]
+        public IActionResult CheckAuth()
         {
             var hasAccessToken = Request.Cookies.TryGetValue("accessToken", out var accessToken);
             var hasRefreshToken = Request.Cookies.TryGetValue("refreshToken", out var refreshToken);
 
             return Ok(new
             {
+                IsAuthenticated = hasAccessToken,
                 HasAccessToken = hasAccessToken,
                 HasRefreshToken = hasRefreshToken,
-                AccessTokenValue = hasAccessToken ? accessToken.Substring(0, 10) + "..." : "N/A",
-                RefreshTokenValue = hasRefreshToken ? refreshToken.Substring(0, 10) + "..." : "N/A"
+                AccessTokenLength = hasAccessToken ? accessToken.Length : 0,
+                RefreshTokenLength = hasRefreshToken ? refreshToken.Length : 0
             });
-        }
-
-        private CookieOptions BuildCookieOptions(DateTime expires)
-        {
-            bool isHttps = HttpContext.Request.IsHttps;
-
-            return new CookieOptions
-            {
-                HttpOnly = true,
-                Secure = isHttps, // Only set Secure flag when using HTTPS
-                SameSite = isHttps ? SameSiteMode.None : SameSiteMode.Lax, // Use None for HTTPS cross-site, Lax for HTTP
-                Expires = expires,
-                Path = "/"
-            };
-        }
-
-        private void SetAccessTokenCookie(string token, DateTime expiration)
-        {
-            Response.Cookies.Append("accessToken", token, BuildCookieOptions(expiration));
-        }
-
-        private void SetRefreshTokenCookie(string token, DateTime expiration)
-        {
-            Response.Cookies.Append("refreshToken", token, BuildCookieOptions(expiration));
         }
     }
 }
+
