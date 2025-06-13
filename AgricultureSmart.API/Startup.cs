@@ -72,7 +72,7 @@ namespace AgricultureSmart.API
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
             // Configure CORS if needed
-            /*services.AddCors(options =>
+            services.AddCors(options =>
             {
                 options.AddPolicy("AllowAll", builder =>
                 {
@@ -81,9 +81,9 @@ namespace AgricultureSmart.API
                            .AllowAnyHeader()
                            .AllowCredentials();
                 });
-            });*/
+            });
 
-            services.AddCors(options =>
+            /*services.AddCors(options =>
             {
                 options.AddPolicy("AllowAll", builder =>
                 {
@@ -92,7 +92,7 @@ namespace AgricultureSmart.API
                            .AllowAnyHeader()
                            .AllowCredentials();
                 });
-            });
+            });*/
 
             // Add Swagger
             services.AddSwaggerGen(c =>
