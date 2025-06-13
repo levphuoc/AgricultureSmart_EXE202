@@ -207,7 +207,7 @@ namespace AgricultureSmart.API.Controllers
             return Ok(new { Message = "Logged out successfully" });
         }
 
-        private void SetAccessTokenCookie(string token, DateTime expiration)
+        /*private void SetAccessTokenCookie(string token, DateTime expiration)
         {
             var cookieOptions = new CookieOptions
             {
@@ -233,7 +233,7 @@ namespace AgricultureSmart.API.Controllers
             };
 
             Response.Cookies.Append("refreshToken", token, cookieOptions);
-        }
+        }*/
 
         private void ClearAuthCookies()
         {
@@ -255,5 +255,27 @@ namespace AgricultureSmart.API.Controllers
                 RefreshTokenValue = hasRefreshToken ? refreshToken : "N/A"
             });
         }
+
+        private CookieOptions BuildCookieOptions(DateTime expires)
+        {
+            return new CookieOptions
+            {
+                HttpOnly = true,
+                Secure = true,   // Cookie is sent only over HTTPS — should be true in production (set to false only during local development without HTTPS)
+                SameSite = SameSiteMode.None,
+                Expires = expires,
+                Path = "/"
+            };
+        }
+        private void SetAccessTokenCookie(string token, DateTime expiration)
+        {
+            Response.Cookies.Append("accessToken", token, BuildCookieOptions(expiration));
+        }
+
+        private void SetRefreshTokenCookie(string token, DateTime expiration)
+        {
+            Response.Cookies.Append("refreshToken", token, BuildCookieOptions(expiration));
+        }
+
     }
 }
