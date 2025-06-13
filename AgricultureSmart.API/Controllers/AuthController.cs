@@ -277,8 +277,8 @@ namespace AgricultureSmart.API.Controllers
             return new CookieOptions
             {
                 HttpOnly = true,
-                Secure = false, 
-                SameSite = SameSiteMode.None, 
+                Secure = isHttps,
+                SameSite = isHttps ? SameSiteMode.None : SameSiteMode.Lax,
                 Expires = expires,
                 Path = "/"
             };
