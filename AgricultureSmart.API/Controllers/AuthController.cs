@@ -256,19 +256,35 @@ namespace AgricultureSmart.API.Controllers
             });
         }
 
-        private CookieOptions BuildCookieOptions(DateTime expires)
+        /*private CookieOptions BuildCookieOptions(DateTime expires)
         {
-            bool secure = HttpContext.Request.IsHttps;
+            bool isHttps = HttpContext.Request.IsHttps;
 
             return new CookieOptions
             {
                 HttpOnly = true,
-                Secure = secure,   // Cookie is sent only over HTTPS — should be true in production (set to false only during local development without HTTPS)
-                SameSite = SameSiteMode.None,
+                Secure = isHttps,
+                SameSite = isHttps ? SameSiteMode.None : SameSiteMode.Lax,
+                Expires = expires,
+                Path = "/"
+            };
+        }*/
+
+        private CookieOptions BuildCookieOptions(DateTime expires)
+        {
+            bool isHttps = HttpContext.Request.IsHttps;
+
+            return new CookieOptions
+            {
+                HttpOnly = true,
+                Secure = false, 
+                SameSite = SameSiteMode.Lax, 
                 Expires = expires,
                 Path = "/"
             };
         }
+
+
         private void SetAccessTokenCookie(string token, DateTime expiration)
         {
             Response.Cookies.Append("accessToken", token, BuildCookieOptions(expiration));
