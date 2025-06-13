@@ -385,19 +385,16 @@ namespace AgricultureSmart.API.Controllers
         // ? FIXED: Cookie Options ?? tránh b? màu vàng và m?t cookie
         private CookieOptions BuildCookieOptions(DateTime expires, bool isRefreshToken = false)
         {
-            var isHttps = HttpContext.Request.IsHttps;
-            var isDevelopment = HttpContext.RequestServices
-                .GetRequiredService<IWebHostEnvironment>().IsDevelopment();
 
             return new CookieOptions
             {
                 HttpOnly = true,
 
                 // ? FIX: Ch? set Secure khi th?c s? dùng HTTPS
-                Secure = isHttps && !isDevelopment,
+                Secure = true,
 
                 // ? FIX: SameSite policy phù h?p
-                SameSite = isDevelopment ? SameSiteMode.Lax : SameSiteMode.None,
+                SameSite = SameSiteMode.None,
 
                 // ? FIX: Set th?i gian expires c? th? (không ph?i session cookie)
                 Expires = expires,
