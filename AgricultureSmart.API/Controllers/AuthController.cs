@@ -259,6 +259,7 @@ namespace AgricultureSmart.API.Controllers
         private CookieOptions BuildCookieOptions(DateTime expires)
         {
             bool secure = HttpContext.Request.IsHttps;
+
             return new CookieOptions
             {
                 HttpOnly = true,
