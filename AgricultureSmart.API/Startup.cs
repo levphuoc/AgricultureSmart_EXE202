@@ -72,7 +72,7 @@ namespace AgricultureSmart.API
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
             // Configure CORS if needed
-            services.AddCors(options =>
+            /*services.AddCors(options =>
             {
                 options.AddPolicy("AllowAll", builder =>
                 {
@@ -81,13 +81,23 @@ namespace AgricultureSmart.API
                            .AllowAnyHeader()
                            .AllowCredentials();
                 });
+            });*/
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAll", builder =>
+                {
+                    builder.AllowAnyOrigin()
+                           .AllowAnyMethod()
+                           .AllowAnyHeader();
+                });
             });
 
             // Add Swagger
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Agriculture Smart API", Version = "v1" });
-                
+
                 // Add JWT Authentication to Swagger
                 c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {
@@ -163,7 +173,7 @@ namespace AgricultureSmart.API
             app.UseHttpsRedirection();
             app.UseRouting();
             app.UseCors("AllowAll");
-            
+
             // Add authentication middleware
             app.UseAuthentication();
             app.UseAuthorization();
@@ -174,4 +184,4 @@ namespace AgricultureSmart.API
             });
         }
     }
-} 
+}
