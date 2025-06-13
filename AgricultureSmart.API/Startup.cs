@@ -63,9 +63,10 @@ namespace AgricultureSmart.API
             {
                 options.AddPolicy("AllowAll", builder =>
                 {
-                    builder.AllowAnyOrigin()
+                    builder.WithOrigins("http://localhost:3000", "https://agriculture-smart-fe.vercel.app")
                            .AllowAnyMethod()
-                           .AllowAnyHeader();
+                           .AllowAnyHeader()
+                           .AllowCredentials();
                 });
             });
 
@@ -142,7 +143,10 @@ namespace AgricultureSmart.API
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Agriculture Smart API v1"));
             }
 
-            app.UseHttpsRedirection();
+            //if (!env.IsProduction())
+            //{
+            //    app.UseHttpsRedirection();
+            //}
             app.UseRouting();
             app.UseCors("AllowAll");
             
