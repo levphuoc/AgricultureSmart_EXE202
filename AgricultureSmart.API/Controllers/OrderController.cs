@@ -1,3 +1,4 @@
+using AgricultureSmart.Services.Extension;
 using AgricultureSmart.Services.Interfaces;
 using AgricultureSmart.Services.Models.OrderModels;
 using Microsoft.AspNetCore.Authorization;
@@ -10,6 +11,7 @@ namespace AgricultureSmart.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles = "Farmer")]
     public class OrderController : ControllerBase
     {
         private readonly IOrderService _orderService;
@@ -23,8 +25,8 @@ namespace AgricultureSmart.API.Controllers
         [HttpPost]
         public async Task<ActionResult<OrderDto>> CreateOrder([FromBody] CreateOrderDto createOrderDto)
         {
-            // TODO: Get the actual user ID from authentication
-            int userId = 1; // Temporary hardcoded user ID for testing
+            int userId = User.GetUserId();
+            if (userId == 0) return Unauthorized();
 
             try
             {
@@ -41,8 +43,8 @@ namespace AgricultureSmart.API.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<OrderDto>>> GetUserOrders()
         {
-            // TODO: Get the actual user ID from authentication
-            int userId = 1; // Temporary hardcoded user ID for testing
+            int userId = User.GetUserId();
+            if (userId == 0) return Unauthorized();
 
             var orders = await _orderService.GetUserOrdersAsync(userId);
             return Ok(orders);
@@ -52,8 +54,8 @@ namespace AgricultureSmart.API.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<OrderDto>> GetOrderById(int id)
         {
-            // TODO: Get the actual user ID from authentication
-            int userId = 1; // Temporary hardcoded user ID for testing
+            int userId = User.GetUserId();
+            if (userId == 0) return Unauthorized();
 
             var order = await _orderService.GetOrderByIdAsync(userId, id);
             if (order == null)
@@ -68,8 +70,8 @@ namespace AgricultureSmart.API.Controllers
         [HttpGet("number/{orderNumber}")]
         public async Task<ActionResult<OrderDto>> GetOrderByOrderNumber(string orderNumber)
         {
-            // TODO: Get the actual user ID from authentication
-            int userId = 1; // Temporary hardcoded user ID for testing
+            int userId = User.GetUserId();
+            if (userId == 0) return Unauthorized();
 
             var order = await _orderService.GetOrderByOrderNumberAsync(userId, orderNumber);
             if (order == null)
@@ -84,8 +86,8 @@ namespace AgricultureSmart.API.Controllers
         [HttpPut("{id}/cancel")]
         public async Task<IActionResult> CancelOrder(int id)
         {
-            // TODO: Get the actual user ID from authentication
-            int userId = 1; // Temporary hardcoded user ID for testing
+            int userId = User.GetUserId();
+            if (userId == 0) return Unauthorized();
 
             var result = await _orderService.CancelOrderAsync(userId, id);
             if (!result)
@@ -100,8 +102,8 @@ namespace AgricultureSmart.API.Controllers
         [HttpPost("{id}/payment")]
         public async Task<IActionResult> ProcessPayment(int id, [FromBody] string paymentMethod)
         {
-            // TODO: Get the actual user ID from authentication
-            int userId = 1; // Temporary hardcoded user ID for testing
+            int userId = User.GetUserId();
+            if (userId == 0) return Unauthorized();
 
             var result = await _orderService.ProcessPaymentAsync(userId, id, paymentMethod);
             if (!result)

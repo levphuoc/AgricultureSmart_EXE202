@@ -1,5 +1,7 @@
+using AgricultureSmart.Services.Extension;
 using AgricultureSmart.Services.Interfaces;
 using AgricultureSmart.Services.Models.CartModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -9,6 +11,7 @@ namespace AgricultureSmart.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles = "Farmer")]
     public class CartController : ControllerBase
     {
         private readonly ICartService _cartService;
@@ -22,8 +25,8 @@ namespace AgricultureSmart.API.Controllers
         [HttpGet]
         public async Task<ActionResult<CartDto>> GetCart()
         {
-            // TODO: Get the actual user ID from authentication
-            int userId = 1; // Temporary hardcoded user ID for testing
+            int userId = User.GetUserId();
+            if (userId == 0) return Unauthorized();
 
             var cart = await _cartService.GetCartAsync(userId);
             return Ok(cart);
@@ -40,8 +43,8 @@ namespace AgricultureSmart.API.Controllers
 
             try
             {
-                // TODO: Get the actual user ID from authentication
-                int userId = 1; // Temporary hardcoded user ID for testing
+                int userId = User.GetUserId();
+                if (userId == 0) return Unauthorized();
 
                 var cartItem = await _cartService.AddToCartAsync(userId, addToCartDto);
                 return Ok(cartItem);
@@ -67,8 +70,8 @@ namespace AgricultureSmart.API.Controllers
 
             try
             {
-                // TODO: Get the actual user ID from authentication
-                int userId = 1; // Temporary hardcoded user ID for testing
+                int userId = User.GetUserId();
+                if (userId == 0) return Unauthorized();
 
                 var cartItem = await _cartService.UpdateCartItemAsync(userId, cartItemId, updateCartItemDto);
                 if (cartItem == null)
@@ -92,8 +95,8 @@ namespace AgricultureSmart.API.Controllers
         [HttpDelete("items/{cartItemId}")]
         public async Task<IActionResult> RemoveCartItem(int cartItemId)
         {
-            // TODO: Get the actual user ID from authentication
-            int userId = 1; // Temporary hardcoded user ID for testing
+            int userId = User.GetUserId();
+            if (userId == 0) return Unauthorized();
 
             var result = await _cartService.RemoveCartItemAsync(userId, cartItemId);
             if (!result)
@@ -108,8 +111,8 @@ namespace AgricultureSmart.API.Controllers
         [HttpDelete]
         public async Task<IActionResult> ClearCart()
         {
-            // TODO: Get the actual user ID from authentication
-            int userId = 1; // Temporary hardcoded user ID for testing
+            int userId = User.GetUserId();
+            if (userId == 0) return Unauthorized();
 
             var result = await _cartService.ClearCartAsync(userId);
             if (!result)
@@ -124,8 +127,8 @@ namespace AgricultureSmart.API.Controllers
         [HttpGet("count")]
         public async Task<ActionResult<int>> GetCartItemCount()
         {
-            // TODO: Get the actual user ID from authentication
-            int userId = 1; // Temporary hardcoded user ID for testing
+            int userId = User.GetUserId();
+            if (userId == 0) return Unauthorized();
 
             var count = await _cartService.GetCartItemCountAsync(userId);
             return Ok(count);
