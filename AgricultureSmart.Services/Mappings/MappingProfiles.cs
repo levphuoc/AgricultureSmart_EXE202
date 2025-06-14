@@ -5,6 +5,7 @@ using AgricultureSmart.Services.Models.EngineerModel;
 using AgricultureSmart.Services.Models.FarmerModels;
 using AgricultureSmart.Services.Models.NewCategoryModels;
 using AgricultureSmart.Services.Models.NewModels;
+using AgricultureSmart.Services.Models.NewModels.AgricultureSmart.Services.Models.NewModels;
 using AgricultureSmart.Services.Models.OrderModels;
 using AgricultureSmart.Services.Models.ProductCategoryModels;
 using AgricultureSmart.Services.Models.ProductModels;
@@ -37,6 +38,8 @@ namespace AgricultureSmart.Services.Mappings
 
             CreateMap<News, NewsDto>()
             .ForMember(dest => dest.CategoryName, opt => opt.MapFrom(src => src.Category.Name));
+            CreateMap<News, NewGetAllDto>()
+            .ForMember(dest => dest.CategoryName, opt => opt.MapFrom(src => src.Category.Name)).ReverseMap();
             CreateMap<NewsCreateDto, News>();
             CreateMap<NewsUpdateDto, News>();
 

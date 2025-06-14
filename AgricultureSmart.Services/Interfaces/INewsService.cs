@@ -1,4 +1,5 @@
 ﻿using AgricultureSmart.Services.Models.NewModels;
+using AgricultureSmart.Services.Models.NewModels.AgricultureSmart.Services.Models.NewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,7 @@ namespace AgricultureSmart.Services.Interfaces
 {
     public interface INewsService
     {
-        Task<IEnumerable<NewsDto>> GetAllAsync(int page, int pageSize);
+        Task<IEnumerable<NewGetAllDto>> GetAllAsync(int page, int pageSize);
         Task<IEnumerable<NewsDto>> SearchAsync(string title, string author, int? categoryId, int page, int pageSize);
         Task<NewsDto> GetByIdAsync(int id);
         Task<NewsDto> CreateAsync(NewsCreateDto dto);

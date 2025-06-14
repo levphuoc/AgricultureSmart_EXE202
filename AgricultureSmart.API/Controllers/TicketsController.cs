@@ -148,5 +148,18 @@ namespace AgricultureSmart.API.Controllers
             return CreatedAtAction(nameof(GetById),
                 new { id = result.Data?.Id }, result);
         }
+
+        // GET: api/ticket/user/123?pageIndex=0&pageSize=10
+        [HttpGet("user/{userId}")]
+        public async Task<IActionResult> GetByUserId(
+            int userId, int pageIndex = 0, int pageSize = 10)
+        {
+            var tickets = await _ticketService.GetByUserIdAsync(userId, pageIndex, pageSize);
+
+            if (!tickets.Any())
+                return NotFound(new { Message = $"No tickets found for user {userId}." });
+
+            return Ok(tickets);
+        }
     }
 }

@@ -2,6 +2,7 @@
 using AgricultureSmart.Repositories.Repositories.Interfaces;
 using AgricultureSmart.Services.Interfaces;
 using AgricultureSmart.Services.Models.NewModels;
+using AgricultureSmart.Services.Models.NewModels.AgricultureSmart.Services.Models.NewModels;
 using AutoMapper;
 using Microsoft.Extensions.Logging;
 using System;
@@ -23,11 +24,11 @@ namespace AgricultureSmart.Services.Services
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<NewsDto>> GetAllAsync(int page, int pageSize)
+        public async Task<IEnumerable<NewGetAllDto>> GetAllAsync(int page, int pageSize)
         {
             var query = _repo.GetAll().OrderByDescending(n => n.PublishedAt);
             var paged = query.Skip((page - 1) * pageSize).Take(pageSize);
-            return _mapper.Map<IEnumerable<NewsDto>>(paged);
+            return _mapper.Map<IEnumerable<NewGetAllDto>>(paged);
         }
 
         public async Task<IEnumerable<NewsDto>> SearchAsync(string title, string author, int? categoryId, int page, int pageSize)
