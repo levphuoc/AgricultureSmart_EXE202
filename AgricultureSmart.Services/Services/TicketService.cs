@@ -293,5 +293,47 @@ namespace AgricultureSmart.Services.Services
 
             return TicketStatusConstants.ValidTransitions[currentStatus].Contains(newStatus);
         }
+
+        public async Task<ServiceResponse<TicketViewModel>>
+    CreateForFarmerAsync(int farmerId, CreateTicketForFarmerModel model)
+        {
+            try
+            {
+                var ticket = new Ticket
+                {
+                    FarmerId = farmerId,
+                    AssignedEngineerId = null,              // chưa gán kỹ sư
+                    Title = model.Title,
+                    Category = model.Category,
+                    CropType = model.CropType,
+                    Location = model.Location,
+                    Description = model.Description,
+                    Priority = model.Priority,
+                    ContactMethod = model.ContactMethod,
+                    PhoneNumber = model.PhoneNumber,
+                    ImageUrl = model.ImageUrl,
+                    Status = TicketStatusConstants.Open,   // mặc định “open”
+                    CreatedAt = DateTime.UtcNow,
+                    UpdatedAt = DateTime.UtcNow
+                };
+
+                await _ticketRepo.AddAsync(ticket);
+                var viewModel = await GetByIdAsync(ticket.Id);
+
+                return new ServiceResponse<TicketViewModel>
+                {
+                    Data = viewModel,
+                    Message = "Ticket created successfully."
+                };
+            }
+            catch (Exception ex)
+            {
+                return new ServiceResponse<TicketViewModel>
+                {
+                    Success = false,
+                    Message = $"Error creating ticket: {ex.Message}"
+                };
+            }
+        }
     }
 }
