@@ -57,7 +57,6 @@ namespace AgricultureSmart.Repositories.Repositories
                 .OrderByDescending(r => r.CreatedAt)
                 .ToListAsync();
         }
-/*
         public async Task<double> GetAverageRatingAsync(int productId)
         {
             return await _context.Reviews
@@ -66,6 +65,5 @@ namespace AgricultureSmart.Repositories.Repositories
                                  .DefaultIfEmpty(0)
                                  .AverageAsync();
         }
-*/
     }
 }

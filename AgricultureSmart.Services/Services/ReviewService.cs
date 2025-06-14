@@ -70,5 +70,18 @@ namespace AgricultureSmart.Services.Services
             return _mapper.Map<IEnumerable<ReviewDto>>(reviews);
         }
 
+        /*private async Task RecalculateRatingAsync(int productId)
+        {
+            double avg = await _repository.GetAverageRatingAsync(productId);
+            avg = Math.Round(avg, 2);
+
+            var product = await _repository.GetByIdAsync(productId);
+            if (product == null) return;
+
+            product.Rating = avg;
+            product.UpdatedAt = DateTime.UtcNow;
+            await _repository.UpdateAsync(product);
+        }*/
+
     }
 }

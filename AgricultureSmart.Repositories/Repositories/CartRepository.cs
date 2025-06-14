@@ -27,6 +27,7 @@ namespace AgricultureSmart.Repositories.Repositories
             return await _dbSet
                 .Include(c => c.CartItems)
                     .ThenInclude(ci => ci.Product)
+                        .ThenInclude(p => p.Category)
                 .FirstOrDefaultAsync(c => c.UserId == userId);
         }
 

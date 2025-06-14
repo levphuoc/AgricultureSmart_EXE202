@@ -15,5 +15,6 @@ namespace AgricultureSmart.Repositories.Repositories.Interfaces
         Task UpdateAsync(Review review);
         Task DeleteAsync(Review review);
         Task<IEnumerable<Review>> GetByProductIdAsync(int productId);
+        Task<double> GetAverageRatingAsync(int productId);
     }
 }
