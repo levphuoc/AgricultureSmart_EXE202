@@ -14,11 +14,15 @@ namespace AgricultureSmart.Services.Services
     public class ReviewService : IReviewService
     {
         private readonly IReviewRepository _repository;
+        private readonly IProductRepository _productRepo;
         private readonly IMapper _mapper;
 
-        public ReviewService(IReviewRepository repository, IMapper mapper)
+        public ReviewService(IReviewRepository reviewRepo,
+                        IProductRepository productRepo,
+                        IMapper mapper)
         {
-            _repository = repository;
+            _repository = reviewRepo;
+            _productRepo = productRepo;
             _mapper = mapper;
         }
 
@@ -37,10 +41,12 @@ namespace AgricultureSmart.Services.Services
         public async Task<ReviewDto> CreateAsync(ReviewCreateDto dto)
         {
             var review = _mapper.Map<Review>(dto);
-            review.CreatedAt = DateTime.UtcNow;
-            review.UpdatedAt = DateTime.UtcNow;
+            review.CreatedAt = review.UpdatedAt = DateTime.UtcNow;
 
             await _repository.AddAsync(review);
+
+            await RecalculateRatingAsync(review.ProductId);
+
             return _mapper.Map<ReviewDto>(review);
         }
 
@@ -53,8 +59,11 @@ namespace AgricultureSmart.Services.Services
             review.UpdatedAt = DateTime.UtcNow;
 
             await _repository.UpdateAsync(review);
+            await RecalculateRatingAsync(review.ProductId);
+
             return true;
         }
+
 
         public async Task<bool> DeleteAsync(int id)
         {
@@ -70,18 +79,17 @@ namespace AgricultureSmart.Services.Services
             return _mapper.Map<IEnumerable<ReviewDto>>(reviews);
         }
 
-        /*private async Task RecalculateRatingAsync(int productId)
+        private async Task RecalculateRatingAsync(int productId)
         {
             double avg = await _repository.GetAverageRatingAsync(productId);
             avg = Math.Round(avg, 2);
 
-            var product = await _repository.GetByIdAsync(productId);
+            var product = await _productRepo.GetByIdAsync(productId);
             if (product == null) return;
 
             product.Rating = avg;
             product.UpdatedAt = DateTime.UtcNow;
-            await _repository.UpdateAsync(product);
-        }*/
-
+            await _productRepo.UpdateAsync(product);
+        }
     }
 }

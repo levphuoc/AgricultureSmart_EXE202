@@ -19,6 +19,8 @@ namespace AgricultureSmart.Services.Models.ProductModels
         public bool IsActive { get; set; }
         public string SKU { get; set; } = string.Empty;
         public decimal? DiscountPrice { get; set; }
+        public double? Rating { get; set; }
+
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
         
