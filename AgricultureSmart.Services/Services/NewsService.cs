@@ -31,7 +31,7 @@ namespace AgricultureSmart.Services.Services
             return _mapper.Map<IEnumerable<NewGetAllDto>>(paged);
         }
 
-        public async Task<IEnumerable<NewsDto>> SearchAsync(string title, string author, int? categoryId, int page, int pageSize)
+        public async Task<IEnumerable<NewGetAllDto>> SearchAsync(string title, string author, int? categoryId, int page, int pageSize)
         {
             var query = _repo.GetAll();
 
@@ -45,7 +45,7 @@ namespace AgricultureSmart.Services.Services
                 query = query.Where(n => n.CategoryId == categoryId.Value);
 
             var paged = query.Skip((page - 1) * pageSize).Take(pageSize);
-            return _mapper.Map<IEnumerable<NewsDto>>(paged);
+            return _mapper.Map<IEnumerable<NewGetAllDto>>(paged);
         }
 
         public async Task<NewsDto> GetByIdAsync(int id)
