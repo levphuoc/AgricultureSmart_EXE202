@@ -23,7 +23,5 @@ namespace AgricultureSmart.Repositories.Repositories.Interfaces
             bool? isActive = null,
             bool sortByDiscountPrice = false);
 
-       /* Task<double> GetAverageRatingAsync(int productId);*/
-
     }
 } 
