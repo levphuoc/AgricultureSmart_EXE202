@@ -31,21 +31,33 @@ namespace AgricultureSmart.Services.Services
             return _mapper.Map<IEnumerable<NewGetAllDto>>(paged);
         }
 
-        public async Task<IEnumerable<NewGetAllDto>> SearchAsync(string title, string author, int? categoryId, int page, int pageSize)
+        public async Task<PagedResult<NewGetAllDto>> SearchAsync(string? title, string? author,
+                                                         int? categoryId, int page, int pageSize)
         {
             var query = _repo.GetAll();
 
-            if (!string.IsNullOrEmpty(title))
+            if (!string.IsNullOrWhiteSpace(title))
                 query = query.Where(n => n.Title.Contains(title));
 
-            if (!string.IsNullOrEmpty(author))
+            if (!string.IsNullOrWhiteSpace(author))
                 query = query.Where(n => n.Author.Contains(author));
 
             if (categoryId.HasValue)
-                query = query.Where(n => n.CategoryId == categoryId.Value);
+                query = query.Where(n => n.CategoryId == categoryId);
 
-            var paged = query.Skip((page - 1) * pageSize).Take(pageSize);
-            return _mapper.Map<IEnumerable<NewGetAllDto>>(paged);
+            int totalItems = query.Count();
+            var pageItems = query.Skip((page - 1) * pageSize)
+                                  .Take(pageSize)
+                                  .ToList();
+
+            return new PagedResult<NewGetAllDto>
+            {
+                Items = _mapper.Map<IEnumerable<NewGetAllDto>>(pageItems),
+                TotalItems = totalItems,
+                TotalPages = (int)Math.Ceiling(totalItems / (double)pageSize),
+                CurrentPage = page,
+                PageSize = pageSize
+            };
         }
 
         public async Task<NewsDto> GetByIdAsync(int id)

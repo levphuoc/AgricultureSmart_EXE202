@@ -24,10 +24,22 @@ namespace AgricultureSmart.API.Controllers
         }
 
         [HttpGet("search")]
-        public async Task<IActionResult> Search([FromQuery] string? title, [FromQuery] string? author, [FromQuery] int? categoryId, [FromQuery] int page = 1, [FromQuery] int pageSize = 10)
+        public async Task<IActionResult> Search([FromQuery] string? title,
+                                        [FromQuery] string? author,
+                                        [FromQuery] int? categoryId,
+                                        [FromQuery] int page = 1,
+                                        [FromQuery] int pageSize = 10)
         {
             var result = await _service.SearchAsync(title, author, categoryId, page, pageSize);
-            return Ok(new { message = "Tìm kiếm thành công", data = result });
+
+            return Ok(new
+            {
+                data = result.Items,
+                totalItems = result.TotalItems,
+                totalPages = result.TotalPages,
+                currentPage = result.CurrentPage,
+                pageSize = result.PageSize
+            });
         }
 
         [HttpGet("{id}")]
