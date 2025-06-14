@@ -1,4 +1,5 @@
-﻿using AgricultureSmart.Services.Interfaces;
+﻿using AgricultureSmart.Services.Extension;
+using AgricultureSmart.Services.Interfaces;
 using AgricultureSmart.Services.Models;
 using AgricultureSmart.Services.Models.TicketModels;
 using Microsoft.AspNetCore.Authorization;
@@ -149,12 +150,14 @@ namespace AgricultureSmart.API.Controllers
                 new { id = result.Data?.Id }, result);
         }
 
-        // GET: api/ticket/user/123?pageIndex=0&pageSize=10
-        [HttpGet("user/{userId}")]
-        public async Task<IActionResult> GetByUserId(
-            int userId, int pageIndex = 0, int pageSize = 10)
+        [HttpGet("user")]
+        [Authorize]
+        public async Task<IActionResult> GetByUserId()
         {
-            var tickets = await _ticketService.GetByUserIdAsync(userId, pageIndex, pageSize);
+            int userId = User.GetUserId();
+            if (userId == 0) return Unauthorized();
+
+            var tickets = await _ticketService.GetByUserIdAsync(userId);
 
             if (!tickets.Any())
                 return NotFound(new { Message = $"No tickets found for user {userId}." });

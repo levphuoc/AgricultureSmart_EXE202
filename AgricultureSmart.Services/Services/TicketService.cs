@@ -336,17 +336,15 @@ namespace AgricultureSmart.Services.Services
             }
         }
 
-        public async Task<IEnumerable<TicketViewModel>> GetByUserIdAsync(
-    int userId, int pageIndex = 0, int pageSize = 10)
+        public async Task<IEnumerable<TicketFarmerViewModel>> GetByUserIdAsync(
+    int userId)
         {
             var tickets = await _ticketRepo.GetAllAsync();
 
             var userTickets = tickets
                 .Where(t => t.FarmerId == userId)
                 .OrderByDescending(t => t.CreatedAt)
-                .Skip(pageIndex * pageSize)
-                .Take(pageSize)
-                .Select(t => new TicketViewModel
+                .Select(t => new TicketFarmerViewModel
                 {
                     Id = t.Id,
                     Title = t.Title,
