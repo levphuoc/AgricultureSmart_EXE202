@@ -47,9 +47,9 @@ namespace AgricultureSmart.Repositories.Entities
 
         public DateTime UpdatedAt { get; set; }
 
-        /*[Range(0, 5)]
+        [Range(0, 5)]
         [Column(TypeName = "float")]
-        public double Rating { get; set; } = 0;*/
+        public double Rating { get; set; } = 0;
 
 
         // Navigation properties
