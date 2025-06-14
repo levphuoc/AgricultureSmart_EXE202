@@ -335,5 +335,36 @@ namespace AgricultureSmart.Services.Services
                 };
             }
         }
+
+        public async Task<IEnumerable<TicketViewModel>> GetByUserIdAsync(
+    int userId, int pageIndex = 0, int pageSize = 10)
+        {
+            var tickets = await _ticketRepo.GetAllAsync();
+
+            var userTickets = tickets
+                .Where(t => t.FarmerId == userId)
+                .OrderByDescending(t => t.CreatedAt)
+                .Skip(pageIndex * pageSize)
+                .Take(pageSize)
+                .Select(t => new TicketViewModel
+                {
+                    Id = t.Id,
+                    Title = t.Title,
+                    Category = t.Category,
+                    CropType = t.CropType,
+                    Location = t.Location,
+                    Description = t.Description,
+                    Priority = t.Priority,
+                    ContactMethod = t.ContactMethod,
+                    PhoneNumber = t.PhoneNumber,
+                    ImageUrl = t.ImageUrl,
+                    Status = t.Status,
+                    CreatedAt = t.CreatedAt,
+                    UpdatedAt = t.UpdatedAt,
+                    ResolvedAt = t.ResolvedAt
+                });
+
+            return userTickets;
+        }
     }
 }

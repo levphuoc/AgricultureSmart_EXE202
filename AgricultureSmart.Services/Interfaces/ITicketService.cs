@@ -18,5 +18,7 @@ namespace AgricultureSmart.Services.Interfaces
         Task<ServiceResponse<TicketViewModel>> CreateForFarmerAsync(
         int farmerId,
         CreateTicketForFarmerModel model);
+        Task<IEnumerable<TicketViewModel>> GetByUserIdAsync(
+        int userId, int pageIndex, int pageSize);
     }
 }
