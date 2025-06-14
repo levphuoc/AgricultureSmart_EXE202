@@ -11,8 +11,9 @@ namespace AgricultureSmart.Services.Interfaces
     public interface INewsService
     {
         Task<IEnumerable<NewGetAllDto>> GetAllAsync(int page, int pageSize);
-        Task<PagedResult<NewGetAllDto>> SearchAsync(string? title, string? author,
-                                            int? categoryId, int page, int pageSize);
+        Task<NewsListResponse> SearchAsync(string? title, string? author,
+                                   int? categoryId, int page, int pageSize);
+
         Task<NewsDto> GetByIdAsync(int id);
         Task<NewsDto> CreateAsync(NewsCreateDto dto);
         Task<bool> UpdateAsync(int id, NewsUpdateDto dto);
