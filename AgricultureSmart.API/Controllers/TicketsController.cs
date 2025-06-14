@@ -1,7 +1,9 @@
 ﻿using AgricultureSmart.Services.Interfaces;
 using AgricultureSmart.Services.Models;
 using AgricultureSmart.Services.Models.TicketModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace AgricultureSmart.API.Controllers
 {
@@ -129,6 +131,22 @@ namespace AgricultureSmart.API.Controllers
             };
 
             return Ok(statusInfo);
+        }
+
+        [Authorize(Roles = "Farmer")]              
+        [HttpPost("farmer")]
+        public async Task<IActionResult> CreateForFarmer([FromBody] CreateTicketForFarmerModel model)
+        {
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+
+            int farmerId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+
+            var result = await _ticketService.CreateForFarmerAsync(farmerId, model);
+
+            if (!result.Success) return StatusCode(500, result);
+
+            return CreatedAtAction(nameof(GetById),
+                new { id = result.Data?.Id }, result);
         }
     }
 }

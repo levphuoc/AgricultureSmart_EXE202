@@ -15,5 +15,8 @@ namespace AgricultureSmart.Services.Interfaces
         Task<ServiceResponse<bool>> UpdateAsync(UpdateTicketModel model);
         Task<ServiceResponse<bool>> DeleteAsync(int id);
         Task<ServiceResponse<TicketViewModel>> UpdateStatusAsync(UpdateTicketStatusModel model);
+        Task<ServiceResponse<TicketViewModel>> CreateForFarmerAsync(
+        int farmerId,
+        CreateTicketForFarmerModel model);
     }
 }
