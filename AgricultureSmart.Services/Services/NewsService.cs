@@ -4,6 +4,7 @@ using AgricultureSmart.Services.Interfaces;
 using AgricultureSmart.Services.Models.NewModels;
 using AgricultureSmart.Services.Models.NewModels.AgricultureSmart.Services.Models.NewModels;
 using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -31,10 +32,10 @@ namespace AgricultureSmart.Services.Services
             return _mapper.Map<IEnumerable<NewGetAllDto>>(paged);
         }
 
-        public async Task<PagedResult<NewGetAllDto>> SearchAsync(string? title, string? author,
-                                                         int? categoryId, int page, int pageSize)
+        public async Task<NewsListResponse> SearchAsync(string? title, string? author,
+                                                int? categoryId, int page, int pageSize)
         {
-            var query = _repo.GetAll();
+            var query = _repo.GetAll();  // IQueryable<News>
 
             if (!string.IsNullOrWhiteSpace(title))
                 query = query.Where(n => n.Title.Contains(title));
@@ -45,18 +46,24 @@ namespace AgricultureSmart.Services.Services
             if (categoryId.HasValue)
                 query = query.Where(n => n.CategoryId == categoryId);
 
-            int totalItems = query.Count();
-            var pageItems = query.Skip((page - 1) * pageSize)
-                                  .Take(pageSize)
-                                  .ToList();
+            int total = await query.CountAsync();
+            int totalPages = (int)Math.Ceiling(total / (double)pageSize);
 
-            return new PagedResult<NewGetAllDto>
+            var items = await query
+                .OrderByDescending(n => n.PublishedAt)
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            return new NewsListResponse
             {
-                Items = _mapper.Map<IEnumerable<NewGetAllDto>>(pageItems),
-                TotalItems = totalItems,
-                TotalPages = (int)Math.Ceiling(totalItems / (double)pageSize),
-                CurrentPage = page,
-                PageSize = pageSize
+                Items = _mapper.Map<List<NewGetAllDto>>(items),
+                TotalCount = total,
+                PageNumber = page,
+                PageSize = pageSize,
+                TotalPages = totalPages,
+                HasPreviousPage = page > 1,
+                HasNextPage = page < totalPages
             };
         }
 

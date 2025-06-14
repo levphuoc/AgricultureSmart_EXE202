@@ -31,16 +31,9 @@ namespace AgricultureSmart.API.Controllers
                                         [FromQuery] int pageSize = 10)
         {
             var result = await _service.SearchAsync(title, author, categoryId, page, pageSize);
-
-            return Ok(new
-            {
-                data = result.Items,
-                totalItems = result.TotalItems,
-                totalPages = result.TotalPages,
-                currentPage = result.CurrentPage,
-                pageSize = result.PageSize
-            });
+            return Ok(result);     
         }
+
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
