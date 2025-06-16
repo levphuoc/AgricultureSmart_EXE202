@@ -365,6 +365,32 @@ namespace AgricultureSmart.Services.Services
             }
         }
 
+        public async Task<bool> UpdateOrderAfterPaymentAsync(int orderId, string transactionId)
+        {
+            try
+            {
+                var order = await _orderRepository.GetByIdAsync(orderId);
+                if (order == null)
+                {
+                    return false;
+                }
+
+                // Update both order status and payment status
+                order.Status = "processing";  // Standard status value after payment
+                order.PaymentStatus = "paid";
+                order.PaidAt = DateTime.UtcNow;
+                order.UpdatedAt = DateTime.UtcNow;
+                
+                await _orderRepository.UpdateAsync(order);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error updating order after payment for order ID {OrderId}", orderId);
+                throw;
+            }
+        }
+
         private string GenerateOrderNumber()
         {
             // Generate a unique order number with format: ORD-YYYYMMDD-XXXX

@@ -14,6 +14,7 @@ namespace AgricultureSmart.Services.Interfaces
         Task<bool> UpdateOrderStatusAsync(int orderId, UpdateOrderStatusDto updateOrderStatusDto);
         Task<bool> CancelOrderAsync(int userId, int orderId);
         Task<bool> ProcessPaymentAsync(int userId, int orderId, string paymentMethod);
+        Task<bool> UpdateOrderAfterPaymentAsync(int orderId, string transactionId);
         
         // Admin methods
         Task<IEnumerable<OrderDto>> GetAllOrdersAsync();

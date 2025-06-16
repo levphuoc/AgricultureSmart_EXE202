@@ -156,7 +156,7 @@ namespace AgricultureSmart.API
             services.AddScoped<INewsCategoryService, NewsCategoryService>();
             services.AddScoped<INewsService, NewsService>();
             services.AddScoped<IReviewService, ReviewService>(); 
-            /*services.AddScoped<IVnPayService, VnPayService>(); */
+            services.AddScoped<IVnPayService, VnPayService>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

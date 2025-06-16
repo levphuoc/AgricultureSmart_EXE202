@@ -1,9 +1,11 @@
-﻿/*using AutoMapper;
+﻿using AgricultureSmart.Services.Interfaces;
+using AgricultureSmart.Services.Models.VnPayModels;
+using AgricultureSmart.Services.Utils;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -11,86 +13,74 @@ namespace AgricultureSmart.Services.Services
 {
     public class VnPayService : IVnPayService
     {
-        private readonly IConfiguration _cfg;
-        private readonly IHttpContextAccessor _http;
-        private readonly IUnitOfWork _uow;
-        private readonly IMapper _mapper;
-
-        public VnPayService(IConfiguration cfg,
-                             IHttpContextAccessor http,
-                             IUnitOfWork uow,
-                             IMapper mapper)
+        private readonly IConfiguration _config;
+        public VnPayService(IConfiguration config)
         {
-            _cfg = cfg;
-            _http = http;
-            _uow = uow;
-            _mapper = mapper;
+            _config = config;
+        }
+        public string CreatePaymentUrl(HttpContext context, VnPaymentRequestModel model)
+        {
+            var tick = DateTime.Now.ToString("yyyyMMddHHmmss");
+            var vnpay = new VnPayLibrary();
+            vnpay.AddRequestData("vnp_Version", _config["VnPay:Version"]);
+            vnpay.AddRequestData("vnp_Command", _config["VnPay:Command"]);
+            vnpay.AddRequestData("vnp_TmnCode", _config["VnPay:TmnCode"]);
+            vnpay.AddRequestData("vnp_Amount", (model.Amount * 100).ToString());
+            //Số tiền thanh toán. Số tiền không 
+            //mang các ký tự phân tách thập phân, phần nghìn, ký tự tiền tệ. Để gửi số tiền thanh toán là 100,000 VND
+            //(một trăm nghìn VNĐ) thì merchant cần nhân thêm 100 lần(khử phần thập phân), sau đó gửi sang VNPAY
+            //là: 10000000
+
+            vnpay.AddRequestData("vnp_CreateDate", model.CreatedDate.ToString("yyyyMMddHHmmss"));
+            vnpay.AddRequestData("vnp_CurrCode", _config["VnPay:CurrCode"]);
+            vnpay.AddRequestData("vnp_IpAddr", AgricultureSmart.Services.Utils.Utils.GetIpAddress(context));
+            vnpay.AddRequestData("vnp_Locale", _config["VnPay:Locale"]);
+
+            vnpay.AddRequestData("vnp_OrderInfo", "Thanh toan don hang:" + model.OrderId);
+            vnpay.AddRequestData("vnp_OrderType", "other"); //default value: other
+            vnpay.AddRequestData("vnp_ReturnUrl", _config["VnPay:ReturnUrl"]);
+            vnpay.AddRequestData("vnp_TxnRef", $"{model.OrderId}_{tick}"); //Mã đơn hàng, merchant tự sinh ra và đảm bảo duy nhất trong hệ thống của mình
+            var paymentUrl = vnpay.CreateRequestUrl(_config["VnPay:BaseUrl"], _config["VnPay:HashSecret"]);
+            return paymentUrl;
         }
 
-        /// <inheritdoc/>
-        public async Task<string> CreatePaymentUrlAsync(int orderId, HttpContext ctx)
+        public VnPaymentResponseModel PaymentExcute(IQueryCollection collection)
         {
-            // 1. Lấy Order
-            var orderRepo = _uow.GetRepository<Order>();
-            var order = await orderRepo.Entities.FirstOrDefaultAsync(o => o.Id == orderId);
-            if (order == null) return "Order not found";
-            if (order.PaymentStatus == "paid") return "Order already paid";
-
-            // 2. Tạm ghi trạng thái chờ thanh toán
-            order.PaymentMethod = "VNPay";
-            order.PaymentStatus = "pending";
-            order.UpdatedAt = DateTime.UtcNow;
-            await _uow.SaveAsync();
-
-            // 3. Tạo link VNPay
-            var vnp = new VNPayLibrary();
-            vnp.AddRequestData("vnp_Version", "2.1.0");
-            vnp.AddRequestData("vnp_Command", "pay");
-            vnp.AddRequestData("vnp_TmnCode", _cfg["VnPay:TmnCode"]);
-            vnp.AddRequestData("vnp_Amount", ((int)(order.TotalAmount * 100)).ToString());
-            vnp.AddRequestData("vnp_CreateDate", DateTime.Now.ToString("yyyyMMddHHmmss"));
-            vnp.AddRequestData("vnp_ExpireDate", DateTime.Now.AddMinutes(15).ToString("yyyyMMddHHmmss"));
-            vnp.AddRequestData("vnp_CurrCode", "VND");
-            vnp.AddRequestData("vnp_IpAddr", ctx?.Connection?.RemoteIpAddress?.ToString() ?? "0.0.0.0");
-            vnp.AddRequestData("vnp_Locale", "vn");
-            vnp.AddRequestData("vnp_OrderInfo", $"Thanh toán đơn #{order.OrderNumber}");
-            vnp.AddRequestData("vnp_OrderType", "other");
-            vnp.AddRequestData("vnp_TxnRef", order.OrderNumber);                          // duy nhất
-            vnp.AddRequestData("vnp_ReturnUrl", _cfg["VnPay:ReturnUrl"]);                   // /api/payment/execute-vnpay
-
-            string payUrl = vnp.CreateRequestUrl(_cfg["VnPay:PaymentUrl"], _cfg["VnPay:HashSecret"]);
-            return payUrl;
-        }
-
-        /// <inheritdoc/>
-        public async Task<string> ExecutePaymentAsync(PaymentResponseModelView res)
-        {
-            // 1. Xác thực checksum
-            var vnp = new VNPayLibrary();
-            if (!vnp.ValidateSignature(res.Vnp_SecureHash, _cfg["VnPay:HashSecret"]))
-                return "INVALID CHECKSUM";
-
-            // 2. Lấy Order theo vnp_TxnRef (OrderNumber)
-            var orderRepo = _uow.GetRepository<Order>();
-            var order = await orderRepo.Entities.FirstOrDefaultAsync(o => o.OrderNumber == res.TxnRef);
-            if (order == null) return "Order not found";
-
-            // 3. Cập nhật trạng thái thanh toán
-            if (res.ResponseCode == "00")
+            var vnpay = new VnPayLibrary();
+            foreach (var (key, value) in collection)
             {
-                order.PaymentStatus = "paid";
-                order.Status = "processing";           // tuỳ logic
-                order.PaidAt = DateTime.UtcNow;
+                if (!string.IsNullOrEmpty(value) && !string.IsNullOrEmpty(key) && key.StartsWith("vnp_"))
+                {
+                    vnpay.AddResponseData(key, value.ToString());
+                }
             }
-            else
-            {
-                order.PaymentStatus = "failed";
-            }
-            order.UpdatedAt = DateTime.UtcNow;
-            await _uow.SaveAsync();
+            var vnp_orderId = Convert.ToString(vnpay.GetResponseData("vnp_TxnRef"));
+            var vnp_TransactionId = Convert.ToString(vnpay.GetResponseData("vnp_TransactionNo"));
+            var vnp_SecureHash = collection.FirstOrDefault(x => x.Key == "vnp_SecureHash").Value;
+            var vnp_ResponseCode = Convert.ToString(vnpay.GetResponseData("vnp_ResponseCode"));
+            var vnp_OrderInfo = Convert.ToString(vnpay.GetResponseData("vnp_OrderInfo"));
 
-            return order.PaymentStatus == "paid" ? "Thanh toán thành công." : "Thanh toán thất bại.";
+            bool checkSignature = vnpay.ValidateSignature(vnp_SecureHash, _config["VnPay:HashSecret"]);
+
+            if (!checkSignature || vnp_ResponseCode != "00")
+            {
+                return new VnPaymentResponseModel
+                {
+                    Success = false,
+                };
+            }
+            return new VnPaymentResponseModel
+            {
+                Success = true,
+                PaymentMethod = "VnPay",
+                OrderDescription = vnp_OrderInfo,
+                OrderId = vnp_orderId,
+                PaymentId = vnp_TransactionId,
+                TransactionId = vnp_TransactionId,
+                Token = vnp_SecureHash,
+                VnPayResponseCode = vnp_ResponseCode
+            };
         }
+
     }
 }
-*/
