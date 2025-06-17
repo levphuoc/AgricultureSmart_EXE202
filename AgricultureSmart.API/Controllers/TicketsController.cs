@@ -164,5 +164,39 @@ namespace AgricultureSmart.API.Controllers
 
             return Ok(tickets);
         }
+
+        /// <summary>
+        /// Search tickets with pagination & priority ordering.
+        /// </summary>
+        [HttpGet("search")]
+        public async Task<IActionResult> SearchTickets(
+            [FromQuery] int pageNumber = 1,
+            [FromQuery] int pageSize = 10,
+            [FromQuery] string? title = null,
+            [FromQuery] int? farmerId = null,
+            [FromQuery] int? assignedEngineerId = null)
+        {
+            try
+            {
+                var result = await _ticketService.SearchAsync(
+                                 pageNumber, pageSize,
+                                 title, farmerId, assignedEngineerId);
+
+                return Ok(new
+                {
+                    success = true,
+                    message = "Tickets retrieved successfully.",
+                    data = result
+                });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new
+                {
+                    success = false,
+                    message = $"Error retrieving tickets: {ex.Message}"
+                });
+            }
+        }
     }
 }

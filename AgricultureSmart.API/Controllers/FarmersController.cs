@@ -17,17 +17,22 @@ namespace AgricultureSmart.API.Controllers
         }
 
         /// <summary>
-        /// Get all farmers with pagination
+        /// Search farmers with pagination.
         /// </summary>
-        /// <param name="pageIndex">Page index (0-based)</param>
-        /// <param name="pageSize">Number of items per page</param>
-        /// <returns>Paginated list of farmers</returns>
-        [HttpGet]
-        public async Task<IActionResult> GetAllFarmers([FromQuery] int pageIndex = 0, [FromQuery] int pageSize = 10)
+        [HttpGet("search")]
+        public async Task<IActionResult> SearchFarmers(
+            [FromQuery] int pageNumber = 1,
+            [FromQuery] int pageSize = 10,
+            [FromQuery] string? farmLocation = null,
+            [FromQuery] decimal? farmSize = null,
+            [FromQuery] string? cropTypes = null)
         {
             try
             {
-                var result = await _farmerService.GetAllAsync(pageIndex, pageSize);
+                var result = await _farmerService.SearchAsync(
+                                 pageNumber, pageSize,
+                                 farmLocation, farmSize, cropTypes);
+
                 return Ok(new
                 {
                     success = true,
@@ -35,7 +40,7 @@ namespace AgricultureSmart.API.Controllers
                     data = result
                 });
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
                 return BadRequest(new
                 {

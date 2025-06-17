@@ -19,13 +19,27 @@ namespace AgricultureSmart.Repositories.Repositories
             _context = context;
         }
 
-        public async Task<IEnumerable<Review>> GetAllAsync(int page, int pageSize)
+        /*public async Task<IEnumerable<Review>> GetAllAsync(int page, int pageSize)
         {
             return await _context.Reviews
                 .OrderByDescending(r => r.CreatedAt)
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize)
                 .ToListAsync();
+        }*/
+
+        public async Task<(IEnumerable<Review> Items, int TotalCount)> GetAllAsync(int pageNumber, int pageSize)
+        {
+            var query = _context.Reviews.OrderByDescending(r => r.CreatedAt);
+
+            var totalCount = await query.CountAsync();
+
+            var items = await query
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            return (items, totalCount);
         }
 
         public async Task<Review?> GetByIdAsync(int id)

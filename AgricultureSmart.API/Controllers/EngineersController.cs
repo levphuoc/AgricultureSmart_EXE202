@@ -17,25 +17,32 @@ namespace AgricultureSmart.API.Controllers
         }
 
         /// <summary>
-        /// Get all engineers with pagination
+        /// Search engineers with specialization, experienceYears
         /// </summary>
         /// <param name="pageIndex">Page index (0-based)</param>
         /// <param name="pageSize">Number of items per page</param>
         /// <returns>Paginated list of engineers</returns>
-        [HttpGet]
-        public async Task<IActionResult> GetAllEngineers([FromQuery] int pageIndex = 0, [FromQuery] int pageSize = 10)
+        [HttpGet("search")]
+        public async Task<IActionResult> Search(
+         [FromQuery] int pageNumber = 1,
+         [FromQuery] int pageSize = 10,
+         [FromQuery] string? specialization = null,
+         [FromQuery] int? experienceYears = null)
         {
             try
             {
-                var engineers = await _engineerService.GetAllAsync(pageIndex, pageSize);
+                var result = await _engineerService.SearchAsync(
+                                 pageNumber, pageSize,
+                                 specialization, experienceYears);
+
                 return Ok(new
                 {
                     success = true,
                     message = "Engineers retrieved successfully.",
-                    data = engineers
+                    data = result
                 });
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
                 return BadRequest(new
                 {

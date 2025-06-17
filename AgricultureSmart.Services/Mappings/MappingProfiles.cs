@@ -1,5 +1,6 @@
 ﻿using AgricultureSmart.Repositories.Entities;
 using AgricultureSmart.Services.Models.AssignmentModel;
+using AgricultureSmart.Services.Models.BlogModels;
 using AgricultureSmart.Services.Models.CartModels;
 using AgricultureSmart.Services.Models.EngineerModel;
 using AgricultureSmart.Services.Models.FarmerModels;
@@ -81,9 +82,21 @@ namespace AgricultureSmart.Services.Mappings
                 
             // Order mappings
             CreateMap<Order, OrderDto>();
-            
+
             // OrderItem mappings
             CreateMap<OrderItem, OrderItemDto>();
+
+            // Blog mappings
+            CreateMap<Blog, BlogListItems>()
+            .ForMember(dest => dest.CategoryName,
+                       opt => opt.MapFrom(src => src.Category != null
+                                                ? src.Category.Name
+                                                : null))
+            .ForMember(dest => dest.AuthorName,
+                       opt => opt.MapFrom(src => src.Author != null
+                                                ? src.Author.UserName
+                                                : null));
+
         }
     }
 }

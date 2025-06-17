@@ -6,6 +6,7 @@ using System.Security.Claims;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using AgricultureSmart.Services.Models.BlogModels;
 
 namespace AgricultureSmart.API.Controllers
 {
@@ -20,23 +21,17 @@ namespace AgricultureSmart.API.Controllers
             _blogService = blogService;
         }
 
-        // GET: api/Blog
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<BlogListItem>>> GetBlogs()
+        [HttpGet("search")]
+        public async Task<ActionResult<BlogListResponse>> GetBlogs(
+            [FromQuery] int pageNumber = 1,
+            [FromQuery] int pageSize = 10,
+            [FromQuery] string? title = null,
+            [FromQuery] int? authorId = null,
+            [FromQuery] int? categoryId = null)
         {
-            var blogs = await _blogService.GetAllBlogsAsync();
-            var result = blogs.Select(b => new BlogListItem
-            {
-                Id = b.Id,
-                Title = b.Title,
-                Slug = b.Slug,
-                Status = b.Status,
-                CategoryName = b.Category?.Name,
-                AuthorName = b.Author?.UserName,
-                CreatedAt = b.CreatedAt,
-                PublishedAt = b.PublishedAt,
-                ViewCount = b.ViewCount
-            });
+            var result = await _blogService.SearchBlogsByTitlelAsync(
+                             pageNumber, pageSize,
+                             title, authorId, categoryId);
 
             return Ok(result);
         }
@@ -259,6 +254,21 @@ namespace AgricultureSmart.API.Controllers
             }
 
             return NoContent();
+        }
+
+        [HttpGet("user/{authorId}")]
+        public async Task<IActionResult> GetBlogsByUser(
+        int authorId,
+        [FromQuery] int pageNumber = 1,
+        [FromQuery] int pageSize = 10)
+        {
+            var result = await _blogService.GetBlogsByUserIdAsync(pageNumber, pageSize, authorId);
+            return Ok(new
+            {
+                success = true,
+                message = "Blogs retrieved successfully.",
+                data = result
+            });
         }
     }
 } 

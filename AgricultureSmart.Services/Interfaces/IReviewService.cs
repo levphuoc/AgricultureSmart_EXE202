@@ -9,7 +9,8 @@ namespace AgricultureSmart.Services.Interfaces
 {
     public interface IReviewService
     {
-        Task<IEnumerable<ReviewDto>> GetAllAsync(int page, int pageSize);
+        /*Task<IEnumerable<ReviewDto>> GetAllAsync(int page, int pageSize);*/
+        Task<ReviewListResponse> GetAllAsync(int pageNumber, int pageSize);
         Task<ReviewDto?> GetByIdAsync(int id);
         Task<ReviewDto> CreateAsync(ReviewCreateDto dto);
         Task<bool> UpdateAsync(int id, ReviewUpdateDto dto);

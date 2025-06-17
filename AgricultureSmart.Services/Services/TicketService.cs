@@ -1,7 +1,9 @@
 ﻿using AgricultureSmart.Repositories.Entities;
 using AgricultureSmart.Repositories.Repositories.Interfaces;
 using AgricultureSmart.Services.Interfaces;
+using AgricultureSmart.Services.Models.PagedListResponseModels;
 using AgricultureSmart.Services.Models.TicketModels;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,10 +15,15 @@ namespace AgricultureSmart.Services.Services
     public class TicketService : ITicketService
     {
         private readonly IGenericRepository<Ticket> _ticketRepo;
+        private readonly ITicketRepository _repo;
+        private readonly ILogger<TicketService> _logger;
 
-        public TicketService(IGenericRepository<Ticket> ticketRepo)
+        public TicketService(IGenericRepository<Ticket> ticketRepo, ITicketRepository repo,
+                         ILogger<TicketService> logger)
         {
             _ticketRepo = ticketRepo;
+            _repo = repo;
+            _logger = logger;
         }
 
         public async Task<IEnumerable<TicketViewModel>> GetAllAsync(int pageIndex, int pageSize)
@@ -363,6 +370,54 @@ namespace AgricultureSmart.Services.Services
                 });
 
             return userTickets;
+        }
+
+        public async Task<PagedListResponse<TicketViewModel>> SearchAsync(
+        int pageNumber,
+        int pageSize,
+        string? title,
+        int? farmerId,
+        int? assignedEngineerId)
+        {
+            try
+            {
+                var (entities, totalCount) = await _repo.SearchAsync(
+                                                 pageNumber, pageSize,
+                                                 title, farmerId, assignedEngineerId);
+
+                var items = entities.Select(t => new TicketViewModel
+                {
+                    Id = t.Id,
+                    FarmerId = t.FarmerId,
+                   /* FarmerName = t.Farmer.User.UserName,*/
+                    AssignedEngineerId = t.AssignedEngineerId,
+                   /* EngineerName = t.AssignedEngineer?.User?.UserName,*/
+                    Title = t.Title,
+                    Category = t.Category,
+                    CropType = t.CropType,
+                    Location = t.Location,
+                    Description = t.Description,
+                    Priority = t.Priority,
+                    ContactMethod = t.ContactMethod,
+                    PhoneNumber = t.PhoneNumber,
+                    Status = t.Status,
+                    CreatedAt = t.CreatedAt,
+                    ResolvedAt = t.ResolvedAt
+                }).ToList();
+
+                return new PagedListResponse<TicketViewModel>
+                {
+                    Items = items,
+                    TotalCount = totalCount,
+                    PageNumber = pageNumber,
+                    PageSize = pageSize
+                };
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error searching tickets");
+                throw;
+            }
         }
     }
 }

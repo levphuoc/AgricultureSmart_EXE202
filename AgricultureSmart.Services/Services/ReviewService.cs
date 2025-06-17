@@ -3,6 +3,7 @@ using AgricultureSmart.Repositories.Repositories.Interfaces;
 using AgricultureSmart.Services.Interfaces;
 using AgricultureSmart.Services.Models.ReviewModels;
 using AutoMapper;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,20 +17,43 @@ namespace AgricultureSmart.Services.Services
         private readonly IReviewRepository _repository;
         private readonly IProductRepository _productRepo;
         private readonly IMapper _mapper;
+        private readonly ILogger<ReviewService> _logger;
 
         public ReviewService(IReviewRepository reviewRepo,
                         IProductRepository productRepo,
-                        IMapper mapper)
+                        IMapper mapper, ILogger<ReviewService> logger)
         {
             _repository = reviewRepo;
             _productRepo = productRepo;
             _mapper = mapper;
+            _logger = logger;
         }
 
-        public async Task<IEnumerable<ReviewDto>> GetAllAsync(int page, int pageSize)
+        /*public async Task<IEnumerable<ReviewDto>> GetAllAsync(int page, int pageSize)
         {
             var reviews = await _repository.GetAllAsync(page, pageSize);
             return _mapper.Map<IEnumerable<ReviewDto>>(reviews);
+        }*/
+
+        public async Task<ReviewListResponse> GetAllAsync(int pageNumber, int pageSize)
+        {
+            try
+            {
+                var (reviews, totalCount) = await _repository.GetAllAsync(pageNumber, pageSize);
+
+                return new ReviewListResponse
+                {
+                    Items = _mapper.Map<List<ReviewDto>>(reviews),
+                    TotalCount = totalCount,
+                    PageNumber = pageNumber,
+                    PageSize = pageSize
+                };
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error getting paginated reviews");
+                throw;
+            }
         }
 
         public async Task<ReviewDto?> GetByIdAsync(int id)
