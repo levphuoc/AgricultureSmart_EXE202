@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using AgricultureSmart.Services.Models.BlogModels;
+using AgricultureSmart.Services.Extension;
 
 namespace AgricultureSmart.API.Controllers
 {
@@ -256,13 +257,18 @@ namespace AgricultureSmart.API.Controllers
             return NoContent();
         }
 
-        [HttpGet("user/{authorId}")]
-        public async Task<IActionResult> GetBlogsByUser(
-        int authorId,
+        [Authorize]
+        [HttpGet("my-blogs")]
+        public async Task<IActionResult> GetMyBlogs(
         [FromQuery] int pageNumber = 1,
         [FromQuery] int pageSize = 10)
         {
-            var result = await _blogService.GetBlogsByUserIdAsync(pageNumber, pageSize, authorId);
+            int userId = User.GetUserId();
+            if (userId == 0)
+                return Unauthorized(new { success = false, message = "Invalid or missing user token." });
+
+            var result = await _blogService.GetBlogsByUserIdAsync(pageNumber, pageSize, userId);
+
             return Ok(new
             {
                 success = true,
