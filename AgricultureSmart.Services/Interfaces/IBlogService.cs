@@ -33,5 +33,6 @@ namespace AgricultureSmart.Services.Interfaces
         int authorId);
 
         Task<int> CountBlogsByStatusAsync(string status);
+        Task<BlogStatusStatisticsResponse> GetBlogStatusStatisticsAsync();
     }
 }

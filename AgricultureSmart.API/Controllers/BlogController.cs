@@ -300,5 +300,12 @@ namespace AgricultureSmart.API.Controllers
                 count
             });
         }
+
+        [HttpGet("statistics/status")]
+        public async Task<ActionResult<BlogStatusStatisticsResponse>> GetBlogStatusStatistics()
+        {
+            var result = await _blogService.GetBlogStatusStatisticsAsync();
+            return Ok(result);
+        }
     }
 } 
