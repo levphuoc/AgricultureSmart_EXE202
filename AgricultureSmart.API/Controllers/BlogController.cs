@@ -24,18 +24,20 @@ namespace AgricultureSmart.API.Controllers
 
         [HttpGet("search")]
         public async Task<ActionResult<BlogListResponse>> GetBlogs(
-            [FromQuery] int pageNumber = 1,
-            [FromQuery] int pageSize = 10,
-            [FromQuery] string? title = null,
-            [FromQuery] int? authorId = null,
-            [FromQuery] int? categoryId = null)
+        [FromQuery] int pageNumber = 1,
+        [FromQuery] int pageSize = 10,
+        [FromQuery] string? title = null,
+        [FromQuery] int? authorId = null,
+        [FromQuery] int? categoryId = null,
+        [FromQuery] string? status = null)
         {
             var result = await _blogService.SearchBlogsByTitlelAsync(
                              pageNumber, pageSize,
-                             title, authorId, categoryId);
+                             title, authorId, categoryId, status); 
 
             return Ok(result);
         }
+
 
         // GET: api/Blog/category/5
         [HttpGet("category/{categoryId}")]
@@ -274,6 +276,28 @@ namespace AgricultureSmart.API.Controllers
                 success = true,
                 message = "Blogs retrieved successfully.",
                 data = result
+            });
+        }
+
+        /// <summary>
+        /// Count blogs by status (e.g., draft, published, archived)
+        /// </summary>
+        /// <param name="status">Blog status</param>
+        /// <returns>Number of blogs with the given status</returns>
+        [HttpGet("count-by-status")]
+        public async Task<IActionResult> CountBlogsByStatus([FromQuery] string status)
+        {
+            if (string.IsNullOrWhiteSpace(status))
+            {
+                return BadRequest(new { success = false, message = "Status is required." });
+            }
+
+            var count = await _blogService.CountBlogsByStatusAsync(status);
+            return Ok(new
+            {
+                success = true,
+                status,
+                count
             });
         }
     }

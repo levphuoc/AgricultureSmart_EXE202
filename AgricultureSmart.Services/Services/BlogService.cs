@@ -22,7 +22,7 @@ namespace AgricultureSmart.Services.Services
         private readonly ILogger<BlogService> _logger;
 
 
-        public BlogService(AgricultureSmartDbContext context, 
+        public BlogService(AgricultureSmartDbContext context,
                        IBlogRepository repository,
                        IMapper mapper,
                        ILogger<BlogService> logger)
@@ -38,13 +38,14 @@ namespace AgricultureSmart.Services.Services
         int pageSize,
         string? title = null,
         int? authorId = null,
-        int? categoryId = null)
+        int? categoryId = null,
+        string? status = null)
         {
             try
             {
                 var (blogs, totalCount) = await _repository.GetBlogsAsync(
                                                pageNumber, pageSize,
-                                               title, authorId, categoryId);
+                                               title, authorId, categoryId, status);
 
                 return new BlogListResponse
                 {
@@ -60,6 +61,7 @@ namespace AgricultureSmart.Services.Services
                 throw;
             }
         }
+
 
         public async Task<IEnumerable<Blog>> GetBlogsByCategoryAsync(int categoryId)
         {
@@ -257,6 +259,11 @@ namespace AgricultureSmart.Services.Services
                 _logger.LogError(ex, "Error getting blogs by userId");
                 throw;
             }
+        }
+
+        public async Task<int> CountBlogsByStatusAsync(string status)
+        {
+            return await _repository.CountBlogsByStatusAsync(status);
         }
     }
 }
