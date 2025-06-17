@@ -57,5 +57,17 @@ namespace AgricultureSmart.Repositories.Repositories
                 .Where(b => b.Status.ToLower() == status.ToLower())
                 .CountAsync();
         }
+
+        public async Task<Dictionary<string, int>> GetBlogStatusCountsAsync()
+        {
+            var result = await _context.Blogs
+                .GroupBy(b => b.Status.ToLower())
+                .Select(g => new { Status = g.Key, Count = g.Count() })
+                .ToListAsync();
+
+            var dict = result.ToDictionary(x => x.Status, x => x.Count);
+            dict["all"] = dict.Values.Sum();
+            return dict;
+        }
     }
 }

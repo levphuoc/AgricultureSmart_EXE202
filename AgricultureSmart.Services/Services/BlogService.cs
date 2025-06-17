@@ -265,5 +265,18 @@ namespace AgricultureSmart.Services.Services
         {
             return await _repository.CountBlogsByStatusAsync(status);
         }
+
+        public async Task<BlogStatusStatisticsResponse> GetBlogStatusStatisticsAsync()
+        {
+            var counts = await _repository.GetBlogStatusCountsAsync();
+
+            return new BlogStatusStatisticsResponse
+            {
+                All = counts.GetValueOrDefault("all", 0),
+                Draft = counts.GetValueOrDefault("draft", 0),
+                Published = counts.GetValueOrDefault("published", 0),
+                Archived = counts.GetValueOrDefault("archived", 0)
+            };
+        }
     }
 }
