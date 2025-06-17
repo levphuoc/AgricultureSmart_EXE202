@@ -15,7 +15,8 @@ namespace AgricultureSmart.Services.Interfaces
             int pageSize,
             string? title = null,
             int? authorId = null,
-            int? categoryId = null);
+            int? categoryId = null,
+            string? status = null);
 
         Task<IEnumerable<Blog>> GetBlogsByCategoryAsync(int categoryId);
         Task<Blog> GetBlogByIdAsync(int id);
@@ -30,5 +31,7 @@ namespace AgricultureSmart.Services.Interfaces
         int pageNumber,
         int pageSize,
         int authorId);
+
+        Task<int> CountBlogsByStatusAsync(string status);
     }
 }

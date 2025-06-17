@@ -14,6 +14,9 @@ namespace AgricultureSmart.Repositories.Repositories.Interfaces
             int pageSize,
             string? title = null,
             int? authorId = null,
-            int? categoryId = null);
+            int? categoryId = null,
+            string? status = null);
+
+        Task<int> CountBlogsByStatusAsync(string status);
     }
 }
