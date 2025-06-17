@@ -2,7 +2,9 @@
 using AgricultureSmart.Repositories.Repositories.Interfaces;
 using AgricultureSmart.Services.Interfaces;
 using AgricultureSmart.Services.Models.EngineerModel;
+using AgricultureSmart.Services.Models.PagedListResponseModels;
 using AgricultureSmart.Services.Models.TicketModels;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,39 +17,60 @@ namespace AgricultureSmart.Services.Services
     {
         private readonly IGenericRepository<Engineer> _engineerRepo;
         private readonly IGenericRepository<Users> _userRepo;
+        private readonly IEngineerRepository _repo;
+        private readonly ILogger<EngineerService> _logger;
 
-        public EngineerService(IGenericRepository<Engineer> engineerRepo, IGenericRepository<Users> userRepo)
+
+        public EngineerService(IGenericRepository<Engineer> engineerRepo, IGenericRepository<Users> userRepo, IEngineerRepository repo,
+                           ILogger<EngineerService> logger)
         {
             _engineerRepo = engineerRepo;
             _userRepo = userRepo;
+            _repo = repo;
+            _logger = logger;
         }
 
-        public async Task<IEnumerable<EngineerViewModel>> GetAllAsync(int pageIndex, int pageSize)
+        public async Task<PagedListResponse<EngineerViewModel>> SearchAsync(
+       int pageNumber,
+       int pageSize,
+       string? specialization,
+       int? experienceYears)
         {
-            var engineers = await _engineerRepo.GetAllAsync();
-            var users = await _userRepo.GetAllAsync();
+            try
+            {
+                var (entities, totalCount) = await _repo.SearchAsync(
+                                                 pageNumber, pageSize,
+                                                 specialization, experienceYears);
 
-            var pagedEngineers = engineers
-                .Join(users, e => e.UserId, u => u.Id, (e, u) => new EngineerViewModel
+                var items = entities.Select(e => new EngineerViewModel
                 {
                     Id = e.Id,
                     UserId = e.UserId,
-                    UserName = u.UserName,
-                    Email = u.Email,
-                    PhoneNumber = u.PhoneNumber,
-                    Address = u.Address,
+                    UserName = e.User.UserName,
+                    Email = e.User.Email,
+                    PhoneNumber = e.User.PhoneNumber,
+                    Address = e.User.Address,
                     Specialization = e.Specialization,
                     ExperienceYears = e.ExperienceYears,
                     Certification = e.Certification,
                     Bio = e.Bio,
                     CreatedAt = e.CreatedAt,
                     UpdatedAt = e.UpdatedAt
-                })
-                .OrderByDescending(e => e.CreatedAt)
-                .Skip(pageIndex * pageSize)
-                .Take(pageSize);
+                }).ToList();
 
-            return pagedEngineers;
+                return new PagedListResponse<EngineerViewModel>
+                {
+                    Items = items,
+                    TotalCount = totalCount,
+                    PageNumber = pageNumber,
+                    PageSize = pageSize
+                };
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error searching engineers");
+                throw;
+            }
         }
 
         public async Task<EngineerViewModel?> GetByIdAsync(int id)

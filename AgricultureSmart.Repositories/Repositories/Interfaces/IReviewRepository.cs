@@ -9,7 +9,8 @@ namespace AgricultureSmart.Repositories.Repositories.Interfaces
 {
     public interface IReviewRepository
     {
-        Task<IEnumerable<Review>> GetAllAsync(int page, int pageSize);
+        /*Task<IEnumerable<Review>> GetAllAsync(int page, int pageSize);*/
+        Task<(IEnumerable<Review> Items, int TotalCount)> GetAllAsync(int pageNumber, int pageSize);
         Task<Review?> GetByIdAsync(int id);
         Task AddAsync(Review review);
         Task UpdateAsync(Review review);

@@ -1,7 +1,11 @@
 using AgricultureSmart.Repositories.DbAgriContext;
 using AgricultureSmart.Repositories.Entities;
+using AgricultureSmart.Repositories.Repositories.Interfaces;
 using AgricultureSmart.Services.Interfaces;
+using AgricultureSmart.Services.Models.BlogModels;
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,19 +17,48 @@ namespace AgricultureSmart.Services.Services
     public class BlogService : IBlogService
     {
         private readonly AgricultureSmartDbContext _context;
+        private readonly IBlogRepository _repository;
+        private readonly IMapper _mapper;
+        private readonly ILogger<BlogService> _logger;
 
-        public BlogService(AgricultureSmartDbContext context)
+
+        public BlogService(AgricultureSmartDbContext context, 
+                       IBlogRepository repository,
+                       IMapper mapper,
+                       ILogger<BlogService> logger)
         {
             _context = context;
+            _repository = repository;
+            _mapper = mapper;
+            _logger = logger;
         }
 
-        public async Task<IEnumerable<Blog>> GetAllBlogsAsync()
+        public async Task<BlogListResponse> SearchBlogsByTitlelAsync(
+        int pageNumber,
+        int pageSize,
+        string? title = null,
+        int? authorId = null,
+        int? categoryId = null)
         {
-            return await _context.Blogs
-                .Include(b => b.Category)
-                .Include(b => b.Author)
-                .OrderByDescending(b => b.CreatedAt)
-                .ToListAsync();
+            try
+            {
+                var (blogs, totalCount) = await _repository.GetBlogsAsync(
+                                               pageNumber, pageSize,
+                                               title, authorId, categoryId);
+
+                return new BlogListResponse
+                {
+                    Items = _mapper.Map<List<BlogListItems>>(blogs),
+                    TotalCount = totalCount,
+                    PageNumber = pageNumber,
+                    PageSize = pageSize
+                };
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error getting paginated blogs");
+                throw;
+            }
         }
 
         public async Task<IEnumerable<Blog>> GetBlogsByCategoryAsync(int categoryId)
@@ -100,7 +133,7 @@ namespace AgricultureSmart.Services.Services
                 Console.WriteLine($"Database error: {dbEx.Message}");
                 if (dbEx.InnerException != null)
                     Console.WriteLine($"Inner exception: {dbEx.InnerException.Message}");
-                
+
                 throw new Exception($"Failed to save blog: {dbEx.Message}", dbEx);
             }
             catch (Exception ex)
@@ -197,5 +230,33 @@ namespace AgricultureSmart.Services.Services
 
             return blog.ViewCount;
         }
+
+        public async Task<BlogListResponse> GetBlogsByUserIdAsync(
+        int pageNumber,
+        int pageSize,
+        int authorId)
+        {
+            try
+            {
+                var (blogs, totalCount) = await _repository.GetBlogsAsync(
+                                              pageNumber, pageSize,
+                                              title: null,
+                                              authorId: authorId,
+                                              categoryId: null);
+
+                return new BlogListResponse
+                {
+                    Items = _mapper.Map<List<BlogListItems>>(blogs),
+                    TotalCount = totalCount,
+                    PageNumber = pageNumber,
+                    PageSize = pageSize
+                };
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error getting blogs by userId");
+                throw;
+            }
+        }
     }
-} 
+}

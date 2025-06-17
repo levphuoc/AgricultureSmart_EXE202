@@ -2,7 +2,9 @@
 using AgricultureSmart.Repositories.Repositories.Interfaces;
 using AgricultureSmart.Services.Interfaces;
 using AgricultureSmart.Services.Models.FarmerModels;
+using AgricultureSmart.Services.Models.PagedListResponseModels;
 using AgricultureSmart.Services.Models.TicketModels;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,39 +17,59 @@ namespace AgricultureSmart.Services.Services
     {
         private readonly IGenericRepository<Farmer> _farmerRepo;
         private readonly IGenericRepository<Users> _userRepo;
+        private readonly IFarmerRepository _repo;
+        private readonly ILogger<FarmerService> _logger;
 
-        public FarmerService(IGenericRepository<Farmer> farmerRepo, IGenericRepository<Users> userRepo)
+        public FarmerService(IGenericRepository<Farmer> farmerRepo, IGenericRepository<Users> userRepo, IFarmerRepository repo, ILogger<FarmerService> logger)
         {
             _farmerRepo = farmerRepo;
             _userRepo = userRepo;
+            _repo = repo;
+            _logger = logger;
         }
 
-        public async Task<IEnumerable<FarmerViewModel>> GetAllAsync(int pageIndex, int pageSize)
+        public async Task<PagedListResponse<FarmerViewModel>> SearchAsync(
+      int pageNumber,
+      int pageSize,
+      string? farmLocation,
+      decimal? farmSize,
+      string? cropTypes)
         {
-            var farmers = await _farmerRepo.GetAllAsync();
-            var users = await _userRepo.GetAllAsync();
+            try
+            {
+                var (entities, totalCount) = await _repo.SearchAsync(
+                                                 pageNumber, pageSize,
+                                                 farmLocation, farmSize, cropTypes);
 
-            var pagedFarmers = farmers
-                .Join(users, f => f.UserId, u => u.Id, (f, u) => new FarmerViewModel
+                var items = entities.Select(f => new FarmerViewModel
                 {
                     Id = f.Id,
                     UserId = f.UserId,
-                    UserName = u.UserName,
-                    Email = u.Email,
-                    PhoneNumber = u.PhoneNumber,
-                    Address = u.Address,
+                    UserName = f.User.UserName,
+                    Email = f.User.Email,
+                    PhoneNumber = f.User.PhoneNumber,
+                    Address = f.User.Address,
                     FarmLocation = f.FarmLocation,
                     FarmSize = f.FarmSize,
                     CropTypes = f.CropTypes,
                     FarmingExperienceYears = f.FarmingExperienceYears,
                     CreatedAt = f.CreatedAt,
                     UpdatedAt = f.UpdatedAt
-                })
-                .OrderByDescending(f => f.CreatedAt) // optional: sort by date
-                .Skip(pageIndex * pageSize)
-                .Take(pageSize);
+                }).ToList();
 
-            return pagedFarmers;
+                return new PagedListResponse<FarmerViewModel>
+                {
+                    Items = items,
+                    TotalCount = totalCount,
+                    PageNumber = pageNumber,
+                    PageSize = pageSize
+                };
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error searching farmers");
+                throw;
+            }
         }
 
         public async Task<FarmerViewModel?> GetByIdAsync(int id)

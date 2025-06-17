@@ -1,4 +1,5 @@
 ﻿using AgricultureSmart.Services.Models.EngineerModel;
+using AgricultureSmart.Services.Models.PagedListResponseModels;
 using AgricultureSmart.Services.Models.TicketModels;
 using System;
 using System.Collections.Generic;
@@ -10,7 +11,11 @@ namespace AgricultureSmart.Services.Interfaces
 {
     public interface IEngineerService
     {
-        Task<IEnumerable<EngineerViewModel>> GetAllAsync(int pageIndex, int pageSize);
+        Task<PagedListResponse<EngineerViewModel>> SearchAsync(
+            int pageNumber,
+            int pageSize,
+            string? specialization,
+            int? experienceYears);
         Task<EngineerViewModel?> GetByIdAsync(int id);
         Task<ServiceResponse<EngineerViewModel>> CreateAsync(CreateEngineerModel model);
         Task<ServiceResponse<bool>> UpdateAsync(UpdateEngineerModel model);

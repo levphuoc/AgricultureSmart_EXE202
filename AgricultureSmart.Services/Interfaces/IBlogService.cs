@@ -1,4 +1,5 @@
 using AgricultureSmart.Repositories.Entities;
+using AgricultureSmart.Services.Models.BlogModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,13 @@ namespace AgricultureSmart.Services.Interfaces
 {
     public interface IBlogService
     {
-        Task<IEnumerable<Blog>> GetAllBlogsAsync();
+        Task<BlogListResponse> SearchBlogsByTitlelAsync(
+            int pageNumber,
+            int pageSize,
+            string? title = null,
+            int? authorId = null,
+            int? categoryId = null);
+
         Task<IEnumerable<Blog>> GetBlogsByCategoryAsync(int categoryId);
         Task<Blog> GetBlogByIdAsync(int id);
         Task<Blog> GetBlogBySlugAsync(string slug);
@@ -19,5 +26,9 @@ namespace AgricultureSmart.Services.Interfaces
         Task<Blog> PublishBlogAsync(int id);
         Task<Blog> UnpublishBlogAsync(int id);
         Task<int> IncrementViewCountAsync(int id);
+        Task<BlogListResponse> GetBlogsByUserIdAsync(
+        int pageNumber,
+        int pageSize,
+        int authorId);
     }
-} 
+}

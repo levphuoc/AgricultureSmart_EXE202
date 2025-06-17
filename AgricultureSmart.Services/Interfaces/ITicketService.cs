@@ -1,4 +1,5 @@
-﻿using AgricultureSmart.Services.Models.TicketModels;
+﻿using AgricultureSmart.Services.Models.PagedListResponseModels;
+using AgricultureSmart.Services.Models.TicketModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,5 +21,11 @@ namespace AgricultureSmart.Services.Interfaces
         CreateTicketForFarmerModel model);
         Task<IEnumerable<TicketFarmerViewModel>> GetByUserIdAsync(
         int userId);
+        Task<PagedListResponse<TicketViewModel>> SearchAsync(
+        int pageNumber,
+        int pageSize,
+        string? title,
+        int? farmerId,
+        int? assignedEngineerId);
     }
 }
