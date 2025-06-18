@@ -1,5 +1,6 @@
 using AgricultureSmart.Repositories.DbAgriContext;
 using AgricultureSmart.Repositories.Entities;
+using AgricultureSmart.Repositories.Repositories;
 using AgricultureSmart.Repositories.Repositories.Interfaces;
 using AgricultureSmart.Services.Interfaces;
 using AgricultureSmart.Services.Models.BlogModels;
@@ -146,35 +147,33 @@ namespace AgricultureSmart.Services.Services
             }
         }
 
-        public async Task<Blog> UpdateBlogAsync(int id, int categoryId, string title, string content, string featuredImage, string slug, string status)
+        public async Task<Blog?> UpdateBlogAsync(int id, UpdateBlogModel model)
         {
-            var blog = await _context.Blogs.FindAsync(id);
+            var blog = await _repository.GetByIdAsync(id);
             if (blog == null)
                 return null;
 
-            // Check if category exists
-            var categoryExists = await _context.BlogCategories.AnyAsync(c => c.Id == categoryId);
-            if (!categoryExists)
-                throw new ArgumentException("Invalid category ID");
+            if (!await _repository.CategoryExistsAsync(model.CategoryId))
+                throw new ArgumentException("Invalid category ID.");
 
-            blog.CategoryId = categoryId;
-            blog.Title = title;
-            blog.Content = content;
-            blog.FeaturedImage = featuredImage ?? blog.FeaturedImage;
-            blog.Slug = slug;
-            blog.Status = status;
+            var existingSlugBlog = await _repository.GetBySlugAsync(model.Slug);
+            if (existingSlugBlog != null && existingSlugBlog.Id != id)
+                throw new ArgumentException($"Slug “{model.Slug}” has existed.");
+
+            blog.CategoryId = model.CategoryId;
+            blog.Title = model.Title;
+            blog.Content = model.Content;
+            blog.FeaturedImage = model.FeaturedImage ?? blog.FeaturedImage;
+            blog.Slug = model.Slug;
+            blog.Status = model.Status;
             blog.UpdatedAt = DateTime.UtcNow;
 
-            // Update published date if status changed to published
             if (blog.Status == "published" && blog.PublishedAt == null)
-            {
                 blog.PublishedAt = DateTime.UtcNow;
-            }
 
-            _context.Blogs.Update(blog);
-            await _context.SaveChangesAsync();
+            await _repository.UpdateAsync(blog);
 
-            return await GetBlogByIdAsync(blog.Id);
+            return blog;
         }
 
         public async Task<bool> DeleteBlogAsync(int id)

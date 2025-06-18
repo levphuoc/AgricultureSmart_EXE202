@@ -129,7 +129,7 @@ namespace AgricultureSmart.API.Controllers
         // POST: api/Blog
         [Authorize]
         [HttpPost]
-        public async Task<ActionResult<BlogDetailModel>> CreateBlog(BlogCreateModel model)
+        public async Task<ActionResult<BlogDetailModel>> CreateBlog(CreateBlogModel model)
         {
             if (!ModelState.IsValid)
             {
@@ -178,41 +178,30 @@ namespace AgricultureSmart.API.Controllers
         }
 
         // PUT: api/Blog/5
-        [Authorize]
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateBlog(int id, BlogModel model)
+        public async Task<IActionResult> UpdateBlog(int id, [FromBody] UpdateBlogModel model)
         {
-            // Always use the ID from the route parameter, ignore the ID in the model
-            // This allows updating a blog without requiring the ID in the model
-            
             if (!ModelState.IsValid)
-            {
                 return BadRequest(ModelState);
-            }
 
             try
             {
-                var blog = await _blogService.UpdateBlogAsync(
-                    id,
-                    model.CategoryId,
-                    model.Title,
-                    model.Content,
-                    model.FeaturedImage,
-                    model.Slug,
-                    model.Status);
-
+                var blog = await _blogService.UpdateBlogAsync(id, model);
                 if (blog == null)
-                {
                     return NotFound();
-                }
 
                 return NoContent();
             }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
             catch (Exception ex)
             {
-                return BadRequest(new { Message = ex.Message });
+                return StatusCode(500, new { message = "An error occurred while updating the blog", detail = ex.Message });
             }
         }
+
 
         // DELETE: api/Blog/5
         [Authorize]

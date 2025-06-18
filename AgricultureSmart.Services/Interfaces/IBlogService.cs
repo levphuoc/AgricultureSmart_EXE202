@@ -22,7 +22,7 @@ namespace AgricultureSmart.Services.Interfaces
         Task<Blog> GetBlogByIdAsync(int id);
         Task<Blog> GetBlogBySlugAsync(string slug);
         Task<Blog> CreateBlogAsync(int authorId, int categoryId, string title, string content, string featuredImage, string slug, string status);
-        Task<Blog> UpdateBlogAsync(int id, int categoryId, string title, string content, string featuredImage, string slug, string status);
+        Task<Blog?> UpdateBlogAsync(int id, UpdateBlogModel model);
         Task<bool> DeleteBlogAsync(int id);
         Task<Blog> PublishBlogAsync(int id);
         Task<Blog> UnpublishBlogAsync(int id);

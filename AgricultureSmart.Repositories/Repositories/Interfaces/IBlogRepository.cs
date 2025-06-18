@@ -19,5 +19,9 @@ namespace AgricultureSmart.Repositories.Repositories.Interfaces
 
         Task<int> CountBlogsByStatusAsync(string status);
         Task<Dictionary<string, int>> GetBlogStatusCountsAsync();
+        Task<Blog?> GetByIdAsync(int id);
+        Task<Blog?> GetBySlugAsync(string slug);
+        Task<bool> CategoryExistsAsync(int categoryId);
+        Task UpdateAsync(Blog blog);
     }
 }
