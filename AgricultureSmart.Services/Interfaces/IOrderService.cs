@@ -19,5 +19,8 @@ namespace AgricultureSmart.Services.Interfaces
         // Admin methods
         Task<IEnumerable<OrderDto>> GetAllOrdersAsync();
         Task<IEnumerable<OrderDto>> GetOrdersByStatusAsync(string status);
+        
+        // Method to get order without user check (for payment callbacks)
+        Task<OrderDto?> GetOrderByIdWithoutUserCheckAsync(int orderId);
     }
 } 

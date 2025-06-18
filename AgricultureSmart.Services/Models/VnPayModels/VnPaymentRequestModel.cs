@@ -15,5 +15,6 @@ namespace AgricultureSmart.Services.Models.VnPayModels
 
         public DateTime CreatedDate { get; set; }
         public string OrderId { get; set; }
+        public int OrderIdNumeric { get; set; }
     }
 }

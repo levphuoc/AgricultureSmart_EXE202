@@ -369,11 +369,18 @@ namespace AgricultureSmart.Services.Services
         {
             try
             {
+                _logger.LogInformation("Starting UpdateOrderAfterPaymentAsync for orderId: {OrderId}, transactionId: {TransactionId}", 
+                    orderId, transactionId);
+                
                 var order = await _orderRepository.GetByIdAsync(orderId);
                 if (order == null)
                 {
+                    _logger.LogWarning("Order with ID {OrderId} not found", orderId);
                     return false;
                 }
+
+                _logger.LogInformation("Order found: {OrderId}, Current Status: {Status}, Current PaymentStatus: {PaymentStatus}", 
+                    orderId, order.Status, order.PaymentStatus);
 
                 // Update both order status and payment status
                 order.Status = "processing";  // Standard status value after payment
@@ -381,12 +388,59 @@ namespace AgricultureSmart.Services.Services
                 order.PaidAt = DateTime.UtcNow;
                 order.UpdatedAt = DateTime.UtcNow;
                 
+                _logger.LogInformation("Order {OrderId} status updated to: {Status}, PaymentStatus: {PaymentStatus}", 
+                    orderId, order.Status, order.PaymentStatus);
+                
                 await _orderRepository.UpdateAsync(order);
+                
+                // Verify the update was successful by retrieving the order again
+                var updatedOrder = await _orderRepository.GetByIdAsync(orderId);
+                if (updatedOrder != null)
+                {
+                    _logger.LogInformation("Order {OrderId} after update - Status: {Status}, PaymentStatus: {PaymentStatus}", 
+                        updatedOrder.Id, updatedOrder.Status, updatedOrder.PaymentStatus);
+                }
+                
                 return true;
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error updating order after payment for order ID {OrderId}", orderId);
+                throw;
+            }
+        }
+
+        // Phương thức này lấy thông tin đơn hàng mà không kiểm tra userId, 
+        // chỉ nên dùng cho payment callback hoặc admin
+        public async Task<OrderDto?> GetOrderByIdWithoutUserCheckAsync(int orderId)
+        {
+            try
+            {
+                _logger.LogInformation("Getting order without user check for orderId: {OrderId}", orderId);
+                var order = await _orderRepository.GetOrderWithItemsByIdAsync(orderId);
+                if (order == null)
+                {
+                    _logger.LogWarning("Order with ID {OrderId} not found", orderId);
+                    return null;
+                }
+
+                var user = await _userRepository.GetByIdAsync(order.UserId);
+                var orderDto = _mapper.Map<OrderDto>(order);
+                
+                if (user != null)
+                {
+                    orderDto.UserName = user.UserName;
+                    orderDto.UserEmail = user.Email;
+                }
+
+                _logger.LogInformation("Found order {OrderId} for user {UserId}, status: {Status}, payment status: {PaymentStatus}", 
+                    orderId, order.UserId, order.Status, order.PaymentStatus);
+                
+                return orderDto;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error getting order ID {OrderId} without user check", orderId);
                 throw;
             }
         }

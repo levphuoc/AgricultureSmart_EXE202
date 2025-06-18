@@ -95,13 +95,13 @@ namespace AgricultureSmart.Repositories.Migrations
                             AuthorId = 2,
                             CategoryId = 1,
                             Content = "Bệnh đạo ôn lúa là một trong những bệnh phổ biến và nguy hiểm nhất đối với cây lúa. Bài viết này sẽ hướng dẫn cách nhận biết triệu chứng và các biện pháp phòng trị hiệu quả...",
-                            CreatedAt = new DateTime(2025, 5, 30, 11, 17, 38, 249, DateTimeKind.Utc).AddTicks(6757),
+                            CreatedAt = new DateTime(2025, 6, 3, 13, 44, 7, 845, DateTimeKind.Utc).AddTicks(5537),
                             FeaturedImage = "/images/blog/dao-on-lua.jpg",
-                            PublishedAt = new DateTime(2025, 6, 4, 11, 17, 38, 249, DateTimeKind.Utc).AddTicks(6757),
+                            PublishedAt = new DateTime(2025, 6, 8, 13, 44, 7, 845, DateTimeKind.Utc).AddTicks(5537),
                             Slug = "cach-nhan-biet-va-phong-tri-benh-dao-on-lua",
                             Status = "published",
                             Title = "Cách nhận biết và phòng trị bệnh đạo ôn lúa",
-                            UpdatedAt = new DateTime(2025, 6, 4, 11, 17, 38, 249, DateTimeKind.Utc).AddTicks(6757),
+                            UpdatedAt = new DateTime(2025, 6, 8, 13, 44, 7, 845, DateTimeKind.Utc).AddTicks(5537),
                             ViewCount = 1250
                         },
                         new
@@ -110,13 +110,13 @@ namespace AgricultureSmart.Repositories.Migrations
                             AuthorId = 3,
                             CategoryId = 3,
                             Content = "Việc bón phân đúng cách và đúng thời điểm là yếu tố quyết định năng suất lúa. Bài viết này sẽ hướng dẫn chi tiết cách bón phân NPK cho cây lúa...",
-                            CreatedAt = new DateTime(2025, 6, 2, 11, 17, 38, 249, DateTimeKind.Utc).AddTicks(6757),
+                            CreatedAt = new DateTime(2025, 6, 6, 13, 44, 7, 845, DateTimeKind.Utc).AddTicks(5537),
                             FeaturedImage = "/images/blog/bon-phan-lua.jpg",
-                            PublishedAt = new DateTime(2025, 6, 7, 11, 17, 38, 249, DateTimeKind.Utc).AddTicks(6757),
+                            PublishedAt = new DateTime(2025, 6, 11, 13, 44, 7, 845, DateTimeKind.Utc).AddTicks(5537),
                             Slug = "huong-dan-bon-phan-npk-cho-cay-lua",
                             Status = "published",
                             Title = "Hướng dẫn bón phân NPK cho cây lúa theo từng giai đoạn",
-                            UpdatedAt = new DateTime(2025, 6, 7, 11, 17, 38, 249, DateTimeKind.Utc).AddTicks(6757),
+                            UpdatedAt = new DateTime(2025, 6, 11, 13, 44, 7, 845, DateTimeKind.Utc).AddTicks(5537),
                             ViewCount = 980
                         },
                         new
@@ -125,13 +125,13 @@ namespace AgricultureSmart.Repositories.Migrations
                             AuthorId = 4,
                             CategoryId = 2,
                             Content = "Trồng rau màu trong nhà kính giúp kiểm soát được điều kiện môi trường, tăng năng suất và chất lượng sản phẩm. Bài viết này sẽ chia sẻ những kỹ thuật cần thiết...",
-                            CreatedAt = new DateTime(2025, 6, 6, 11, 17, 38, 249, DateTimeKind.Utc).AddTicks(6757),
+                            CreatedAt = new DateTime(2025, 6, 10, 13, 44, 7, 845, DateTimeKind.Utc).AddTicks(5537),
                             FeaturedImage = "/images/blog/rau-nha-kinh.jpg",
-                            PublishedAt = new DateTime(2025, 6, 9, 11, 17, 38, 249, DateTimeKind.Utc).AddTicks(6757),
+                            PublishedAt = new DateTime(2025, 6, 13, 13, 44, 7, 845, DateTimeKind.Utc).AddTicks(5537),
                             Slug = "ky-thuat-trong-rau-mau-trong-nha-kinh",
                             Status = "published",
                             Title = "Kỹ thuật trồng rau màu trong nhà kính",
-                            UpdatedAt = new DateTime(2025, 6, 9, 11, 17, 38, 249, DateTimeKind.Utc).AddTicks(6757),
+                            UpdatedAt = new DateTime(2025, 6, 13, 13, 44, 7, 845, DateTimeKind.Utc).AddTicks(5537),
                             ViewCount = 756
                         },
                         new
@@ -140,13 +140,13 @@ namespace AgricultureSmart.Repositories.Migrations
                             AuthorId = 2,
                             CategoryId = 4,
                             Content = "Việc sử dụng thuốc BVTV cần tuân thủ nghiêm ngặt các quy định về an toàn để bảo vệ sức khỏe người sử dụng và môi trường...",
-                            CreatedAt = new DateTime(2025, 6, 8, 11, 17, 38, 249, DateTimeKind.Utc).AddTicks(6757),
+                            CreatedAt = new DateTime(2025, 6, 12, 13, 44, 7, 845, DateTimeKind.Utc).AddTicks(5537),
                             FeaturedImage = "/images/blog/an-toan-thuoc-bvtv.jpg",
-                            PublishedAt = new DateTime(2025, 6, 11, 11, 17, 38, 249, DateTimeKind.Utc).AddTicks(6757),
+                            PublishedAt = new DateTime(2025, 6, 15, 13, 44, 7, 845, DateTimeKind.Utc).AddTicks(5537),
                             Slug = "an-toan-khi-su-dung-thuoc-bao-ve-thuc-vat",
                             Status = "published",
                             Title = "An toàn khi sử dụng thuốc bảo vệ thực vật",
-                            UpdatedAt = new DateTime(2025, 6, 11, 11, 17, 38, 249, DateTimeKind.Utc).AddTicks(6757),
+                            UpdatedAt = new DateTime(2025, 6, 15, 13, 44, 7, 845, DateTimeKind.Utc).AddTicks(5537),
                             ViewCount = 1100
                         },
                         new
@@ -155,13 +155,13 @@ namespace AgricultureSmart.Repositories.Migrations
                             AuthorId = 3,
                             CategoryId = 5,
                             Content = "Lịch thời vụ trồng lúa miền Nam được xây dựng dựa trên điều kiện khí hậu, thủy văn và kinh nghiệm sản xuất của nông dân...",
-                            CreatedAt = new DateTime(2025, 6, 10, 11, 17, 38, 249, DateTimeKind.Utc).AddTicks(6757),
+                            CreatedAt = new DateTime(2025, 6, 14, 13, 44, 7, 845, DateTimeKind.Utc).AddTicks(5537),
                             FeaturedImage = "/images/blog/lich-thoi-vu-lua.jpg",
-                            PublishedAt = new DateTime(2025, 6, 13, 11, 17, 38, 249, DateTimeKind.Utc).AddTicks(6757),
+                            PublishedAt = new DateTime(2025, 6, 17, 13, 44, 7, 845, DateTimeKind.Utc).AddTicks(5537),
                             Slug = "lich-thoi-vu-trong-lua-mien-nam-2024",
                             Status = "published",
                             Title = "Lịch thời vụ trồng lúa miền Nam năm 2024",
-                            UpdatedAt = new DateTime(2025, 6, 13, 11, 17, 38, 249, DateTimeKind.Utc).AddTicks(6757),
+                            UpdatedAt = new DateTime(2025, 6, 17, 13, 44, 7, 845, DateTimeKind.Utc).AddTicks(5537),
                             ViewCount = 2100
                         });
                 });
@@ -212,7 +212,7 @@ namespace AgricultureSmart.Repositories.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2025, 6, 14, 11, 17, 38, 249, DateTimeKind.Utc).AddTicks(6757),
+                            CreatedAt = new DateTime(2025, 6, 18, 13, 44, 7, 845, DateTimeKind.Utc).AddTicks(5537),
                             Description = "Các bài viết về bệnh hại trên cây trồng và cách phòng trị",
                             IsActive = true,
                             Name = "Bệnh cây trồng",
@@ -221,7 +221,7 @@ namespace AgricultureSmart.Repositories.Migrations
                         new
                         {
                             Id = 2,
-                            CreatedAt = new DateTime(2025, 6, 14, 11, 17, 38, 249, DateTimeKind.Utc).AddTicks(6757),
+                            CreatedAt = new DateTime(2025, 6, 18, 13, 44, 7, 845, DateTimeKind.Utc).AddTicks(5537),
                             Description = "Hướng dẫn kỹ thuật trồng trọt và chăm sóc cây",
                             IsActive = true,
                             Name = "Kỹ thuật canh tác",
@@ -230,7 +230,7 @@ namespace AgricultureSmart.Repositories.Migrations
                         new
                         {
                             Id = 3,
-                            CreatedAt = new DateTime(2025, 6, 14, 11, 17, 38, 249, DateTimeKind.Utc).AddTicks(6757),
+                            CreatedAt = new DateTime(2025, 6, 18, 13, 44, 7, 845, DateTimeKind.Utc).AddTicks(5537),
                             Description = "Thông tin về các loại phân bón và cách sử dụng",
                             IsActive = true,
                             Name = "Phân bón",
@@ -239,7 +239,7 @@ namespace AgricultureSmart.Repositories.Migrations
                         new
                         {
                             Id = 4,
-                            CreatedAt = new DateTime(2025, 6, 14, 11, 17, 38, 249, DateTimeKind.Utc).AddTicks(6757),
+                            CreatedAt = new DateTime(2025, 6, 18, 13, 44, 7, 845, DateTimeKind.Utc).AddTicks(5537),
                             Description = "Hướng dẫn sử dụng thuốc BVTV an toàn",
                             IsActive = true,
                             Name = "Thuốc bảo vệ thực vật",
@@ -248,7 +248,7 @@ namespace AgricultureSmart.Repositories.Migrations
                         new
                         {
                             Id = 5,
-                            CreatedAt = new DateTime(2025, 6, 14, 11, 17, 38, 249, DateTimeKind.Utc).AddTicks(6757),
+                            CreatedAt = new DateTime(2025, 6, 18, 13, 44, 7, 845, DateTimeKind.Utc).AddTicks(5537),
                             Description = "Lịch thời vụ và mùa vụ canh tác",
                             IsActive = true,
                             Name = "Thời vụ",
@@ -293,25 +293,25 @@ namespace AgricultureSmart.Repositories.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2025, 6, 12, 11, 17, 38, 249, DateTimeKind.Utc).AddTicks(6757),
+                            CreatedAt = new DateTime(2025, 6, 16, 13, 44, 7, 845, DateTimeKind.Utc).AddTicks(5537),
                             TotalAmount = 127000m,
-                            UpdatedAt = new DateTime(2025, 6, 14, 5, 17, 38, 249, DateTimeKind.Utc).AddTicks(6757),
+                            UpdatedAt = new DateTime(2025, 6, 18, 7, 44, 7, 845, DateTimeKind.Utc).AddTicks(5537),
                             UserId = 5
                         },
                         new
                         {
                             Id = 2,
-                            CreatedAt = new DateTime(2025, 6, 13, 11, 17, 38, 249, DateTimeKind.Utc).AddTicks(6757),
+                            CreatedAt = new DateTime(2025, 6, 17, 13, 44, 7, 845, DateTimeKind.Utc).AddTicks(5537),
                             TotalAmount = 540000m,
-                            UpdatedAt = new DateTime(2025, 6, 14, 8, 17, 38, 249, DateTimeKind.Utc).AddTicks(6757),
+                            UpdatedAt = new DateTime(2025, 6, 18, 10, 44, 7, 845, DateTimeKind.Utc).AddTicks(5537),
                             UserId = 6
                         },
                         new
                         {
                             Id = 3,
-                            CreatedAt = new DateTime(2025, 6, 13, 23, 17, 38, 249, DateTimeKind.Utc).AddTicks(6757),
+                            CreatedAt = new DateTime(2025, 6, 18, 1, 44, 7, 845, DateTimeKind.Utc).AddTicks(5537),
                             TotalAmount = 85000m,
-                            UpdatedAt = new DateTime(2025, 6, 14, 9, 17, 38, 249, DateTimeKind.Utc).AddTicks(6757),
+                            UpdatedAt = new DateTime(2025, 6, 18, 11, 44, 7, 845, DateTimeKind.Utc).AddTicks(5537),
                             UserId = 7
                         });
                 });
@@ -362,78 +362,78 @@ namespace AgricultureSmart.Repositories.Migrations
                         {
                             Id = 1,
                             CartId = 1,
-                            CreatedAt = new DateTime(2025, 6, 12, 11, 17, 38, 249, DateTimeKind.Utc).AddTicks(6757),
+                            CreatedAt = new DateTime(2025, 6, 16, 13, 44, 7, 845, DateTimeKind.Utc).AddTicks(5537),
                             ProductId = 1,
                             Quantity = 2,
                             TotalPrice = 84000m,
                             UnitPrice = 42000m,
-                            UpdatedAt = new DateTime(2025, 6, 12, 11, 17, 38, 249, DateTimeKind.Utc).AddTicks(6757)
+                            UpdatedAt = new DateTime(2025, 6, 16, 13, 44, 7, 845, DateTimeKind.Utc).AddTicks(5537)
                         },
                         new
                         {
                             Id = 2,
                             CartId = 1,
-                            CreatedAt = new DateTime(2025, 6, 14, 5, 17, 38, 249, DateTimeKind.Utc).AddTicks(6757),
+                            CreatedAt = new DateTime(2025, 6, 18, 7, 44, 7, 845, DateTimeKind.Utc).AddTicks(5537),
                             ProductId = 2,
                             Quantity = 1,
                             TotalPrice = 25000m,
                             UnitPrice = 25000m,
-                            UpdatedAt = new DateTime(2025, 6, 14, 5, 17, 38, 249, DateTimeKind.Utc).AddTicks(6757)
+                            UpdatedAt = new DateTime(2025, 6, 18, 7, 44, 7, 845, DateTimeKind.Utc).AddTicks(5537)
                         },
                         new
                         {
                             Id = 3,
                             CartId = 1,
-                            CreatedAt = new DateTime(2025, 6, 14, 5, 17, 38, 249, DateTimeKind.Utc).AddTicks(6757),
+                            CreatedAt = new DateTime(2025, 6, 18, 7, 44, 7, 845, DateTimeKind.Utc).AddTicks(5537),
                             ProductId = 4,
                             Quantity = 1,
                             TotalPrice = 18000m,
                             UnitPrice = 18000m,
-                            UpdatedAt = new DateTime(2025, 6, 14, 5, 17, 38, 249, DateTimeKind.Utc).AddTicks(6757)
+                            UpdatedAt = new DateTime(2025, 6, 18, 7, 44, 7, 845, DateTimeKind.Utc).AddTicks(5537)
                         },
                         new
                         {
                             Id = 4,
                             CartId = 2,
-                            CreatedAt = new DateTime(2025, 6, 13, 11, 17, 38, 249, DateTimeKind.Utc).AddTicks(6757),
+                            CreatedAt = new DateTime(2025, 6, 17, 13, 44, 7, 845, DateTimeKind.Utc).AddTicks(5537),
                             ProductId = 8,
                             Quantity = 1,
                             TotalPrice = 420000m,
                             UnitPrice = 420000m,
-                            UpdatedAt = new DateTime(2025, 6, 13, 11, 17, 38, 249, DateTimeKind.Utc).AddTicks(6757)
+                            UpdatedAt = new DateTime(2025, 6, 17, 13, 44, 7, 845, DateTimeKind.Utc).AddTicks(5537)
                         },
                         new
                         {
                             Id = 5,
                             CartId = 2,
-                            CreatedAt = new DateTime(2025, 6, 14, 8, 17, 38, 249, DateTimeKind.Utc).AddTicks(6757),
+                            CreatedAt = new DateTime(2025, 6, 18, 10, 44, 7, 845, DateTimeKind.Utc).AddTicks(5537),
                             ProductId = 4,
                             Quantity = 5,
                             TotalPrice = 90000m,
                             UnitPrice = 18000m,
-                            UpdatedAt = new DateTime(2025, 6, 14, 8, 17, 38, 249, DateTimeKind.Utc).AddTicks(6757)
+                            UpdatedAt = new DateTime(2025, 6, 18, 10, 44, 7, 845, DateTimeKind.Utc).AddTicks(5537)
                         },
                         new
                         {
                             Id = 6,
                             CartId = 2,
-                            CreatedAt = new DateTime(2025, 6, 14, 8, 17, 38, 249, DateTimeKind.Utc).AddTicks(6757),
+                            CreatedAt = new DateTime(2025, 6, 18, 10, 44, 7, 845, DateTimeKind.Utc).AddTicks(5537),
                             ProductId = 9,
                             Quantity = 2,
                             TotalPrice = 150000m,
                             UnitPrice = 75000m,
-                            UpdatedAt = new DateTime(2025, 6, 14, 8, 17, 38, 249, DateTimeKind.Utc).AddTicks(6757)
+                            UpdatedAt = new DateTime(2025, 6, 18, 10, 44, 7, 845, DateTimeKind.Utc).AddTicks(5537)
                         },
                         new
                         {
                             Id = 7,
                             CartId = 3,
-                            CreatedAt = new DateTime(2025, 6, 13, 23, 17, 38, 249, DateTimeKind.Utc).AddTicks(6757),
+                            CreatedAt = new DateTime(2025, 6, 18, 1, 44, 7, 845, DateTimeKind.Utc).AddTicks(5537),
                             ProductId = 6,
                             Quantity = 1,
                             TotalPrice = 85000m,
                             UnitPrice = 85000m,
-                            UpdatedAt = new DateTime(2025, 6, 13, 23, 17, 38, 249, DateTimeKind.Utc).AddTicks(6757)
+                            UpdatedAt = new DateTime(2025, 6, 18, 1, 44, 7, 845, DateTimeKind.Utc).AddTicks(5537)
                         });
                 });
 
@@ -483,10 +483,10 @@ namespace AgricultureSmart.Repositories.Migrations
                             Id = 1,
                             Bio = "Chuyên gia về bệnh hại cây trồng với 8 năm kinh nghiệm trong lĩnh vực chẩn đoán và điều trị bệnh lúa, rau màu.",
                             Certification = "[\"Chứng chỉ Kỹ sư Nông nghiệp\", \"Chứng chỉ Chuyên gia Bệnh học thực vật\"]",
-                            CreatedAt = new DateTime(2025, 6, 14, 11, 17, 38, 249, DateTimeKind.Utc).AddTicks(6757),
+                            CreatedAt = new DateTime(2025, 6, 18, 13, 44, 7, 845, DateTimeKind.Utc).AddTicks(5537),
                             ExperienceYears = 8,
                             Specialization = "Bệnh học thực vật",
-                            UpdatedAt = new DateTime(2025, 6, 14, 11, 17, 38, 249, DateTimeKind.Utc).AddTicks(6757),
+                            UpdatedAt = new DateTime(2025, 6, 18, 13, 44, 7, 845, DateTimeKind.Utc).AddTicks(5537),
                             UserId = 2
                         },
                         new
@@ -494,10 +494,10 @@ namespace AgricultureSmart.Repositories.Migrations
                             Id = 2,
                             Bio = "Chuyên gia về dinh dưỡng và phân bón cây trồng, có kinh nghiệm tư vấn cho nhiều hợp tác xã nông nghiệp.",
                             Certification = "[\"Chứng chỉ Kỹ sư Nông nghiệp\", \"Chứng chỉ Chuyên gia Dinh dưỡng thực vật\"]",
-                            CreatedAt = new DateTime(2025, 6, 14, 11, 17, 38, 249, DateTimeKind.Utc).AddTicks(6757),
+                            CreatedAt = new DateTime(2025, 6, 18, 13, 44, 7, 845, DateTimeKind.Utc).AddTicks(5537),
                             ExperienceYears = 6,
                             Specialization = "Dinh dưỡng cây trồng",
-                            UpdatedAt = new DateTime(2025, 6, 14, 11, 17, 38, 249, DateTimeKind.Utc).AddTicks(6757),
+                            UpdatedAt = new DateTime(2025, 6, 18, 13, 44, 7, 845, DateTimeKind.Utc).AddTicks(5537),
                             UserId = 3
                         },
                         new
@@ -505,10 +505,10 @@ namespace AgricultureSmart.Repositories.Migrations
                             Id = 3,
                             Bio = "Chuyên gia kỹ thuật canh tác với 10 năm kinh nghiệm, chuyên về nông nghiệp hữu cơ và canh tác bền vững.",
                             Certification = "[\"Chứng chỉ Kỹ sư Nông nghiệp\", \"Chứng chỉ Chuyên gia Kỹ thuật canh tác\", \"Chứng chỉ Nông nghiệp hữu cơ\"]",
-                            CreatedAt = new DateTime(2025, 6, 14, 11, 17, 38, 249, DateTimeKind.Utc).AddTicks(6757),
+                            CreatedAt = new DateTime(2025, 6, 18, 13, 44, 7, 845, DateTimeKind.Utc).AddTicks(5537),
                             ExperienceYears = 10,
                             Specialization = "Kỹ thuật canh tác",
-                            UpdatedAt = new DateTime(2025, 6, 14, 11, 17, 38, 249, DateTimeKind.Utc).AddTicks(6757),
+                            UpdatedAt = new DateTime(2025, 6, 18, 13, 44, 7, 845, DateTimeKind.Utc).AddTicks(5537),
                             UserId = 4
                         });
                 });
@@ -554,7 +554,7 @@ namespace AgricultureSmart.Repositories.Migrations
                         new
                         {
                             Id = 1,
-                            AssignedAt = new DateTime(2025, 6, 14, 11, 17, 38, 249, DateTimeKind.Utc).AddTicks(6757),
+                            AssignedAt = new DateTime(2025, 6, 18, 13, 44, 7, 845, DateTimeKind.Utc).AddTicks(5537),
                             EngineerId = 1,
                             FarmerId = 1,
                             IsActive = true,
@@ -563,7 +563,7 @@ namespace AgricultureSmart.Repositories.Migrations
                         new
                         {
                             Id = 2,
-                            AssignedAt = new DateTime(2025, 6, 14, 11, 17, 38, 249, DateTimeKind.Utc).AddTicks(6757),
+                            AssignedAt = new DateTime(2025, 6, 18, 13, 44, 7, 845, DateTimeKind.Utc).AddTicks(5537),
                             EngineerId = 1,
                             FarmerId = 2,
                             IsActive = true,
@@ -572,7 +572,7 @@ namespace AgricultureSmart.Repositories.Migrations
                         new
                         {
                             Id = 3,
-                            AssignedAt = new DateTime(2025, 6, 14, 11, 17, 38, 249, DateTimeKind.Utc).AddTicks(6757),
+                            AssignedAt = new DateTime(2025, 6, 18, 13, 44, 7, 845, DateTimeKind.Utc).AddTicks(5537),
                             EngineerId = 2,
                             FarmerId = 3,
                             IsActive = true,
@@ -581,7 +581,7 @@ namespace AgricultureSmart.Repositories.Migrations
                         new
                         {
                             Id = 4,
-                            AssignedAt = new DateTime(2025, 6, 14, 11, 17, 38, 249, DateTimeKind.Utc).AddTicks(6757),
+                            AssignedAt = new DateTime(2025, 6, 18, 13, 44, 7, 845, DateTimeKind.Utc).AddTicks(5537),
                             EngineerId = 2,
                             FarmerId = 4,
                             IsActive = true,
@@ -590,7 +590,7 @@ namespace AgricultureSmart.Repositories.Migrations
                         new
                         {
                             Id = 5,
-                            AssignedAt = new DateTime(2025, 6, 14, 11, 17, 38, 249, DateTimeKind.Utc).AddTicks(6757),
+                            AssignedAt = new DateTime(2025, 6, 18, 13, 44, 7, 845, DateTimeKind.Utc).AddTicks(5537),
                             EngineerId = 3,
                             FarmerId = 5,
                             IsActive = true,
@@ -641,56 +641,56 @@ namespace AgricultureSmart.Repositories.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2025, 6, 14, 11, 17, 38, 249, DateTimeKind.Utc).AddTicks(6757),
+                            CreatedAt = new DateTime(2025, 6, 18, 13, 44, 7, 845, DateTimeKind.Utc).AddTicks(5537),
                             CropTypes = "[\"Lúa\", \"Rau màu\", \"Cây ăn trái\"]",
                             FarmLocation = "Ấp 1, Xã Tân Phú, Huyện Châu Thành, Tỉnh An Giang",
                             FarmSize = 2.5m,
                             FarmingExperienceYears = 15,
-                            UpdatedAt = new DateTime(2025, 6, 14, 11, 17, 38, 249, DateTimeKind.Utc).AddTicks(6757),
+                            UpdatedAt = new DateTime(2025, 6, 18, 13, 44, 7, 845, DateTimeKind.Utc).AddTicks(5537),
                             UserId = 5
                         },
                         new
                         {
                             Id = 2,
-                            CreatedAt = new DateTime(2025, 6, 14, 11, 17, 38, 249, DateTimeKind.Utc).AddTicks(6757),
+                            CreatedAt = new DateTime(2025, 6, 18, 13, 44, 7, 845, DateTimeKind.Utc).AddTicks(5537),
                             CropTypes = "[\"Lúa\", \"Ngô\", \"Đậu tương\"]",
                             FarmLocation = "Ấp 2, Xã Long Phú, Huyện Phú Tân, Tỉnh An Giang",
                             FarmSize = 3.2m,
                             FarmingExperienceYears = 12,
-                            UpdatedAt = new DateTime(2025, 6, 14, 11, 17, 38, 249, DateTimeKind.Utc).AddTicks(6757),
+                            UpdatedAt = new DateTime(2025, 6, 18, 13, 44, 7, 845, DateTimeKind.Utc).AddTicks(5537),
                             UserId = 6
                         },
                         new
                         {
                             Id = 3,
-                            CreatedAt = new DateTime(2025, 6, 14, 11, 17, 38, 249, DateTimeKind.Utc).AddTicks(6757),
+                            CreatedAt = new DateTime(2025, 6, 18, 13, 44, 7, 845, DateTimeKind.Utc).AddTicks(5537),
                             CropTypes = "[\"Rau màu\", \"Cây ăn trái\", \"Hoa màu\"]",
                             FarmLocation = "Ấp 3, Xã Vĩnh Hậu, Huyện Tân Hưng, Tỉnh Long An",
                             FarmSize = 1.8m,
                             FarmingExperienceYears = 8,
-                            UpdatedAt = new DateTime(2025, 6, 14, 11, 17, 38, 249, DateTimeKind.Utc).AddTicks(6757),
+                            UpdatedAt = new DateTime(2025, 6, 18, 13, 44, 7, 845, DateTimeKind.Utc).AddTicks(5537),
                             UserId = 7
                         },
                         new
                         {
                             Id = 4,
-                            CreatedAt = new DateTime(2025, 6, 14, 11, 17, 38, 249, DateTimeKind.Utc).AddTicks(6757),
+                            CreatedAt = new DateTime(2025, 6, 18, 13, 44, 7, 845, DateTimeKind.Utc).AddTicks(5537),
                             CropTypes = "[\"Lúa\", \"Mía\", \"Cây ăn trái\"]",
                             FarmLocation = "Ấp 4, Xã Đức Hòa, Huyện Đức Hòa, Tỉnh Long An",
                             FarmSize = 4.1m,
                             FarmingExperienceYears = 20,
-                            UpdatedAt = new DateTime(2025, 6, 14, 11, 17, 38, 249, DateTimeKind.Utc).AddTicks(6757),
+                            UpdatedAt = new DateTime(2025, 6, 18, 13, 44, 7, 845, DateTimeKind.Utc).AddTicks(5537),
                             UserId = 8
                         },
                         new
                         {
                             Id = 5,
-                            CreatedAt = new DateTime(2025, 6, 14, 11, 17, 38, 249, DateTimeKind.Utc).AddTicks(6757),
+                            CreatedAt = new DateTime(2025, 6, 18, 13, 44, 7, 845, DateTimeKind.Utc).AddTicks(5537),
                             CropTypes = "[\"Lúa\", \"Rau màu\", \"Đậu các loại\"]",
                             FarmLocation = "Ấp 5, Xã Tân Trụ, Huyện Tân Trụ, Tỉnh Long An",
                             FarmSize = 2.9m,
                             FarmingExperienceYears = 10,
-                            UpdatedAt = new DateTime(2025, 6, 14, 11, 17, 38, 249, DateTimeKind.Utc).AddTicks(6757),
+                            UpdatedAt = new DateTime(2025, 6, 18, 13, 44, 7, 845, DateTimeKind.Utc).AddTicks(5537),
                             UserId = 9
                         });
                 });
@@ -779,15 +779,15 @@ namespace AgricultureSmart.Repositories.Migrations
                             Author = "Bộ Nông nghiệp và Phát triển Nông thôn",
                             CategoryId = 1,
                             Content = "Chính phủ vừa phê duyệt chương trình hỗ trợ nông dân chuyển đổi số trong sản xuất nông nghiệp với tổng kinh phí 500 tỷ đồng...",
-                            CreatedAt = new DateTime(2025, 6, 12, 11, 17, 38, 249, DateTimeKind.Utc).AddTicks(6757),
+                            CreatedAt = new DateTime(2025, 6, 16, 13, 44, 7, 845, DateTimeKind.Utc).AddTicks(5537),
                             Excerpt = "Chương trình hỗ trợ nông dân ứng dụng công nghệ số trong sản xuất nông nghiệp với tổng kinh phí 500 tỷ đồng.",
                             Featured = true,
                             ImageUrl = "/images/news/ho-tro-chuyen-doi-so.jpg",
-                            PublishedAt = new DateTime(2025, 6, 12, 11, 17, 38, 249, DateTimeKind.Utc).AddTicks(6757),
+                            PublishedAt = new DateTime(2025, 6, 16, 13, 44, 7, 845, DateTimeKind.Utc).AddTicks(5537),
                             Source = "Bộ Nông nghiệp và Phát triển Nông thôn",
                             Tags = "[\"Chính sách\", \"Chuyển đổi số\", \"Hỗ trợ nông dân\"]",
                             Title = "Chính phủ hỗ trợ 500 tỷ đồng cho nông dân chuyển đổi số",
-                            UpdatedAt = new DateTime(2025, 6, 12, 11, 17, 38, 249, DateTimeKind.Utc).AddTicks(6757),
+                            UpdatedAt = new DateTime(2025, 6, 16, 13, 44, 7, 845, DateTimeKind.Utc).AddTicks(5537),
                             Urgent = false,
                             ViewCount = 3500
                         },
@@ -797,15 +797,15 @@ namespace AgricultureSmart.Repositories.Migrations
                             Author = "Hiệp hội Lương thực Việt Nam",
                             CategoryId = 2,
                             Content = "Theo báo cáo từ Sở Nông nghiệp các tỉnh ĐBSCL, giá lúa đã tăng mạnh trong tuần qua...",
-                            CreatedAt = new DateTime(2025, 6, 13, 11, 17, 38, 249, DateTimeKind.Utc).AddTicks(6757),
+                            CreatedAt = new DateTime(2025, 6, 17, 13, 44, 7, 845, DateTimeKind.Utc).AddTicks(5537),
                             Excerpt = "Giá lúa tại các tỉnh ĐBSCL tăng 200-300 đồng/kg so với tuần trước nhờ nhu cầu xuất khẩu tăng cao.",
                             Featured = false,
                             ImageUrl = "/images/news/gia-lua-tang.jpg",
-                            PublishedAt = new DateTime(2025, 6, 13, 11, 17, 38, 249, DateTimeKind.Utc).AddTicks(6757),
+                            PublishedAt = new DateTime(2025, 6, 17, 13, 44, 7, 845, DateTimeKind.Utc).AddTicks(5537),
                             Source = "Hiệp hội Lương thực Việt Nam",
                             Tags = "[\"Giá lúa\", \"Xuất khẩu\", \"Thị trường\"]",
                             Title = "Giá lúa tăng mạnh do xuất khẩu khởi sắc",
-                            UpdatedAt = new DateTime(2025, 6, 13, 11, 17, 38, 249, DateTimeKind.Utc).AddTicks(6757),
+                            UpdatedAt = new DateTime(2025, 6, 17, 13, 44, 7, 845, DateTimeKind.Utc).AddTicks(5537),
                             Urgent = true,
                             ViewCount = 2800
                         },
@@ -815,15 +815,15 @@ namespace AgricultureSmart.Repositories.Migrations
                             Author = "Viện Bảo vệ thực vật",
                             CategoryId = 3,
                             Content = "Các ứng dụng AI hiện đại đang giúp nông dân chẩn đoán bệnh cây trồng nhanh chóng và chính xác...",
-                            CreatedAt = new DateTime(2025, 6, 13, 23, 17, 38, 249, DateTimeKind.Utc).AddTicks(6757),
+                            CreatedAt = new DateTime(2025, 6, 18, 1, 44, 7, 845, DateTimeKind.Utc).AddTicks(5537),
                             Excerpt = "Công nghệ trí tuệ nhân tạo đang được ứng dụng rộng rãi trong việc chẩn đoán bệnh hại cây trồng với độ chính xác cao.",
                             Featured = true,
                             ImageUrl = "/images/news/ai-chan-doan-benh.jpg",
-                            PublishedAt = new DateTime(2025, 6, 13, 23, 17, 38, 249, DateTimeKind.Utc).AddTicks(6757),
+                            PublishedAt = new DateTime(2025, 6, 18, 1, 44, 7, 845, DateTimeKind.Utc).AddTicks(5537),
                             Source = "Viện Bảo vệ thực vật",
                             Tags = "[\"AI\", \"Công nghệ\", \"Chẩn đoán bệnh\"]",
                             Title = "Ứng dụng AI trong chẩn đoán bệnh cây trồng",
-                            UpdatedAt = new DateTime(2025, 6, 13, 23, 17, 38, 249, DateTimeKind.Utc).AddTicks(6757),
+                            UpdatedAt = new DateTime(2025, 6, 18, 1, 44, 7, 845, DateTimeKind.Utc).AddTicks(5537),
                             Urgent = false,
                             ViewCount = 1900
                         },
@@ -833,15 +833,15 @@ namespace AgricultureSmart.Repositories.Migrations
                             Author = "Ban Tổ chức",
                             CategoryId = 4,
                             Content = "Hội nghị sẽ quy tụ các chuyên gia hàng đầu thế giới về nông nghiệp bền vững...",
-                            CreatedAt = new DateTime(2025, 6, 14, 5, 17, 38, 249, DateTimeKind.Utc).AddTicks(6757),
+                            CreatedAt = new DateTime(2025, 6, 18, 7, 44, 7, 845, DateTimeKind.Utc).AddTicks(5537),
                             Excerpt = "Hội nghị quốc tế về nông nghiệp bền vững và an ninh lương thực sẽ được tổ chức tại Hà Nội từ ngày 15-17/2/2024.",
                             Featured = false,
                             ImageUrl = "/images/news/hoi-nghi-quoc-te.jpg",
-                            PublishedAt = new DateTime(2025, 6, 14, 5, 17, 38, 249, DateTimeKind.Utc).AddTicks(6757),
+                            PublishedAt = new DateTime(2025, 6, 18, 7, 44, 7, 845, DateTimeKind.Utc).AddTicks(5537),
                             Source = "Bộ Nông nghiệp và Phát triển Nông thôn",
                             Tags = "[\"Hội nghị\", \"Quốc tế\", \"Bền vững\", \"An ninh lương thực\"]",
                             Title = "Hội nghị quốc tế về nông nghiệp bền vững sẽ diễn ra tại Hà Nội",
-                            UpdatedAt = new DateTime(2025, 6, 14, 5, 17, 38, 249, DateTimeKind.Utc).AddTicks(6757),
+                            UpdatedAt = new DateTime(2025, 6, 18, 7, 44, 7, 845, DateTimeKind.Utc).AddTicks(5537),
                             Urgent = false,
                             ViewCount = 1200
                         },
@@ -851,15 +851,15 @@ namespace AgricultureSmart.Repositories.Migrations
                             Author = "Trung tâm Dự báo khí tượng thủy văn",
                             CategoryId = 5,
                             Content = "Theo dự báo, đợt không khí lạnh mạnh sẽ ảnh hưởng đến các tỉnh miền Bắc và Bắc Trung Bộ...",
-                            CreatedAt = new DateTime(2025, 6, 14, 8, 17, 38, 249, DateTimeKind.Utc).AddTicks(6757),
+                            CreatedAt = new DateTime(2025, 6, 18, 10, 44, 7, 845, DateTimeKind.Utc).AddTicks(5537),
                             Excerpt = "Trung tâm Dự báo khí tượng thủy văn cảnh báo đợt rét đậm có thể ảnh hưởng đến vụ lúa Đông Xuân.",
                             Featured = false,
                             ImageUrl = "/images/news/canh-bao-thoi-tiet.jpg",
-                            PublishedAt = new DateTime(2025, 6, 14, 8, 17, 38, 249, DateTimeKind.Utc).AddTicks(6757),
+                            PublishedAt = new DateTime(2025, 6, 18, 10, 44, 7, 845, DateTimeKind.Utc).AddTicks(5537),
                             Source = "Trung tâm Dự báo khí tượng thủy văn",
                             Tags = "[\"Thời tiết\", \"Cảnh báo\", \"Lúa Đông Xuân\"]",
                             Title = "Cảnh báo thời tiết bất lợi cho vụ lúa Đông Xuân",
-                            UpdatedAt = new DateTime(2025, 6, 14, 8, 17, 38, 249, DateTimeKind.Utc).AddTicks(6757),
+                            UpdatedAt = new DateTime(2025, 6, 18, 10, 44, 7, 845, DateTimeKind.Utc).AddTicks(5537),
                             Urgent = true,
                             ViewCount = 4200
                         });
@@ -913,7 +913,7 @@ namespace AgricultureSmart.Repositories.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2025, 6, 14, 11, 17, 38, 249, DateTimeKind.Utc).AddTicks(6757),
+                            CreatedAt = new DateTime(2025, 6, 18, 13, 44, 7, 845, DateTimeKind.Utc).AddTicks(5537),
                             Description = "Tin tức về chính sách nông nghiệp",
                             IsActive = true,
                             Name = "Chính sách",
@@ -922,7 +922,7 @@ namespace AgricultureSmart.Repositories.Migrations
                         new
                         {
                             Id = 2,
-                            CreatedAt = new DateTime(2025, 6, 14, 11, 17, 38, 249, DateTimeKind.Utc).AddTicks(6757),
+                            CreatedAt = new DateTime(2025, 6, 18, 13, 44, 7, 845, DateTimeKind.Utc).AddTicks(5537),
                             Description = "Thông tin thị trường nông sản",
                             IsActive = true,
                             Name = "Thị trường",
@@ -931,7 +931,7 @@ namespace AgricultureSmart.Repositories.Migrations
                         new
                         {
                             Id = 3,
-                            CreatedAt = new DateTime(2025, 6, 14, 11, 17, 38, 249, DateTimeKind.Utc).AddTicks(6757),
+                            CreatedAt = new DateTime(2025, 6, 18, 13, 44, 7, 845, DateTimeKind.Utc).AddTicks(5537),
                             Description = "Công nghệ mới trong nông nghiệp",
                             IsActive = true,
                             Name = "Công nghệ",
@@ -940,7 +940,7 @@ namespace AgricultureSmart.Repositories.Migrations
                         new
                         {
                             Id = 4,
-                            CreatedAt = new DateTime(2025, 6, 14, 11, 17, 38, 249, DateTimeKind.Utc).AddTicks(6757),
+                            CreatedAt = new DateTime(2025, 6, 18, 13, 44, 7, 845, DateTimeKind.Utc).AddTicks(5537),
                             Description = "Các sự kiện nông nghiệp",
                             IsActive = true,
                             Name = "Sự kiện",
@@ -949,7 +949,7 @@ namespace AgricultureSmart.Repositories.Migrations
                         new
                         {
                             Id = 5,
-                            CreatedAt = new DateTime(2025, 6, 14, 11, 17, 38, 249, DateTimeKind.Utc).AddTicks(6757),
+                            CreatedAt = new DateTime(2025, 6, 18, 13, 44, 7, 845, DateTimeKind.Utc).AddTicks(5537),
                             Description = "Dự báo thời tiết phục vụ sản xuất",
                             IsActive = true,
                             Name = "Thời tiết",
@@ -1027,55 +1027,55 @@ namespace AgricultureSmart.Repositories.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2025, 5, 25, 11, 17, 38, 249, DateTimeKind.Utc).AddTicks(6757),
+                            CreatedAt = new DateTime(2025, 5, 29, 13, 44, 7, 845, DateTimeKind.Utc).AddTicks(5537),
                             OrderNumber = "ORD-2024-001",
-                            PaidAt = new DateTime(2025, 5, 30, 11, 17, 38, 249, DateTimeKind.Utc).AddTicks(6757),
+                            PaidAt = new DateTime(2025, 6, 3, 13, 44, 7, 845, DateTimeKind.Utc).AddTicks(5537),
                             PaymentMethod = "cod",
                             PaymentStatus = "paid",
                             ShippingAddress = "Ấp 1, Xã Tân Phú, Huyện Châu Thành, Tỉnh An Giang",
                             Status = "delivered",
                             TotalAmount = 189000m,
-                            UpdatedAt = new DateTime(2025, 5, 30, 11, 17, 38, 249, DateTimeKind.Utc).AddTicks(6757),
+                            UpdatedAt = new DateTime(2025, 6, 3, 13, 44, 7, 845, DateTimeKind.Utc).AddTicks(5537),
                             UserId = 5
                         },
                         new
                         {
                             Id = 2,
-                            CreatedAt = new DateTime(2025, 6, 4, 11, 17, 38, 249, DateTimeKind.Utc).AddTicks(6757),
+                            CreatedAt = new DateTime(2025, 6, 8, 13, 44, 7, 845, DateTimeKind.Utc).AddTicks(5537),
                             OrderNumber = "ORD-2024-002",
-                            PaidAt = new DateTime(2025, 6, 6, 11, 17, 38, 249, DateTimeKind.Utc).AddTicks(6757),
+                            PaidAt = new DateTime(2025, 6, 10, 13, 44, 7, 845, DateTimeKind.Utc).AddTicks(5537),
                             PaymentMethod = "bank_transfer",
                             PaymentStatus = "paid",
                             ShippingAddress = "Ấp 2, Xã Long Phú, Huyện Phú Tân, Tỉnh An Giang",
                             Status = "shipped",
                             TotalAmount = 3450000m,
-                            UpdatedAt = new DateTime(2025, 6, 12, 11, 17, 38, 249, DateTimeKind.Utc).AddTicks(6757),
+                            UpdatedAt = new DateTime(2025, 6, 16, 13, 44, 7, 845, DateTimeKind.Utc).AddTicks(5537),
                             UserId = 6
                         },
                         new
                         {
                             Id = 3,
-                            CreatedAt = new DateTime(2025, 6, 11, 11, 17, 38, 249, DateTimeKind.Utc).AddTicks(6757),
+                            CreatedAt = new DateTime(2025, 6, 15, 13, 44, 7, 845, DateTimeKind.Utc).AddTicks(5537),
                             OrderNumber = "ORD-2024-003",
                             PaymentMethod = "cod",
                             PaymentStatus = "pending",
                             ShippingAddress = "Ấp 3, Xã Vĩnh Hậu, Huyện Tân Hưng, Tỉnh Long An",
                             Status = "processing",
                             TotalAmount = 160000m,
-                            UpdatedAt = new DateTime(2025, 6, 13, 11, 17, 38, 249, DateTimeKind.Utc).AddTicks(6757),
+                            UpdatedAt = new DateTime(2025, 6, 17, 13, 44, 7, 845, DateTimeKind.Utc).AddTicks(5537),
                             UserId = 7
                         },
                         new
                         {
                             Id = 4,
-                            CreatedAt = new DateTime(2025, 6, 13, 11, 17, 38, 249, DateTimeKind.Utc).AddTicks(6757),
+                            CreatedAt = new DateTime(2025, 6, 17, 13, 44, 7, 845, DateTimeKind.Utc).AddTicks(5537),
                             OrderNumber = "ORD-2024-004",
                             PaymentMethod = "cod",
                             PaymentStatus = "pending",
                             ShippingAddress = "Ấp 4, Xã Đức Hòa, Huyện Đức Hòa, Tỉnh Long An",
                             Status = "pending",
                             TotalAmount = 95000m,
-                            UpdatedAt = new DateTime(2025, 6, 13, 11, 17, 38, 249, DateTimeKind.Utc).AddTicks(6757),
+                            UpdatedAt = new DateTime(2025, 6, 17, 13, 44, 7, 845, DateTimeKind.Utc).AddTicks(5537),
                             UserId = 8
                         });
                 });
@@ -1269,7 +1269,7 @@ namespace AgricultureSmart.Repositories.Migrations
                         {
                             Id = 1,
                             CategoryId = 1,
-                            CreatedAt = new DateTime(2025, 6, 14, 11, 17, 38, 249, DateTimeKind.Utc).AddTicks(6757),
+                            CreatedAt = new DateTime(2025, 6, 18, 13, 44, 7, 845, DateTimeKind.Utc).AddTicks(5537),
                             Description = "Giống lúa ST25 chất lượng cao, năng suất ổn định, kháng bệnh tốt. Thời gian sinh trưởng 95-100 ngày.",
                             DiscountPrice = 42000m,
                             ImageUrl = "/images/products/hat-giong-lua-st25.jpg",
@@ -1279,13 +1279,13 @@ namespace AgricultureSmart.Repositories.Migrations
                             Rating = 0.0,
                             SKU = "HG-ST25-001",
                             Stock = 500,
-                            UpdatedAt = new DateTime(2025, 6, 14, 11, 17, 38, 249, DateTimeKind.Utc).AddTicks(6757)
+                            UpdatedAt = new DateTime(2025, 6, 18, 13, 44, 7, 845, DateTimeKind.Utc).AddTicks(5537)
                         },
                         new
                         {
                             Id = 2,
                             CategoryId = 1,
-                            CreatedAt = new DateTime(2025, 6, 14, 11, 17, 38, 249, DateTimeKind.Utc).AddTicks(6757),
+                            CreatedAt = new DateTime(2025, 6, 18, 13, 44, 7, 845, DateTimeKind.Utc).AddTicks(5537),
                             Description = "Hạt giống rau cải xanh F1, tỷ lệ nảy mầm cao, sinh trưởng nhanh, chống chịu tốt.",
                             ImageUrl = "/images/products/hat-giong-cai-xanh.jpg",
                             IsActive = true,
@@ -1294,13 +1294,13 @@ namespace AgricultureSmart.Repositories.Migrations
                             Rating = 0.0,
                             SKU = "HG-CX-002",
                             Stock = 200,
-                            UpdatedAt = new DateTime(2025, 6, 14, 11, 17, 38, 249, DateTimeKind.Utc).AddTicks(6757)
+                            UpdatedAt = new DateTime(2025, 6, 18, 13, 44, 7, 845, DateTimeKind.Utc).AddTicks(5537)
                         },
                         new
                         {
                             Id = 3,
                             CategoryId = 1,
-                            CreatedAt = new DateTime(2025, 6, 14, 11, 17, 38, 249, DateTimeKind.Utc).AddTicks(6757),
+                            CreatedAt = new DateTime(2025, 6, 18, 13, 44, 7, 845, DateTimeKind.Utc).AddTicks(5537),
                             Description = "Giống cà chua F1 năng suất cao, quả to, màu đỏ đẹp, thích hợp trồng quanh năm.",
                             DiscountPrice = 32000m,
                             ImageUrl = "/images/products/hat-giong-ca-chua.jpg",
@@ -1310,13 +1310,13 @@ namespace AgricultureSmart.Repositories.Migrations
                             Rating = 0.0,
                             SKU = "HG-CC-003",
                             Stock = 150,
-                            UpdatedAt = new DateTime(2025, 6, 14, 11, 17, 38, 249, DateTimeKind.Utc).AddTicks(6757)
+                            UpdatedAt = new DateTime(2025, 6, 18, 13, 44, 7, 845, DateTimeKind.Utc).AddTicks(5537)
                         },
                         new
                         {
                             Id = 4,
                             CategoryId = 2,
-                            CreatedAt = new DateTime(2025, 6, 14, 11, 17, 38, 249, DateTimeKind.Utc).AddTicks(6757),
+                            CreatedAt = new DateTime(2025, 6, 18, 13, 44, 7, 845, DateTimeKind.Utc).AddTicks(5537),
                             Description = "Phân NPK 16-16-8 chuyên dụng cho cây lúa, cung cấp đầy đủ dinh dưỡng cho cây trồng.",
                             ImageUrl = "/images/products/phan-npk-16-16-8.jpg",
                             IsActive = true,
@@ -1325,13 +1325,13 @@ namespace AgricultureSmart.Repositories.Migrations
                             Rating = 0.0,
                             SKU = "PB-NPK-004",
                             Stock = 1000,
-                            UpdatedAt = new DateTime(2025, 6, 14, 11, 17, 38, 249, DateTimeKind.Utc).AddTicks(6757)
+                            UpdatedAt = new DateTime(2025, 6, 18, 13, 44, 7, 845, DateTimeKind.Utc).AddTicks(5537)
                         },
                         new
                         {
                             Id = 5,
                             CategoryId = 2,
-                            CreatedAt = new DateTime(2025, 6, 14, 11, 17, 38, 249, DateTimeKind.Utc).AddTicks(6757),
+                            CreatedAt = new DateTime(2025, 6, 18, 13, 44, 7, 845, DateTimeKind.Utc).AddTicks(5537),
                             Description = "Phân hữu cơ vi sinh giúp cải tạo đất, tăng cường sức đề kháng cho cây trồng.",
                             DiscountPrice = 20000m,
                             ImageUrl = "/images/products/phan-huu-co-vi-sinh.jpg",
@@ -1341,13 +1341,13 @@ namespace AgricultureSmart.Repositories.Migrations
                             Rating = 0.0,
                             SKU = "PB-HCVS-005",
                             Stock = 800,
-                            UpdatedAt = new DateTime(2025, 6, 14, 11, 17, 38, 249, DateTimeKind.Utc).AddTicks(6757)
+                            UpdatedAt = new DateTime(2025, 6, 18, 13, 44, 7, 845, DateTimeKind.Utc).AddTicks(5537)
                         },
                         new
                         {
                             Id = 6,
                             CategoryId = 3,
-                            CreatedAt = new DateTime(2025, 6, 14, 11, 17, 38, 249, DateTimeKind.Utc).AddTicks(6757),
+                            CreatedAt = new DateTime(2025, 6, 18, 13, 44, 7, 845, DateTimeKind.Utc).AddTicks(5537),
                             Description = "Thuốc trừ sâu Regent 50SC hiệu quả cao, an toàn cho người và môi trường.",
                             ImageUrl = "/images/products/thuoc-tru-sau-regent.jpg",
                             IsActive = true,
@@ -1356,13 +1356,13 @@ namespace AgricultureSmart.Repositories.Migrations
                             Rating = 0.0,
                             SKU = "BVTV-REG-006",
                             Stock = 300,
-                            UpdatedAt = new DateTime(2025, 6, 14, 11, 17, 38, 249, DateTimeKind.Utc).AddTicks(6757)
+                            UpdatedAt = new DateTime(2025, 6, 18, 13, 44, 7, 845, DateTimeKind.Utc).AddTicks(5537)
                         },
                         new
                         {
                             Id = 7,
                             CategoryId = 3,
-                            CreatedAt = new DateTime(2025, 6, 14, 11, 17, 38, 249, DateTimeKind.Utc).AddTicks(6757),
+                            CreatedAt = new DateTime(2025, 6, 18, 13, 44, 7, 845, DateTimeKind.Utc).AddTicks(5537),
                             Description = "Thuốc diệt cỏ Gramoxone tác dụng nhanh, hiệu quả cao với nhiều loại cỏ dại.",
                             ImageUrl = "/images/products/thuoc-diet-co-gramoxone.jpg",
                             IsActive = true,
@@ -1371,13 +1371,13 @@ namespace AgricultureSmart.Repositories.Migrations
                             Rating = 0.0,
                             SKU = "BVTV-GRA-007",
                             Stock = 250,
-                            UpdatedAt = new DateTime(2025, 6, 14, 11, 17, 38, 249, DateTimeKind.Utc).AddTicks(6757)
+                            UpdatedAt = new DateTime(2025, 6, 18, 13, 44, 7, 845, DateTimeKind.Utc).AddTicks(5537)
                         },
                         new
                         {
                             Id = 8,
                             CategoryId = 4,
-                            CreatedAt = new DateTime(2025, 6, 14, 11, 17, 38, 249, DateTimeKind.Utc).AddTicks(6757),
+                            CreatedAt = new DateTime(2025, 6, 18, 13, 44, 7, 845, DateTimeKind.Utc).AddTicks(5537),
                             Description = "Máy phun thuốc bình xịt dung tích 16L, áp suất cao, phun đều, tiết kiệm thuốc.",
                             DiscountPrice = 420000m,
                             ImageUrl = "/images/products/may-phun-thuoc-16l.jpg",
@@ -1387,13 +1387,13 @@ namespace AgricultureSmart.Repositories.Migrations
                             Rating = 0.0,
                             SKU = "DC-MPT-008",
                             Stock = 50,
-                            UpdatedAt = new DateTime(2025, 6, 14, 11, 17, 38, 249, DateTimeKind.Utc).AddTicks(6757)
+                            UpdatedAt = new DateTime(2025, 6, 18, 13, 44, 7, 845, DateTimeKind.Utc).AddTicks(5537)
                         },
                         new
                         {
                             Id = 9,
                             CategoryId = 4,
-                            CreatedAt = new DateTime(2025, 6, 14, 11, 17, 38, 249, DateTimeKind.Utc).AddTicks(6757),
+                            CreatedAt = new DateTime(2025, 6, 18, 13, 44, 7, 845, DateTimeKind.Utc).AddTicks(5537),
                             Description = "Cuốc xới đất cán gỗ chất lượng cao, bền bỉ, phù hợp cho mọi loại đất.",
                             ImageUrl = "/images/products/cuoc-xoi-dat.jpg",
                             IsActive = true,
@@ -1402,13 +1402,13 @@ namespace AgricultureSmart.Repositories.Migrations
                             Rating = 0.0,
                             SKU = "DC-CXD-009",
                             Stock = 100,
-                            UpdatedAt = new DateTime(2025, 6, 14, 11, 17, 38, 249, DateTimeKind.Utc).AddTicks(6757)
+                            UpdatedAt = new DateTime(2025, 6, 18, 13, 44, 7, 845, DateTimeKind.Utc).AddTicks(5537)
                         },
                         new
                         {
                             Id = 10,
                             CategoryId = 5,
-                            CreatedAt = new DateTime(2025, 6, 14, 11, 17, 38, 249, DateTimeKind.Utc).AddTicks(6757),
+                            CreatedAt = new DateTime(2025, 6, 18, 13, 44, 7, 845, DateTimeKind.Utc).AddTicks(5537),
                             Description = "Máy cắt cỏ Honda GX35 công suất mạnh, tiết kiệm nhiên liệu, độ bền cao.",
                             DiscountPrice = 3300000m,
                             ImageUrl = "/images/products/may-cat-co-honda.jpg",
@@ -1418,7 +1418,7 @@ namespace AgricultureSmart.Repositories.Migrations
                             Rating = 0.0,
                             SKU = "MM-MCC-010",
                             Stock = 20,
-                            UpdatedAt = new DateTime(2025, 6, 14, 11, 17, 38, 249, DateTimeKind.Utc).AddTicks(6757)
+                            UpdatedAt = new DateTime(2025, 6, 18, 13, 44, 7, 845, DateTimeKind.Utc).AddTicks(5537)
                         });
                 });
 
@@ -1470,7 +1470,7 @@ namespace AgricultureSmart.Repositories.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2025, 6, 14, 11, 17, 38, 249, DateTimeKind.Utc).AddTicks(6757),
+                            CreatedAt = new DateTime(2025, 6, 18, 13, 44, 7, 845, DateTimeKind.Utc).AddTicks(5537),
                             Description = "Các loại hạt giống cây trồng",
                             IsActive = true,
                             Name = "Hạt giống",
@@ -1479,7 +1479,7 @@ namespace AgricultureSmart.Repositories.Migrations
                         new
                         {
                             Id = 2,
-                            CreatedAt = new DateTime(2025, 6, 14, 11, 17, 38, 249, DateTimeKind.Utc).AddTicks(6757),
+                            CreatedAt = new DateTime(2025, 6, 18, 13, 44, 7, 845, DateTimeKind.Utc).AddTicks(5537),
                             Description = "Các loại phân bón hữu cơ và vô cơ",
                             IsActive = true,
                             Name = "Phân bón",
@@ -1488,7 +1488,7 @@ namespace AgricultureSmart.Repositories.Migrations
                         new
                         {
                             Id = 3,
-                            CreatedAt = new DateTime(2025, 6, 14, 11, 17, 38, 249, DateTimeKind.Utc).AddTicks(6757),
+                            CreatedAt = new DateTime(2025, 6, 18, 13, 44, 7, 845, DateTimeKind.Utc).AddTicks(5537),
                             Description = "Thuốc bảo vệ thực vật",
                             IsActive = true,
                             Name = "Thuốc BVTV",
@@ -1497,7 +1497,7 @@ namespace AgricultureSmart.Repositories.Migrations
                         new
                         {
                             Id = 4,
-                            CreatedAt = new DateTime(2025, 6, 14, 11, 17, 38, 249, DateTimeKind.Utc).AddTicks(6757),
+                            CreatedAt = new DateTime(2025, 6, 18, 13, 44, 7, 845, DateTimeKind.Utc).AddTicks(5537),
                             Description = "Các dụng cụ và thiết bị nông nghiệp",
                             IsActive = true,
                             Name = "Dụng cụ nông nghiệp",
@@ -1506,7 +1506,7 @@ namespace AgricultureSmart.Repositories.Migrations
                         new
                         {
                             Id = 5,
-                            CreatedAt = new DateTime(2025, 6, 14, 11, 17, 38, 249, DateTimeKind.Utc).AddTicks(6757),
+                            CreatedAt = new DateTime(2025, 6, 18, 13, 44, 7, 845, DateTimeKind.Utc).AddTicks(5537),
                             Description = "Máy móc thiết bị nông nghiệp",
                             IsActive = true,
                             Name = "Máy móc",
@@ -1562,77 +1562,77 @@ namespace AgricultureSmart.Repositories.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2025, 5, 25, 11, 17, 38, 249, DateTimeKind.Utc).AddTicks(6757),
+                            CreatedAt = new DateTime(2025, 5, 29, 13, 44, 7, 845, DateTimeKind.Utc).AddTicks(5537),
                             ProductId = 1,
                             ReviewMessage = "Hạt giống chất lượng tuyệt vời! Tỷ lệ nảy mầm cao, cây lúa sinh trưởng khỏe mạnh. Năng suất đạt như quảng cáo. Sẽ tiếp tục mua ở lần sau.",
                             ReviewValue = 5,
-                            UpdatedAt = new DateTime(2025, 5, 25, 11, 17, 38, 249, DateTimeKind.Utc).AddTicks(6757),
+                            UpdatedAt = new DateTime(2025, 5, 29, 13, 44, 7, 845, DateTimeKind.Utc).AddTicks(5537),
                             UserId = 5,
                             UserName = "Nguyễn Thị D"
                         },
                         new
                         {
                             Id = 2,
-                            CreatedAt = new DateTime(2025, 5, 27, 11, 17, 38, 249, DateTimeKind.Utc).AddTicks(6757),
+                            CreatedAt = new DateTime(2025, 5, 31, 13, 44, 7, 845, DateTimeKind.Utc).AddTicks(5537),
                             ProductId = 1,
                             ReviewMessage = "Giống lúa tốt, năng suất ổn định. Chỉ có điều giá hơi cao so với các giống khác. Nhưng chất lượng xứng đáng với giá tiền.",
                             ReviewValue = 4,
-                            UpdatedAt = new DateTime(2025, 5, 27, 11, 17, 38, 249, DateTimeKind.Utc).AddTicks(6757),
+                            UpdatedAt = new DateTime(2025, 5, 31, 13, 44, 7, 845, DateTimeKind.Utc).AddTicks(5537),
                             UserId = 6,
                             UserName = "Trần Văn E"
                         },
                         new
                         {
                             Id = 3,
-                            CreatedAt = new DateTime(2025, 5, 30, 11, 17, 38, 249, DateTimeKind.Utc).AddTicks(6757),
+                            CreatedAt = new DateTime(2025, 6, 3, 13, 44, 7, 845, DateTimeKind.Utc).AddTicks(5537),
                             ProductId = 4,
                             ReviewMessage = "Phân bón hiệu quả tốt, cây trồng xanh tốt sau khi bón. Giá cả hợp lý, giao hàng nhanh chóng.",
                             ReviewValue = 5,
-                            UpdatedAt = new DateTime(2025, 5, 30, 11, 17, 38, 249, DateTimeKind.Utc).AddTicks(6757),
+                            UpdatedAt = new DateTime(2025, 6, 3, 13, 44, 7, 845, DateTimeKind.Utc).AddTicks(5537),
                             UserId = 7,
                             UserName = "Lê Thị F"
                         },
                         new
                         {
                             Id = 4,
-                            CreatedAt = new DateTime(2025, 6, 2, 11, 17, 38, 249, DateTimeKind.Utc).AddTicks(6757),
+                            CreatedAt = new DateTime(2025, 6, 6, 13, 44, 7, 845, DateTimeKind.Utc).AddTicks(5537),
                             ProductId = 8,
                             ReviewMessage = "Máy phun hoạt động tốt, áp suất ổn định. Dung tích 16L vừa phải cho diện tích nhỏ. Chỉ có điều hơi nặng khi mang lâu.",
                             ReviewValue = 4,
-                            UpdatedAt = new DateTime(2025, 6, 2, 11, 17, 38, 249, DateTimeKind.Utc).AddTicks(6757),
+                            UpdatedAt = new DateTime(2025, 6, 6, 13, 44, 7, 845, DateTimeKind.Utc).AddTicks(5537),
                             UserId = 8,
                             UserName = "Phạm Văn G"
                         },
                         new
                         {
                             Id = 5,
-                            CreatedAt = new DateTime(2025, 6, 4, 11, 17, 38, 249, DateTimeKind.Utc).AddTicks(6757),
+                            CreatedAt = new DateTime(2025, 6, 8, 13, 44, 7, 845, DateTimeKind.Utc).AddTicks(5537),
                             ProductId = 5,
                             ReviewMessage = "Phân hữu cơ rất tốt! Đất trở nên tơi xốp hơn, cây trồng khỏe mạnh. Đặc biệt hiệu quả với rau màu. Giá có khuyến mãi nữa, rất hài lòng!",
                             ReviewValue = 5,
-                            UpdatedAt = new DateTime(2025, 6, 4, 11, 17, 38, 249, DateTimeKind.Utc).AddTicks(6757),
+                            UpdatedAt = new DateTime(2025, 6, 8, 13, 44, 7, 845, DateTimeKind.Utc).AddTicks(5537),
                             UserId = 9,
                             UserName = "Hoàng Thị H"
                         },
                         new
                         {
                             Id = 6,
-                            CreatedAt = new DateTime(2025, 6, 6, 11, 17, 38, 249, DateTimeKind.Utc).AddTicks(6757),
+                            CreatedAt = new DateTime(2025, 6, 10, 13, 44, 7, 845, DateTimeKind.Utc).AddTicks(5537),
                             ProductId = 6,
                             ReviewMessage = "Thuốc trừ sâu hiệu quả, sâu chết nhanh sau khi phun. Tuy nhiên cần chú ý an toàn khi sử dụng.",
                             ReviewValue = 4,
-                            UpdatedAt = new DateTime(2025, 6, 6, 11, 17, 38, 249, DateTimeKind.Utc).AddTicks(6757),
+                            UpdatedAt = new DateTime(2025, 6, 10, 13, 44, 7, 845, DateTimeKind.Utc).AddTicks(5537),
                             UserId = 5,
                             UserName = "Nguyễn Thị D"
                         },
                         new
                         {
                             Id = 7,
-                            CreatedAt = new DateTime(2025, 6, 9, 11, 17, 38, 249, DateTimeKind.Utc).AddTicks(6757),
+                            CreatedAt = new DateTime(2025, 6, 13, 13, 44, 7, 845, DateTimeKind.Utc).AddTicks(5537),
                             ProductId = 10,
                             ReviewMessage = "Máy cắt cỏ Honda chất lượng xuất sắc! Máy chạy êm, cắt sạch, tiết kiệm xăng. Đáng đồng tiền bát gạo. Khuyên mọi người nên mua.",
                             ReviewValue = 5,
-                            UpdatedAt = new DateTime(2025, 6, 9, 11, 17, 38, 249, DateTimeKind.Utc).AddTicks(6757),
+                            UpdatedAt = new DateTime(2025, 6, 13, 13, 44, 7, 845, DateTimeKind.Utc).AddTicks(5537),
                             UserId = 6,
                             UserName = "Trần Văn E"
                         });
@@ -1671,21 +1671,21 @@ namespace AgricultureSmart.Repositories.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2025, 6, 14, 11, 17, 38, 249, DateTimeKind.Utc).AddTicks(6757),
+                            CreatedAt = new DateTime(2025, 6, 18, 13, 44, 7, 845, DateTimeKind.Utc).AddTicks(5537),
                             Description = "System Administrator",
                             Name = "Admin"
                         },
                         new
                         {
                             Id = 2,
-                            CreatedAt = new DateTime(2025, 6, 14, 11, 17, 38, 249, DateTimeKind.Utc).AddTicks(6757),
+                            CreatedAt = new DateTime(2025, 6, 18, 13, 44, 7, 845, DateTimeKind.Utc).AddTicks(5537),
                             Description = "Agricultural Engineer",
                             Name = "Engineer"
                         },
                         new
                         {
                             Id = 3,
-                            CreatedAt = new DateTime(2025, 6, 14, 11, 17, 38, 249, DateTimeKind.Utc).AddTicks(6757),
+                            CreatedAt = new DateTime(2025, 6, 18, 13, 44, 7, 845, DateTimeKind.Utc).AddTicks(5537),
                             Description = "Farmer User",
                             Name = "Farmer"
                         });
@@ -1782,7 +1782,7 @@ namespace AgricultureSmart.Repositories.Migrations
                             AssignedEngineerId = 1,
                             Category = "Bệnh cây trồng",
                             ContactMethod = "Điện thoại",
-                            CreatedAt = new DateTime(2025, 6, 9, 11, 17, 38, 249, DateTimeKind.Utc).AddTicks(6757),
+                            CreatedAt = new DateTime(2025, 6, 13, 13, 44, 7, 845, DateTimeKind.Utc).AddTicks(5537),
                             CropType = "Lúa",
                             Description = "Lúa của tôi đang trong giai đoạn đẻ nhánh nhưng bị vàng lá từ dưới lên, một số cây đã chết khô. Tôi đã tưới nước đầy đủ nhưng tình trạng không cải thiện.",
                             FarmerId = 1,
@@ -1792,7 +1792,7 @@ namespace AgricultureSmart.Repositories.Migrations
                             Priority = "high",
                             Status = "in_progress",
                             Title = "Lúa bị vàng lá và chết khô",
-                            UpdatedAt = new DateTime(2025, 6, 12, 11, 17, 38, 249, DateTimeKind.Utc).AddTicks(6757)
+                            UpdatedAt = new DateTime(2025, 6, 16, 13, 44, 7, 845, DateTimeKind.Utc).AddTicks(5537)
                         },
                         new
                         {
@@ -1800,7 +1800,7 @@ namespace AgricultureSmart.Repositories.Migrations
                             AssignedEngineerId = 2,
                             Category = "Dinh dưỡng cây trồng",
                             ContactMethod = "Email",
-                            CreatedAt = new DateTime(2025, 6, 11, 11, 17, 38, 249, DateTimeKind.Utc).AddTicks(6757),
+                            CreatedAt = new DateTime(2025, 6, 15, 13, 44, 7, 845, DateTimeKind.Utc).AddTicks(5537),
                             CropType = "Lúa",
                             Description = "Tôi chuẩn bị gieo sạ vụ lúa mới, muốn được tư vấn về lượng phân bón cần thiết cho 3.2 hecta đất.",
                             FarmerId = 2,
@@ -1810,14 +1810,14 @@ namespace AgricultureSmart.Repositories.Migrations
                             Priority = "medium",
                             Status = "assigned",
                             Title = "Tư vấn lượng phân bón cho vụ lúa mới",
-                            UpdatedAt = new DateTime(2025, 6, 11, 11, 17, 38, 249, DateTimeKind.Utc).AddTicks(6757)
+                            UpdatedAt = new DateTime(2025, 6, 15, 13, 44, 7, 845, DateTimeKind.Utc).AddTicks(5537)
                         },
                         new
                         {
                             Id = 3,
                             Category = "Sâu bệnh",
                             ContactMethod = "Điện thoại",
-                            CreatedAt = new DateTime(2025, 6, 13, 11, 17, 38, 249, DateTimeKind.Utc).AddTicks(6757),
+                            CreatedAt = new DateTime(2025, 6, 17, 13, 44, 7, 845, DateTimeKind.Utc).AddTicks(5537),
                             CropType = "Rau màu",
                             Description = "Rau cải của tôi bị sâu ăn lá nghiêm trọng, lá bị thủng lỗ chỗ. Cần tư vấn thuốc trừ sâu phù hợp.",
                             FarmerId = 3,
@@ -1827,7 +1827,7 @@ namespace AgricultureSmart.Repositories.Migrations
                             Priority = "urgent",
                             Status = "open",
                             Title = "Rau cải bị sâu ăn lá",
-                            UpdatedAt = new DateTime(2025, 6, 13, 11, 17, 38, 249, DateTimeKind.Utc).AddTicks(6757)
+                            UpdatedAt = new DateTime(2025, 6, 17, 13, 44, 7, 845, DateTimeKind.Utc).AddTicks(5537)
                         },
                         new
                         {
@@ -1835,7 +1835,7 @@ namespace AgricultureSmart.Repositories.Migrations
                             AssignedEngineerId = 3,
                             Category = "Kỹ thuật canh tác",
                             ContactMethod = "Email",
-                            CreatedAt = new DateTime(2025, 6, 4, 11, 17, 38, 249, DateTimeKind.Utc).AddTicks(6757),
+                            CreatedAt = new DateTime(2025, 6, 8, 13, 44, 7, 845, DateTimeKind.Utc).AddTicks(5537),
                             CropType = "Cây ăn trái",
                             Description = "Tôi muốn chuyển đổi sang mô hình trồng trọt hữu cơ cho vườn cây ăn trái. Cần được hướng dẫn quy trình và kỹ thuật.",
                             FarmerId = 4,
@@ -1843,17 +1843,17 @@ namespace AgricultureSmart.Repositories.Migrations
                             Location = "Vườn D1, Ấp 4, Xã Đức Hòa",
                             PhoneNumber = "0908901234",
                             Priority = "low",
-                            ResolvedAt = new DateTime(2025, 6, 13, 11, 17, 38, 249, DateTimeKind.Utc).AddTicks(6757),
+                            ResolvedAt = new DateTime(2025, 6, 17, 13, 44, 7, 845, DateTimeKind.Utc).AddTicks(5537),
                             Status = "resolved",
                             Title = "Hướng dẫn kỹ thuật trồng hữu cơ",
-                            UpdatedAt = new DateTime(2025, 6, 13, 11, 17, 38, 249, DateTimeKind.Utc).AddTicks(6757)
+                            UpdatedAt = new DateTime(2025, 6, 17, 13, 44, 7, 845, DateTimeKind.Utc).AddTicks(5537)
                         },
                         new
                         {
                             Id = 5,
                             Category = "Đất đai",
                             ContactMethod = "Điện thoại",
-                            CreatedAt = new DateTime(2025, 6, 13, 23, 17, 38, 249, DateTimeKind.Utc).AddTicks(6757),
+                            CreatedAt = new DateTime(2025, 6, 18, 1, 44, 7, 845, DateTimeKind.Utc).AddTicks(5537),
                             CropType = "Rau màu",
                             Description = "Đất trồng rau của tôi có vẻ bị chua, cây trồng sinh trưởng chậm, lá vàng. Cần tư vấn cách cải tạo đất.",
                             FarmerId = 5,
@@ -1863,7 +1863,7 @@ namespace AgricultureSmart.Repositories.Migrations
                             Priority = "medium",
                             Status = "open",
                             Title = "Đất bị chua, cây trồng sinh trưởng kém",
-                            UpdatedAt = new DateTime(2025, 6, 13, 23, 17, 38, 249, DateTimeKind.Utc).AddTicks(6757)
+                            UpdatedAt = new DateTime(2025, 6, 18, 1, 44, 7, 845, DateTimeKind.Utc).AddTicks(5537)
                         });
                 });
 
@@ -1904,7 +1904,7 @@ namespace AgricultureSmart.Repositories.Migrations
                         {
                             Id = 1,
                             Comment = "Dựa vào mô tả và hình ảnh, có thể cây lúa của anh bị bệnh khô vằn. Tôi sẽ đến khảo sát thực địa vào chiều mai.",
-                            CreatedAt = new DateTime(2025, 6, 10, 11, 17, 38, 249, DateTimeKind.Utc).AddTicks(6757),
+                            CreatedAt = new DateTime(2025, 6, 14, 13, 44, 7, 845, DateTimeKind.Utc).AddTicks(5537),
                             IsInternal = false,
                             TicketId = 1,
                             UserId = 2
@@ -1913,7 +1913,7 @@ namespace AgricultureSmart.Repositories.Migrations
                         {
                             Id = 2,
                             Comment = "Cảm ơn kỹ sư. Tôi sẽ chờ anh đến khảo sát. Hiện tại tình trạng vẫn đang lan rộng.",
-                            CreatedAt = new DateTime(2025, 6, 10, 11, 17, 38, 249, DateTimeKind.Utc).AddTicks(6757),
+                            CreatedAt = new DateTime(2025, 6, 14, 13, 44, 7, 845, DateTimeKind.Utc).AddTicks(5537),
                             IsInternal = false,
                             TicketId = 1,
                             UserId = 5
@@ -1922,7 +1922,7 @@ namespace AgricultureSmart.Repositories.Migrations
                         {
                             Id = 3,
                             Comment = "Đã khảo sát thực địa. Xác định là bệnh khô vằn do nấm. Đã hướng dẫn anh sử dụng thuốc Validamycin 3% với liều lượng 1.5L/ha.",
-                            CreatedAt = new DateTime(2025, 6, 12, 11, 17, 38, 249, DateTimeKind.Utc).AddTicks(6757),
+                            CreatedAt = new DateTime(2025, 6, 16, 13, 44, 7, 845, DateTimeKind.Utc).AddTicks(5537),
                             IsInternal = false,
                             TicketId = 1,
                             UserId = 2
@@ -1931,7 +1931,7 @@ namespace AgricultureSmart.Repositories.Migrations
                         {
                             Id = 4,
                             Comment = "Với diện tích 3.2ha lúa, anh nên sử dụng: Phân lót 200kg NPK 16-16-8, phân thúc lần 1: 100kg Urea, phân thúc lần 2: 80kg NPK 20-20-15.",
-                            CreatedAt = new DateTime(2025, 6, 12, 11, 17, 38, 249, DateTimeKind.Utc).AddTicks(6757),
+                            CreatedAt = new DateTime(2025, 6, 16, 13, 44, 7, 845, DateTimeKind.Utc).AddTicks(5537),
                             IsInternal = false,
                             TicketId = 2,
                             UserId = 3
@@ -1940,7 +1940,7 @@ namespace AgricultureSmart.Repositories.Migrations
                         {
                             Id = 5,
                             Comment = "Đã hoàn thành hướng dẫn chuyển đổi hữu cơ cho anh. Gửi kèm tài liệu quy trình chi tiết qua email.",
-                            CreatedAt = new DateTime(2025, 6, 13, 11, 17, 38, 249, DateTimeKind.Utc).AddTicks(6757),
+                            CreatedAt = new DateTime(2025, 6, 17, 13, 44, 7, 845, DateTimeKind.Utc).AddTicks(5537),
                             IsInternal = false,
                             TicketId = 4,
                             UserId = 4
@@ -1976,63 +1976,63 @@ namespace AgricultureSmart.Repositories.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2025, 6, 14, 11, 17, 38, 249, DateTimeKind.Utc).AddTicks(6757),
+                            CreatedAt = new DateTime(2025, 6, 18, 13, 44, 7, 845, DateTimeKind.Utc).AddTicks(5537),
                             RoleId = 1,
                             UserId = 1
                         },
                         new
                         {
                             Id = 2,
-                            CreatedAt = new DateTime(2025, 6, 14, 11, 17, 38, 249, DateTimeKind.Utc).AddTicks(6757),
+                            CreatedAt = new DateTime(2025, 6, 18, 13, 44, 7, 845, DateTimeKind.Utc).AddTicks(5537),
                             RoleId = 2,
                             UserId = 2
                         },
                         new
                         {
                             Id = 3,
-                            CreatedAt = new DateTime(2025, 6, 14, 11, 17, 38, 249, DateTimeKind.Utc).AddTicks(6757),
+                            CreatedAt = new DateTime(2025, 6, 18, 13, 44, 7, 845, DateTimeKind.Utc).AddTicks(5537),
                             RoleId = 2,
                             UserId = 3
                         },
                         new
                         {
                             Id = 4,
-                            CreatedAt = new DateTime(2025, 6, 14, 11, 17, 38, 249, DateTimeKind.Utc).AddTicks(6757),
+                            CreatedAt = new DateTime(2025, 6, 18, 13, 44, 7, 845, DateTimeKind.Utc).AddTicks(5537),
                             RoleId = 2,
                             UserId = 4
                         },
                         new
                         {
                             Id = 5,
-                            CreatedAt = new DateTime(2025, 6, 14, 11, 17, 38, 249, DateTimeKind.Utc).AddTicks(6757),
+                            CreatedAt = new DateTime(2025, 6, 18, 13, 44, 7, 845, DateTimeKind.Utc).AddTicks(5537),
                             RoleId = 3,
                             UserId = 5
                         },
                         new
                         {
                             Id = 6,
-                            CreatedAt = new DateTime(2025, 6, 14, 11, 17, 38, 249, DateTimeKind.Utc).AddTicks(6757),
+                            CreatedAt = new DateTime(2025, 6, 18, 13, 44, 7, 845, DateTimeKind.Utc).AddTicks(5537),
                             RoleId = 3,
                             UserId = 6
                         },
                         new
                         {
                             Id = 7,
-                            CreatedAt = new DateTime(2025, 6, 14, 11, 17, 38, 249, DateTimeKind.Utc).AddTicks(6757),
+                            CreatedAt = new DateTime(2025, 6, 18, 13, 44, 7, 845, DateTimeKind.Utc).AddTicks(5537),
                             RoleId = 3,
                             UserId = 7
                         },
                         new
                         {
                             Id = 8,
-                            CreatedAt = new DateTime(2025, 6, 14, 11, 17, 38, 249, DateTimeKind.Utc).AddTicks(6757),
+                            CreatedAt = new DateTime(2025, 6, 18, 13, 44, 7, 845, DateTimeKind.Utc).AddTicks(5537),
                             RoleId = 3,
                             UserId = 8
                         },
                         new
                         {
                             Id = 9,
-                            CreatedAt = new DateTime(2025, 6, 14, 11, 17, 38, 249, DateTimeKind.Utc).AddTicks(6757),
+                            CreatedAt = new DateTime(2025, 6, 18, 13, 44, 7, 845, DateTimeKind.Utc).AddTicks(5537),
                             RoleId = 3,
                             UserId = 9
                         });
@@ -2102,108 +2102,108 @@ namespace AgricultureSmart.Repositories.Migrations
                         {
                             Id = 1,
                             Address = "123 Đường Cách Mạng Tháng 8, Quận 1, TP.HCM",
-                            CreatedAt = new DateTime(2025, 6, 14, 11, 17, 38, 249, DateTimeKind.Utc).AddTicks(6757),
+                            CreatedAt = new DateTime(2025, 6, 18, 13, 44, 7, 845, DateTimeKind.Utc).AddTicks(5537),
                             Email = "admin@agricultural.com",
                             IsActive = true,
                             Password = "admin123",
                             PhoneNumber = "0901234567",
-                            UpdatedAt = new DateTime(2025, 6, 14, 11, 17, 38, 249, DateTimeKind.Utc).AddTicks(6757),
+                            UpdatedAt = new DateTime(2025, 6, 18, 13, 44, 7, 845, DateTimeKind.Utc).AddTicks(5537),
                             UserName = "admin"
                         },
                         new
                         {
                             Id = 2,
                             Address = "456 Đường Lê Lợi, Quận 3, TP.HCM",
-                            CreatedAt = new DateTime(2025, 6, 14, 11, 17, 38, 249, DateTimeKind.Utc).AddTicks(6757),
+                            CreatedAt = new DateTime(2025, 6, 18, 13, 44, 7, 845, DateTimeKind.Utc).AddTicks(5537),
                             Email = "nguyenvana@agricultural.com",
                             IsActive = true,
                             Password = "engineer123",
                             PhoneNumber = "0902345678",
-                            UpdatedAt = new DateTime(2025, 6, 14, 11, 17, 38, 249, DateTimeKind.Utc).AddTicks(6757),
+                            UpdatedAt = new DateTime(2025, 6, 18, 13, 44, 7, 845, DateTimeKind.Utc).AddTicks(5537),
                             UserName = "engineer1"
                         },
                         new
                         {
                             Id = 3,
                             Address = "789 Đường Nguyễn Huệ, Quận 1, TP.HCM",
-                            CreatedAt = new DateTime(2025, 6, 14, 11, 17, 38, 249, DateTimeKind.Utc).AddTicks(6757),
+                            CreatedAt = new DateTime(2025, 6, 18, 13, 44, 7, 845, DateTimeKind.Utc).AddTicks(5537),
                             Email = "tranthib@agricultural.com",
                             IsActive = true,
                             Password = "engineer123",
                             PhoneNumber = "0903456789",
-                            UpdatedAt = new DateTime(2025, 6, 14, 11, 17, 38, 249, DateTimeKind.Utc).AddTicks(6757),
+                            UpdatedAt = new DateTime(2025, 6, 18, 13, 44, 7, 845, DateTimeKind.Utc).AddTicks(5537),
                             UserName = "engineer2"
                         },
                         new
                         {
                             Id = 4,
                             Address = "321 Đường Pasteur, Quận 3, TP.HCM",
-                            CreatedAt = new DateTime(2025, 6, 14, 11, 17, 38, 249, DateTimeKind.Utc).AddTicks(6757),
+                            CreatedAt = new DateTime(2025, 6, 18, 13, 44, 7, 845, DateTimeKind.Utc).AddTicks(5537),
                             Email = "levanc@agricultural.com",
                             IsActive = true,
                             Password = "engineer123",
                             PhoneNumber = "0904567890",
-                            UpdatedAt = new DateTime(2025, 6, 14, 11, 17, 38, 249, DateTimeKind.Utc).AddTicks(6757),
+                            UpdatedAt = new DateTime(2025, 6, 18, 13, 44, 7, 845, DateTimeKind.Utc).AddTicks(5537),
                             UserName = "engineer3"
                         },
                         new
                         {
                             Id = 5,
                             Address = "Ấp 1, Xã Tân Phú, Huyện Châu Thành, Tỉnh An Giang",
-                            CreatedAt = new DateTime(2025, 6, 14, 11, 17, 38, 249, DateTimeKind.Utc).AddTicks(6757),
+                            CreatedAt = new DateTime(2025, 6, 18, 13, 44, 7, 845, DateTimeKind.Utc).AddTicks(5537),
                             Email = "nguyenthid@gmail.com",
                             IsActive = true,
                             Password = "farmer123",
                             PhoneNumber = "0905678901",
-                            UpdatedAt = new DateTime(2025, 6, 14, 11, 17, 38, 249, DateTimeKind.Utc).AddTicks(6757),
+                            UpdatedAt = new DateTime(2025, 6, 18, 13, 44, 7, 845, DateTimeKind.Utc).AddTicks(5537),
                             UserName = "farmer1"
                         },
                         new
                         {
                             Id = 6,
                             Address = "Ấp 2, Xã Long Phú, Huyện Phú Tân, Tỉnh An Giang",
-                            CreatedAt = new DateTime(2025, 6, 14, 11, 17, 38, 249, DateTimeKind.Utc).AddTicks(6757),
+                            CreatedAt = new DateTime(2025, 6, 18, 13, 44, 7, 845, DateTimeKind.Utc).AddTicks(5537),
                             Email = "tranvane@gmail.com",
                             IsActive = true,
                             Password = "farmer123",
                             PhoneNumber = "0906789012",
-                            UpdatedAt = new DateTime(2025, 6, 14, 11, 17, 38, 249, DateTimeKind.Utc).AddTicks(6757),
+                            UpdatedAt = new DateTime(2025, 6, 18, 13, 44, 7, 845, DateTimeKind.Utc).AddTicks(5537),
                             UserName = "farmer2"
                         },
                         new
                         {
                             Id = 7,
                             Address = "Ấp 3, Xã Vĩnh Hậu, Huyện Tân Hưng, Tỉnh Long An",
-                            CreatedAt = new DateTime(2025, 6, 14, 11, 17, 38, 249, DateTimeKind.Utc).AddTicks(6757),
+                            CreatedAt = new DateTime(2025, 6, 18, 13, 44, 7, 845, DateTimeKind.Utc).AddTicks(5537),
                             Email = "lethif@gmail.com",
                             IsActive = true,
                             Password = "farmer123",
                             PhoneNumber = "0907890123",
-                            UpdatedAt = new DateTime(2025, 6, 14, 11, 17, 38, 249, DateTimeKind.Utc).AddTicks(6757),
+                            UpdatedAt = new DateTime(2025, 6, 18, 13, 44, 7, 845, DateTimeKind.Utc).AddTicks(5537),
                             UserName = "farmer3"
                         },
                         new
                         {
                             Id = 8,
                             Address = "Ấp 4, Xã Đức Hòa, Huyện Đức Hòa, Tỉnh Long An",
-                            CreatedAt = new DateTime(2025, 6, 14, 11, 17, 38, 249, DateTimeKind.Utc).AddTicks(6757),
+                            CreatedAt = new DateTime(2025, 6, 18, 13, 44, 7, 845, DateTimeKind.Utc).AddTicks(5537),
                             Email = "phamvang@gmail.com",
                             IsActive = true,
                             Password = "farmer123",
                             PhoneNumber = "0908901234",
-                            UpdatedAt = new DateTime(2025, 6, 14, 11, 17, 38, 249, DateTimeKind.Utc).AddTicks(6757),
+                            UpdatedAt = new DateTime(2025, 6, 18, 13, 44, 7, 845, DateTimeKind.Utc).AddTicks(5537),
                             UserName = "farmer4"
                         },
                         new
                         {
                             Id = 9,
                             Address = "Ấp 5, Xã Tân Trụ, Huyện Tân Trụ, Tỉnh Long An",
-                            CreatedAt = new DateTime(2025, 6, 14, 11, 17, 38, 249, DateTimeKind.Utc).AddTicks(6757),
+                            CreatedAt = new DateTime(2025, 6, 18, 13, 44, 7, 845, DateTimeKind.Utc).AddTicks(5537),
                             Email = "hoangthih@gmail.com",
                             IsActive = true,
                             Password = "farmer123",
                             PhoneNumber = "0909012345",
-                            UpdatedAt = new DateTime(2025, 6, 14, 11, 17, 38, 249, DateTimeKind.Utc).AddTicks(6757),
+                            UpdatedAt = new DateTime(2025, 6, 18, 13, 44, 7, 845, DateTimeKind.Utc).AddTicks(5537),
                             UserName = "farmer5"
                         });
                 });
