@@ -69,5 +69,26 @@ namespace AgricultureSmart.Repositories.Repositories
             dict["all"] = dict.Values.Sum();
             return dict;
         }
+
+        public async Task<Blog?> GetByIdAsync(int id)
+        {
+            return await _context.Blogs.FindAsync(id);
+        }
+
+        public async Task<Blog?> GetBySlugAsync(string slug)
+        {
+            return await _context.Blogs.FirstOrDefaultAsync(b => b.Slug == slug);
+        }
+
+        public async Task<bool> CategoryExistsAsync(int categoryId)
+        {
+            return await _context.BlogCategories.AnyAsync(c => c.Id == categoryId);
+        }
+
+        public async Task UpdateAsync(Blog blog)
+        {
+            _context.Blogs.Update(blog);
+            await _context.SaveChangesAsync();
+        }
     }
 }
