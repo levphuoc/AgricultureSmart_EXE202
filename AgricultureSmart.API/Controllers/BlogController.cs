@@ -263,20 +263,19 @@ namespace AgricultureSmart.API.Controllers
         [HttpGet("my-blogs")]
         public async Task<IActionResult> GetMyBlogs(
         [FromQuery] int pageNumber = 1,
-        [FromQuery] int pageSize = 10)
+        [FromQuery] int pageSize = 10,
+        [FromQuery] string? title = null,
+        /*[FromQuery] int? authorId = null,*/
+        [FromQuery] int? categoryId = null,
+        [FromQuery] string? status = null)
         {
             int userId = User.GetUserId();
             if (userId == 0)
                 return Unauthorized(new { success = false, message = "Invalid or missing user token." });
 
-            var result = await _blogService.GetBlogsByUserIdAsync(pageNumber, pageSize, userId);
+            var result = await _blogService.GetBlogsByUserIdAsync(pageNumber, pageSize, title, userId, categoryId, status);
 
-            return Ok(new
-            {
-                success = true,
-                message = "Blogs retrieved successfully.",
-                data = result
-            });
+            return Ok(result);
         }
 
         /// <summary>

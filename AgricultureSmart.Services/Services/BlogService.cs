@@ -236,15 +236,16 @@ namespace AgricultureSmart.Services.Services
         public async Task<BlogListResponse> GetBlogsByUserIdAsync(
         int pageNumber,
         int pageSize,
-        int authorId)
+        string? title = null,
+        int? authorId = null,
+        int? categoryId = null,
+        string? status = null)
         {
             try
             {
                 var (blogs, totalCount) = await _repository.GetBlogsAsync(
                                               pageNumber, pageSize,
-                                              title: null,
-                                              authorId: authorId,
-                                              categoryId: null);
+                                              title, authorId, categoryId, status);
 
                 return new BlogListResponse
                 {
