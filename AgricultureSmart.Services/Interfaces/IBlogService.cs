@@ -30,7 +30,10 @@ namespace AgricultureSmart.Services.Interfaces
         Task<BlogListResponse> GetBlogsByUserIdAsync(
         int pageNumber,
         int pageSize,
-        int authorId);
+        string? title = null,
+        int? authorId = null,
+        int? categoryId = null,
+        string? status = null);
 
         Task<int> CountBlogsByStatusAsync(string status);
         Task<BlogStatusStatisticsResponse> GetBlogStatusStatisticsAsync();
