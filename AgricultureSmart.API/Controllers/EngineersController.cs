@@ -35,12 +35,7 @@ namespace AgricultureSmart.API.Controllers
                                  pageNumber, pageSize,
                                  specialization, experienceYears);
 
-                return Ok(new
-                {
-                    success = true,
-                    message = "Engineers retrieved successfully.",
-                    data = result
-                });
+                return Ok(result);
             }
             catch (Exception ex)
             {
@@ -72,12 +67,7 @@ namespace AgricultureSmart.API.Controllers
                     });
                 }
 
-                return Ok(new
-                {
-                    success = true,
-                    message = "Engineer retrieved successfully.",
-                    data = engineer
-                });
+                return Ok(engineer);
             }
             catch (System.Exception ex)
             {
