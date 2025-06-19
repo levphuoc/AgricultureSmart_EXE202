@@ -113,7 +113,7 @@ namespace AgricultureSmart.API.Controllers
                             
                             if (updateResult)
                             {
-                                return Redirect($"{frontendUrl}/payment/success?orderId={orderId}");
+                                return Redirect($"{frontendUrl}/checkout/success?orderId={orderId}");
                             }
                             else
                             {
@@ -144,7 +144,7 @@ namespace AgricultureSmart.API.Controllers
                             
                             if (updateResult)
                             {
-                                return Redirect($"{frontendUrl}/payment/success?orderId={orderId}");
+                                return Redirect($"{frontendUrl}/checkout/success?orderId={orderId}");
                             }
                             else
                             {
