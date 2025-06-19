@@ -33,12 +33,7 @@ namespace AgricultureSmart.API.Controllers
                                  pageNumber, pageSize,
                                  farmLocation, farmSize, cropTypes);
 
-                return Ok(new
-                {
-                    success = true,
-                    message = "Farmers retrieved successfully.",
-                    data = result
-                });
+                return Ok(result);
             }
             catch (Exception ex)
             {
