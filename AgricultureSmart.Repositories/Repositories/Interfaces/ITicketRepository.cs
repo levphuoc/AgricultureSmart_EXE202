@@ -13,7 +13,7 @@ namespace AgricultureSmart.Repositories.Repositories.Interfaces
             int pageNumber,
             int pageSize,
             string? title,
-            int? farmerId,
-            int? assignedEngineerId);
+            string? farmerName,
+            string? assignedEngineerName);
     }
 }

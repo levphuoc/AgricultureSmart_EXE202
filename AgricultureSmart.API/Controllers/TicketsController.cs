@@ -170,17 +170,16 @@ namespace AgricultureSmart.API.Controllers
         /// </summary>
         [HttpGet("search")]
         public async Task<IActionResult> SearchTickets(
-            [FromQuery] int pageNumber = 1,
-            [FromQuery] int pageSize = 10,
-            [FromQuery] string? title = null,
-            [FromQuery] int? farmerId = null,
-            [FromQuery] int? assignedEngineerId = null)
+        [FromQuery] int pageNumber = 1,
+        [FromQuery] int pageSize = 10,
+        [FromQuery] string? title = null,
+        [FromQuery] string? farmerName = null,
+        [FromQuery] string? assignedEngineerName = null)
         {
             try
             {
                 var result = await _ticketService.SearchAsync(
-                                 pageNumber, pageSize,
-                                 title, farmerId, assignedEngineerId);
+                    pageNumber, pageSize, title, farmerName, assignedEngineerName);
 
                 return Ok(new
                 {
