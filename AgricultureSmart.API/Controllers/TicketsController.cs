@@ -166,7 +166,7 @@ namespace AgricultureSmart.API.Controllers
         }
 
         /// <summary>
-        /// Search tickets with pagination & priority ordering.
+        /// Search tickets with pagination & priority ordering .
         /// </summary>
         [HttpGet("search")]
         public async Task<IActionResult> SearchTickets(
