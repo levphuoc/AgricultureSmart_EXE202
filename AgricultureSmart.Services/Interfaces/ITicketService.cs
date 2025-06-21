@@ -25,7 +25,7 @@ namespace AgricultureSmart.Services.Interfaces
         int pageNumber,
         int pageSize,
         string? title,
-        int? farmerId,
-        int? assignedEngineerId);
+        string? farmerId,
+        string? assignedEngineerId);
     }
 }
