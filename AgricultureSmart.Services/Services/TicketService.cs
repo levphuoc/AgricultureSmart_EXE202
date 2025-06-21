@@ -372,54 +372,6 @@ namespace AgricultureSmart.Services.Services
             return userTickets;
         }
 
-        /*public async Task<PagedListResponse<TicketViewModel>> SearchAsync(
-        int pageNumber,
-        int pageSize,
-        string? title,
-        int? farmerId,
-        int? assignedEngineerId)
-        {
-            try
-            {
-                var (entities, totalCount) = await _repo.SearchAsync(
-                                                 pageNumber, pageSize,
-                                                 title, farmerId, assignedEngineerId);
-
-                var items = entities.Select(t => new TicketViewModel
-                {
-                    Id = t.Id,
-                    FarmerId = t.FarmerId,
-                   *//* FarmerName = t.Farmer.User.UserName,*//*
-                    AssignedEngineerId = t.AssignedEngineerId,
-                   *//* EngineerName = t.AssignedEngineer?.User?.UserName,*//*
-                    Title = t.Title,
-                    Category = t.Category,
-                    CropType = t.CropType,
-                    Location = t.Location,
-                    Description = t.Description,
-                    Priority = t.Priority,
-                    ContactMethod = t.ContactMethod,
-                    PhoneNumber = t.PhoneNumber,
-                    Status = t.Status,
-                    CreatedAt = t.CreatedAt,
-                    ResolvedAt = t.ResolvedAt
-                }).ToList();
-
-                return new PagedListResponse<TicketViewModel>
-                {
-                    Items = items,
-                    TotalCount = totalCount,
-                    PageNumber = pageNumber,
-                    PageSize = pageSize
-                };
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Error searching tickets");
-                throw;
-            }
-        }*/
-
         public async Task<PagedListResponse<TicketViewModel>> SearchAsync(
         int pageNumber,
         int pageSize,
