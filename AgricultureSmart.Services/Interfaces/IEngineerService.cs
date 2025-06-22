@@ -18,7 +18,7 @@ namespace AgricultureSmart.Services.Interfaces
             int? experienceYears);
         Task<EngineerViewModel?> GetByIdAsync(int id);
         Task<ServiceResponse<EngineerViewModel>> CreateAsync(CreateEngineerModel model);
-        Task<ServiceResponse<bool>> UpdateAsync(UpdateEngineerModel model);
+        Task<ServiceResponse<bool>> UpdateAsync(int id, UpdateEngineerModel model);
         Task<ServiceResponse<bool>> DeleteAsync(int id);
     }
 }

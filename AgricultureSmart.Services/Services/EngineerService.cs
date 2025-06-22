@@ -156,11 +156,11 @@ namespace AgricultureSmart.Services.Services
             }
         }
 
-        public async Task<ServiceResponse<bool>> UpdateAsync(UpdateEngineerModel model)
+        public async Task<ServiceResponse<bool>> UpdateAsync(int id, UpdateEngineerModel model)
         {
             try
             {
-                var engineer = await _engineerRepo.GetByIdAsync(model.Id);
+                var engineer = await _engineerRepo.GetByIdAsync(id);
                 if (engineer == null)
                 {
                     return new ServiceResponse<bool>

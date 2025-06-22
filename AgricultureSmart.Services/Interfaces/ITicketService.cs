@@ -28,5 +28,8 @@ namespace AgricultureSmart.Services.Interfaces
         string? farmerId,
         string? assignedEngineerId,
         string? priority);
+
+        Task<IEnumerable<TicketEngineerViewModel>> GetByEngineerIdAsync(
+        int userId);
     }
 }

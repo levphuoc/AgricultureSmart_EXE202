@@ -387,33 +387,29 @@ namespace AgricultureSmart.Services.Services
             }
         }
 
-        public async Task<IEnumerable<TicketFarmerViewModel>> GetByUserIdAsync(
-    int userId)
+        public async Task<IEnumerable<TicketFarmerViewModel>> GetByUserIdAsync(int userId)
         {
-            var tickets = await _ticketRepo.GetAllAsync();
+            var tickets = await _repo.GetTicketsByUserIdAsync(userId); 
 
-            var userTickets = tickets
-                .Where(t => t.FarmerId == userId)
-                .OrderByDescending(t => t.CreatedAt)
-                .Select(t => new TicketFarmerViewModel
-                {
-                    Id = t.Id,
-                    Title = t.Title,
-                    Category = t.Category,
-                    CropType = t.CropType,
-                    Location = t.Location,
-                    Description = t.Description,
-                    Priority = t.Priority,
-                    ContactMethod = t.ContactMethod,
-                    PhoneNumber = t.PhoneNumber,
-                    ImageUrl = t.ImageUrl,
-                    Status = t.Status,
-                    CreatedAt = t.CreatedAt,
-                    UpdatedAt = t.UpdatedAt,
-                    ResolvedAt = t.ResolvedAt
-                });
+            var result = tickets.Select(t => new TicketFarmerViewModel
+            {
+                Id = t.Id,
+                Title = t.Title,
+                Category = t.Category,
+                CropType = t.CropType,
+                Location = t.Location,
+                Description = t.Description,
+                Priority = t.Priority,
+                ContactMethod = t.ContactMethod,
+                PhoneNumber = t.PhoneNumber,
+                ImageUrl = t.ImageUrl,
+                Status = t.Status,
+                CreatedAt = t.CreatedAt,
+                UpdatedAt = t.UpdatedAt,
+                ResolvedAt = t.ResolvedAt
+            });
 
-            return userTickets;
+            return result;
         }
 
         public async Task<PagedListResponse<TicketViewModel>> SearchAsync(
@@ -503,5 +499,27 @@ namespace AgricultureSmart.Services.Services
             };
         }
 
+        public async Task<IEnumerable<TicketEngineerViewModel>> GetByEngineerIdAsync(int userId)
+        {
+            var tickets = await _repo.GetTicketsByEngineerIdAsync(userId); 
+
+            return tickets.Select(t => new TicketEngineerViewModel
+            {
+                Id = t.Id,
+                Title = t.Title,
+                Category = t.Category,
+                CropType = t.CropType,
+                Location = t.Location,
+                Description = t.Description,
+                Priority = t.Priority,
+                ContactMethod = t.ContactMethod,
+                PhoneNumber = t.PhoneNumber,
+                ImageUrl = t.ImageUrl,
+                Status = t.Status,
+                CreatedAt = t.CreatedAt,
+                UpdatedAt = t.UpdatedAt,
+                ResolvedAt = t.ResolvedAt
+            });
+        }
     }
 }

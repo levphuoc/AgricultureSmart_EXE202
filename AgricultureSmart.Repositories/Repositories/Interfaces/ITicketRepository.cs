@@ -17,5 +17,9 @@ namespace AgricultureSmart.Repositories.Repositories.Interfaces
             string? assignedEngineerName,
             string? priority);
         Task<Ticket?> GetByIdAsync(int id);
+
+        Task<IEnumerable<Ticket>> GetTicketsByUserIdAsync(int userId);
+
+        Task<IEnumerable<Ticket>> GetTicketsByEngineerIdAsync(int userId);
     }
 }

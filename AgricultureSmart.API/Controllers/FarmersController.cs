@@ -150,8 +150,8 @@ namespace AgricultureSmart.API.Controllers
                     });
                 }
 
-                model.Id = id;
-                var response = await _farmerService.UpdateAsync(model);
+                
+                var response = await _farmerService.UpdateAsync(id,model);
                 if (!response.Success)
                 {
                     return BadRequest(new

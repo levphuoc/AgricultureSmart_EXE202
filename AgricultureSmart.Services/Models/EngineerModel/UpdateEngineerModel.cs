@@ -9,8 +9,6 @@ namespace AgricultureSmart.Services.Models.EngineerModel
 {
     public class UpdateEngineerModel
     {
-        [Required]
-        public int Id { get; set; }
 
         [StringLength(255)]
         public string Specialization { get; set; }

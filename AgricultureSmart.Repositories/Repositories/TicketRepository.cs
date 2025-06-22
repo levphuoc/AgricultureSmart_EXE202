@@ -86,5 +86,25 @@ namespace AgricultureSmart.Repositories.Repositories
                                                             // Nếu cần thêm các navigation khác (Comment, Review, v.v.) thì Include tiếp ở đây
                 .FirstOrDefaultAsync(t => t.Id == id);
         }
+
+        public async Task<IEnumerable<Ticket>> GetTicketsByUserIdAsync(int userId)
+        {
+            return await _context.Tickets
+                .Include(t => t.Farmer)
+                    .ThenInclude(f => f.User)
+                .Where(t => t.Farmer != null && t.Farmer.UserId == userId)
+                .OrderByDescending(t => t.CreatedAt)
+                .ToListAsync();
+        }
+
+        public async Task<IEnumerable<Ticket>> GetTicketsByEngineerIdAsync(int userId)
+        {
+            return await _context.Tickets
+                .Include(t => t.AssignedEngineer)
+                    .ThenInclude(e => e.User)
+                .Where(t => t.AssignedEngineer != null && t.AssignedEngineer.UserId == userId)
+                .OrderByDescending(t => t.CreatedAt)
+                .ToListAsync();
+        }
     }
 }

@@ -9,8 +9,6 @@ namespace AgricultureSmart.Services.Models.FarmerModels
 {
     public class UpdateFarmerModel
     {
-        [Required]
-        public int Id { get; set; }
 
         [StringLength(255)]
         public string FarmLocation { get; set; }

@@ -187,5 +187,21 @@ namespace AgricultureSmart.API.Controllers
                 });
             }
         }
+
+        [HttpGet("engineer")]
+        [Authorize] 
+        public async Task<IActionResult> GetByEngineerId()
+        {
+            int userId = User.GetUserId();
+            if (userId == 0) return Unauthorized();
+
+            var tickets = await _ticketService.GetByEngineerIdAsync(userId);
+
+            if (!tickets.Any())
+                return NotFound(new { Message = $"No tickets found for engineer with userId = {userId}." });
+
+            return Ok(tickets);
+        }
+
     }
 }
