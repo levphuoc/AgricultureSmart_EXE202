@@ -1,4 +1,5 @@
 ﻿using AgricultureSmart.Repositories.Entities;
+using AgricultureSmart.Services.Models.UserModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,5 +14,6 @@ namespace AgricultureSmart.Services.Interfaces
         Task<(bool Success, string Message, Users User, string Token, DateTime Expiration, string RoleName)> LoginAsync(string username, string password);
         string GenerateRefreshToken();
         Task<(bool Success, string Message, string Token, DateTime Expiration)> RefreshTokenAsync(string refreshToken);
+        Task<UserWithRolesViewModel?> GetUserProfileAsync(int userId);
     }
 }
