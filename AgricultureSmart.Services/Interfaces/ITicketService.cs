@@ -32,5 +32,7 @@ namespace AgricultureSmart.Services.Interfaces
 
         Task<IEnumerable<TicketEngineerViewModel>> GetByEngineerIdAsync(
         int userId);
+
+        Task<TicketStatusStatisticsResponse> GetTicketStatusStatisticsAsync();
     }
 }

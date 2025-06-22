@@ -22,5 +22,7 @@ namespace AgricultureSmart.Repositories.Repositories.Interfaces
         Task<IEnumerable<Ticket>> GetTicketsByUserIdAsync(int userId);
 
         Task<IEnumerable<Ticket>> GetTicketsByEngineerIdAsync(int userId);
+
+        Task<Dictionary<string, int>> GetTicketStatusCountsAsync();
     }
 }

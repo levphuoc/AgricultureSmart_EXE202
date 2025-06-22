@@ -204,5 +204,11 @@ namespace AgricultureSmart.API.Controllers
             return Ok(tickets);
         }
 
+        [HttpGet("statistics/status")]
+        public async Task<ActionResult<TicketStatusStatisticsResponse>> GetTicketStatusStatistics()
+        {
+            var result = await _ticketService.GetTicketStatusStatisticsAsync();
+            return Ok(result);
+        }
     }
 }

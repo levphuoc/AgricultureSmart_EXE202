@@ -504,5 +504,19 @@ namespace AgricultureSmart.Services.Services
                 ResolvedAt = t.ResolvedAt
             });
         }
+        public async Task<TicketStatusStatisticsResponse> GetTicketStatusStatisticsAsync()
+        {
+            var counts = await _repo.GetTicketStatusCountsAsync();
+
+            return new TicketStatusStatisticsResponse
+            {
+                All = counts.GetValueOrDefault("all", 0),
+                Open = counts.GetValueOrDefault("open", 0),
+                Assigned = counts.GetValueOrDefault("assigned", 0),
+                InProgress = counts.GetValueOrDefault("in_progress", 0),
+                Resolved = counts.GetValueOrDefault("resolved", 0),
+                Closed = counts.GetValueOrDefault("closed", 0)
+            };
+        }
     }
 }

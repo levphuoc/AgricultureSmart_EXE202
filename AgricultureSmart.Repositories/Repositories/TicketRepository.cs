@@ -112,5 +112,18 @@ namespace AgricultureSmart.Repositories.Repositories
                 .OrderByDescending(t => t.CreatedAt)
                 .ToListAsync();
         }
+
+        public async Task<Dictionary<string, int>> GetTicketStatusCountsAsync()
+        {
+            // GroupBy & Count một lần để giảm truy DB
+            var dictionary = await _context.Tickets
+                .GroupBy(t => t.Status.ToLower())
+                .Select(g => new { Status = g.Key, Count = g.Count() })
+                .ToDictionaryAsync(x => x.Status, x => x.Count);
+
+            // “all” = tổng cộng
+            dictionary["all"] = dictionary.Values.Sum();
+            return dictionary;
+        }
     }
 }
