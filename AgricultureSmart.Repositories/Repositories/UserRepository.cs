@@ -48,5 +48,12 @@ namespace AgricultureSmart.Repositories.Repositories
             return await _dbContext.Users
                 .AnyAsync(u => u.PhoneNumber == phoneNumber);
         }
+        public async Task<Users?> GetByIdWithRolesAsync(int id)
+        {
+            return await _context.Users
+                .Include(u => u.UserRoles)
+                    .ThenInclude(ur => ur.Role)
+                .FirstOrDefaultAsync(u => u.Id == id);
+        }
     }
 }

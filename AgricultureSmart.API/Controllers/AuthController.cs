@@ -1,4 +1,5 @@
 using AgricultureSmart.API.Models;
+using AgricultureSmart.Services.Extension;
 using AgricultureSmart.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -205,6 +206,21 @@ namespace AgricultureSmart.API.Controllers
         {
             Response.Cookies.Append("refreshToken", token, BuildCookieOptions(expiration));
         }*/
+
+        
+        [HttpGet("my-infor")]
+        [Authorize]
+        public async Task<IActionResult> GetMyProfile()
+        {
+            int userId = User.GetUserId();          
+            if (userId == 0) return Unauthorized();
+
+            var user = await _authService.GetUserProfileAsync(userId);
+            if (user == null)
+                return NotFound(new { message = $"User {userId} not found." });
+
+            return Ok(user);
+        }
     }
 }
 

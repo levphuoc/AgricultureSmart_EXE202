@@ -185,7 +185,9 @@ namespace AgricultureSmart.Services.Services
 
 using AgricultureSmart.Repositories.DbAgriContext;
 using AgricultureSmart.Repositories.Entities;
+using AgricultureSmart.Repositories.Repositories.Interfaces;
 using AgricultureSmart.Services.Interfaces;
+using AgricultureSmart.Services.Models.UserModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
@@ -204,11 +206,13 @@ namespace AgricultureSmart.Services.Services
     {
         private readonly AgricultureSmartDbContext _context;
         private readonly IConfiguration _configuration;
+        private readonly IUserRepository _repo;
 
-        public AuthService(AgricultureSmartDbContext context, IConfiguration configuration)
+        public AuthService(AgricultureSmartDbContext context, IConfiguration configuration, IUserRepository repository)
         {
             _context = context;
             _configuration = configuration;
+            _repo = repository;
         }
 
         public async Task<(bool Success, string Message, Users User)> RegisterUserAsync(string username, string email, string password, string address, string phoneNumber, int roleId = 3)
@@ -401,6 +405,27 @@ namespace AgricultureSmart.Services.Services
 
             // Cho phép so sánh trực tiếp nếu hashedPassword là mật khẩu gốc (trường hợp cũ chưa mã hóa)
             return hashedInputPassword == hashedPassword || password == hashedPassword;
+        }
+
+        public async Task<UserWithRolesViewModel?> GetUserProfileAsync(int userId)
+        {
+            var user = await _repo.GetByIdWithRolesAsync(userId);
+            if (user == null) return null;
+
+            return new UserWithRolesViewModel
+            {
+                Id = user.Id,
+                UserName = user.UserName,
+                Email = user.Email,
+                Address = user.Address,
+                PhoneNumber = user.PhoneNumber,
+                IsActive = user.IsActive,
+                CreatedAt = user.CreatedAt,
+                UpdatedAt = user.UpdatedAt,
+                Roles = user.UserRoles?
+                                .Select(ur => ur.Role.Name)
+                                .ToList() ?? new List<string>()
+            };
         }
     }
 }

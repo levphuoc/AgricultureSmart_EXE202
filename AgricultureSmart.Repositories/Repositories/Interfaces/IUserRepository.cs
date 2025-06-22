@@ -15,5 +15,6 @@ namespace AgricultureSmart.Repositories.Repositories.Interfaces
         Task<bool> EmailExistsAsync(string email);
         Task<bool> UsernameExistsAsync(string username);
         Task<bool> PhoneNumberExistsAsync(string phoneNumber);
+        Task<Users?> GetByIdWithRolesAsync(int id);
     }
 }
