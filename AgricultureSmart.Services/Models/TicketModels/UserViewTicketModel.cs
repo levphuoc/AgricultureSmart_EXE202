@@ -6,44 +6,41 @@ using System.Threading.Tasks;
 
 namespace AgricultureSmart.Services.Models.TicketModels
 {
-    // Thông tin User cơ bản – được tái sử dụng cho cả Farmer và Engineer
-    public class UserViewTicketModel
-    {
-        public int Id { get; set; }
-        public string UserName { get; set; }
-        public string Email { get; set; }
-        public string Address { get; set; }
-        public string PhoneNumber { get; set; }
-        public DateTime CreatedAt { get; set; }
-        public DateTime UpdatedAt { get; set; }
-        public bool IsActive { get; set; }
-    }
-
-    // Thông tin Farmer đầy đủ
+    // Thông tin Farmer (đã flatten User)
     public class FarmerViewTicketModel
     {
-        public int Id { get; set; }
-        public UserViewTicketModel User { get; set; }
+        public int Id { get; set; }          // Farmer.Id
+        public int UserId { get; set; }      // Users.Id
+        public string UserName { get; set; }
+        public string Email { get; set; }
+        public string PhoneNumber { get; set; }
+        public string Address { get; set; }
 
         public string FarmLocation { get; set; }
         public decimal FarmSize { get; set; }
         public string CropTypes { get; set; }
         public int FarmingExperienceYears { get; set; }
-        public DateTime CreatedAt { get; set; }
-        public DateTime UpdatedAt { get; set; }
+
+        public DateTime CreatedAt { get; set; }  // Farmer.CreatedAt
+        public DateTime UpdatedAt { get; set; }  // Farmer.UpdatedAt
     }
 
-    // Thông tin Engineer đầy đủ
+    // Thông tin Engineer (cũng flatten User)
     public class EngineerViewTicketModel
     {
-        public int Id { get; set; }
-        public UserViewTicketModel User { get; set; }
+        public int Id { get; set; }          // Engineer.Id
+        public int UserId { get; set; }      // Users.Id
+        public string UserName { get; set; }
+        public string Email { get; set; }
+        public string PhoneNumber { get; set; }
+        public string Address { get; set; }
 
         public string Specialization { get; set; }
         public int ExperienceYears { get; set; }
         public string Certification { get; set; }
         public string Bio { get; set; }
-        public DateTime CreatedAt { get; set; }
-        public DateTime UpdatedAt { get; set; }
+
+        public DateTime CreatedAt { get; set; }  // Engineer.CreatedAt
+        public DateTime UpdatedAt { get; set; }  // Engineer.UpdatedAt
     }
 }

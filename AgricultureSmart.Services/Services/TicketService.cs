@@ -85,45 +85,36 @@ namespace AgricultureSmart.Services.Services
                 Farmer = t.Farmer == null ? null : new FarmerViewTicketModel
                 {
                     Id = t.Farmer.Id,
+                    UserId = t.Farmer.User.Id,
+                    UserName = t.Farmer.User.UserName,
+                    Email = t.Farmer.User.Email,
+                    PhoneNumber = t.Farmer.User.PhoneNumber,
+                    Address = t.Farmer.User.Address,
+
                     FarmLocation = t.Farmer.FarmLocation,
                     FarmSize = t.Farmer.FarmSize,
                     CropTypes = t.Farmer.CropTypes,
                     FarmingExperienceYears = t.Farmer.FarmingExperienceYears,
                     CreatedAt = t.Farmer.CreatedAt,
-                    UpdatedAt = t.Farmer.UpdatedAt,
-                    User = t.Farmer.User == null ? null : new UserViewTicketModel
-                    {
-                        Id = t.Farmer.User.Id,
-                        UserName = t.Farmer.User.UserName,
-                        Email = t.Farmer.User.Email,
-                        Address = t.Farmer.User.Address,
-                        PhoneNumber = t.Farmer.User.PhoneNumber,
-                        CreatedAt = t.Farmer.User.CreatedAt,
-                        UpdatedAt = t.Farmer.User.UpdatedAt,
-                        IsActive = t.Farmer.User.IsActive
-                    }
+                    UpdatedAt = t.Farmer.UpdatedAt
                 },
 
+                // -------- Engineer (đã flatten) --------
                 AssignedEngineer = t.AssignedEngineer == null ? null : new EngineerViewTicketModel
                 {
                     Id = t.AssignedEngineer.Id,
+                    UserId = t.AssignedEngineer.User.Id,
+                    UserName = t.AssignedEngineer.User.UserName,
+                    Email = t.AssignedEngineer.User.Email,
+                    PhoneNumber = t.AssignedEngineer.User.PhoneNumber,
+                    Address = t.AssignedEngineer.User.Address,
+
                     Specialization = t.AssignedEngineer.Specialization,
                     ExperienceYears = t.AssignedEngineer.ExperienceYears,
                     Certification = t.AssignedEngineer.Certification,
                     Bio = t.AssignedEngineer.Bio,
                     CreatedAt = t.AssignedEngineer.CreatedAt,
-                    UpdatedAt = t.AssignedEngineer.UpdatedAt,
-                    User = t.AssignedEngineer.User == null ? null : new UserViewTicketModel
-                    {
-                        Id = t.AssignedEngineer.User.Id,
-                        UserName = t.AssignedEngineer.User.UserName,
-                        Email = t.AssignedEngineer.User.Email,
-                        Address = t.AssignedEngineer.User.Address,
-                        PhoneNumber = t.AssignedEngineer.User.PhoneNumber,
-                        CreatedAt = t.AssignedEngineer.User.CreatedAt,
-                        UpdatedAt = t.AssignedEngineer.User.UpdatedAt,
-                        IsActive = t.AssignedEngineer.User.IsActive
-                    }
+                    UpdatedAt = t.AssignedEngineer.UpdatedAt
                 }
             };
         }
@@ -418,10 +409,11 @@ namespace AgricultureSmart.Services.Services
         string? title,
         string? farmerName,
         string? assignedEngineerName,
-        string? priority)
+        string? priority,
+        string? status)
         {
             var (entities, totalCount) = await _repo.SearchAsync(
-                pageNumber, pageSize, title, farmerName, assignedEngineerName, priority);
+                pageNumber, pageSize, title, farmerName, assignedEngineerName, priority, status);
 
             var items = entities.Select(t => new TicketViewModel
             {
@@ -447,45 +439,36 @@ namespace AgricultureSmart.Services.Services
                 Farmer = t.Farmer == null ? null : new FarmerViewTicketModel
                 {
                     Id = t.Farmer.Id,
+                    UserId = t.Farmer.User.Id,
+                    UserName = t.Farmer.User.UserName,
+                    Email = t.Farmer.User.Email,
+                    PhoneNumber = t.Farmer.User.PhoneNumber,
+                    Address = t.Farmer.User.Address,
+
                     FarmLocation = t.Farmer.FarmLocation,
                     FarmSize = t.Farmer.FarmSize,
                     CropTypes = t.Farmer.CropTypes,
                     FarmingExperienceYears = t.Farmer.FarmingExperienceYears,
                     CreatedAt = t.Farmer.CreatedAt,
-                    UpdatedAt = t.Farmer.UpdatedAt,
-                    User = t.Farmer.User == null ? null : new UserViewTicketModel
-                    {
-                        Id = t.Farmer.User.Id,
-                        UserName = t.Farmer.User.UserName,
-                        Email = t.Farmer.User.Email,
-                        Address = t.Farmer.User.Address,
-                        PhoneNumber = t.Farmer.User.PhoneNumber,
-                        CreatedAt = t.Farmer.User.CreatedAt,
-                        UpdatedAt = t.Farmer.User.UpdatedAt,
-                        IsActive = t.Farmer.User.IsActive
-                    }
+                    UpdatedAt = t.Farmer.UpdatedAt
                 },
 
+                // -------- Engineer (đã flatten) --------
                 AssignedEngineer = t.AssignedEngineer == null ? null : new EngineerViewTicketModel
                 {
                     Id = t.AssignedEngineer.Id,
+                    UserId = t.AssignedEngineer.User.Id,
+                    UserName = t.AssignedEngineer.User.UserName,
+                    Email = t.AssignedEngineer.User.Email,
+                    PhoneNumber = t.AssignedEngineer.User.PhoneNumber,
+                    Address = t.AssignedEngineer.User.Address,
+
                     Specialization = t.AssignedEngineer.Specialization,
                     ExperienceYears = t.AssignedEngineer.ExperienceYears,
                     Certification = t.AssignedEngineer.Certification,
                     Bio = t.AssignedEngineer.Bio,
                     CreatedAt = t.AssignedEngineer.CreatedAt,
-                    UpdatedAt = t.AssignedEngineer.UpdatedAt,
-                    User = t.AssignedEngineer.User == null ? null : new UserViewTicketModel
-                    {
-                        Id = t.AssignedEngineer.User.Id,
-                        UserName = t.AssignedEngineer.User.UserName,
-                        Email = t.AssignedEngineer.User.Email,
-                        Address = t.AssignedEngineer.User.Address,
-                        PhoneNumber = t.AssignedEngineer.User.PhoneNumber,
-                        CreatedAt = t.AssignedEngineer.User.CreatedAt,
-                        UpdatedAt = t.AssignedEngineer.User.UpdatedAt,
-                        IsActive = t.AssignedEngineer.User.IsActive
-                    }
+                    UpdatedAt = t.AssignedEngineer.UpdatedAt
                 }
 
             }).ToList();
