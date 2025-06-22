@@ -21,7 +21,7 @@ namespace AgricultureSmart.Repositories.Repositories
         string? title,
         string? farmerName,
         string? assignedEngineerName,
-        string? priority)
+        string? priority, string? status)
         {
             var query = _context.Tickets
                 .Include(t => t.Farmer).ThenInclude(f => f.User)
@@ -52,6 +52,12 @@ namespace AgricultureSmart.Repositories.Repositories
             {
                 var normalizedPriority = priority.Trim().ToLower();
                 query = query.Where(t => t.Priority != null && t.Priority.ToLower() == normalizedPriority);
+            }
+
+            if (!string.IsNullOrWhiteSpace(status))
+            {
+                var s = status.Trim().ToLower();
+                query = query.Where(t => t.Status != null && t.Status.ToLower() == s);
             }
 
             // Sort by priority (custom logic: urgent → high → medium → low)
@@ -105,6 +111,19 @@ namespace AgricultureSmart.Repositories.Repositories
                 .Where(t => t.AssignedEngineer != null && t.AssignedEngineer.UserId == userId)
                 .OrderByDescending(t => t.CreatedAt)
                 .ToListAsync();
+        }
+
+        public async Task<Dictionary<string, int>> GetTicketStatusCountsAsync()
+        {
+            // GroupBy & Count một lần để giảm truy DB
+            var dictionary = await _context.Tickets
+                .GroupBy(t => t.Status.ToLower())
+                .Select(g => new { Status = g.Key, Count = g.Count() })
+                .ToDictionaryAsync(x => x.Status, x => x.Count);
+
+            // “all” = tổng cộng
+            dictionary["all"] = dictionary.Values.Sum();
+            return dictionary;
         }
     }
 }

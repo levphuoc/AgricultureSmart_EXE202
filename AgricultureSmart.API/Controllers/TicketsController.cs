@@ -169,12 +169,13 @@ namespace AgricultureSmart.API.Controllers
         [FromQuery] string? title = null,
         [FromQuery] string? farmerName = null,
         [FromQuery] string? assignedEngineerName = null,
-        [FromQuery] string? priority = null)
+        [FromQuery] string? priority = null,
+        [FromQuery] string? status = null)
         {
             try
             {
                 var result = await _ticketService.SearchAsync(
-                    pageNumber, pageSize, title, farmerName, assignedEngineerName, priority);
+                    pageNumber, pageSize, title, farmerName, assignedEngineerName, priority, status);
 
                 return Ok(result);
             }
@@ -203,5 +204,11 @@ namespace AgricultureSmart.API.Controllers
             return Ok(tickets);
         }
 
+        [HttpGet("statistics/status")]
+        public async Task<ActionResult<TicketStatusStatisticsResponse>> GetTicketStatusStatistics()
+        {
+            var result = await _ticketService.GetTicketStatusStatisticsAsync();
+            return Ok(result);
+        }
     }
 }

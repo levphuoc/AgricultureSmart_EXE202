@@ -15,11 +15,14 @@ namespace AgricultureSmart.Repositories.Repositories.Interfaces
             string? title,
             string? farmerName,
             string? assignedEngineerName,
-            string? priority);
+            string? priority,
+            string? status);
         Task<Ticket?> GetByIdAsync(int id);
 
         Task<IEnumerable<Ticket>> GetTicketsByUserIdAsync(int userId);
 
         Task<IEnumerable<Ticket>> GetTicketsByEngineerIdAsync(int userId);
+
+        Task<Dictionary<string, int>> GetTicketStatusCountsAsync();
     }
 }
