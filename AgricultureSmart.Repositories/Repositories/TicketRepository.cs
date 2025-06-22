@@ -20,7 +20,8 @@ namespace AgricultureSmart.Repositories.Repositories
         int pageSize,
         string? title,
         string? farmerName,
-    string? assignedEngineerName)
+        string? assignedEngineerName,
+        string? priority)
         {
             var query = _context.Tickets
                 .Include(t => t.Farmer).ThenInclude(f => f.User)
@@ -47,6 +48,12 @@ namespace AgricultureSmart.Repositories.Repositories
                                          t.AssignedEngineer.User.UserName.Contains(assignedEngineerName.Trim()));
             }
 
+            if (!string.IsNullOrWhiteSpace(priority))
+            {
+                var normalizedPriority = priority.Trim().ToLower();
+                query = query.Where(t => t.Priority != null && t.Priority.ToLower() == normalizedPriority);
+            }
+
             // Sort by priority (custom logic: urgent → high → medium → low)
             query = query.OrderBy(t =>
                         t.Priority == "urgent" ? 0 :
@@ -64,6 +71,40 @@ namespace AgricultureSmart.Repositories.Repositories
                 .ToListAsync();
 
             return (items, totalCount);
+        }
+
+        /// <summary>
+        /// Lấy ticket theo Id, kèm thông tin Farmer.User và AssignedEngineer.User.
+        /// </summary>
+        public async Task<Ticket?> GetByIdAsync(int id)
+        {
+            return await _context.Tickets
+                .Include(t => t.Farmer)
+                    .ThenInclude(f => f.User)               // Farmer → User
+                .Include(t => t.AssignedEngineer)
+                    .ThenInclude(e => e.User)               // Engineer → User
+                                                            // Nếu cần thêm các navigation khác (Comment, Review, v.v.) thì Include tiếp ở đây
+                .FirstOrDefaultAsync(t => t.Id == id);
+        }
+
+        public async Task<IEnumerable<Ticket>> GetTicketsByUserIdAsync(int userId)
+        {
+            return await _context.Tickets
+                .Include(t => t.Farmer)
+                    .ThenInclude(f => f.User)
+                .Where(t => t.Farmer != null && t.Farmer.UserId == userId)
+                .OrderByDescending(t => t.CreatedAt)
+                .ToListAsync();
+        }
+
+        public async Task<IEnumerable<Ticket>> GetTicketsByEngineerIdAsync(int userId)
+        {
+            return await _context.Tickets
+                .Include(t => t.AssignedEngineer)
+                    .ThenInclude(e => e.User)
+                .Where(t => t.AssignedEngineer != null && t.AssignedEngineer.UserId == userId)
+                .OrderByDescending(t => t.CreatedAt)
+                .ToListAsync();
         }
     }
 }

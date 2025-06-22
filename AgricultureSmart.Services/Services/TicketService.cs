@@ -37,8 +37,8 @@ namespace AgricultureSmart.Services.Services
                 .Select(t => new TicketViewModel
                 {
                     Id = t.Id,
-                    FarmerId = t.FarmerId,
-                    AssignedEngineerId = t.AssignedEngineerId,
+                    /*FarmerId = t.FarmerId,
+                    AssignedEngineerId = t.AssignedEngineerId,*/
                     Title = t.Title,
                     Category = t.Category,
                     CropType = t.CropType,
@@ -60,14 +60,14 @@ namespace AgricultureSmart.Services.Services
 
         public async Task<TicketViewModel?> GetByIdAsync(int id)
         {
-            var t = await _ticketRepo.GetByIdAsync(id);
+            var t = await _repo.GetByIdAsync(id);
             if (t == null) return null;
 
             return new TicketViewModel
             {
                 Id = t.Id,
-                FarmerId = t.FarmerId,
-                AssignedEngineerId = t.AssignedEngineerId,
+                /*FarmerId = t.FarmerId,
+                AssignedEngineerId = t.AssignedEngineerId,*/
                 Title = t.Title,
                 Category = t.Category,
                 CropType = t.CropType,
@@ -80,7 +80,51 @@ namespace AgricultureSmart.Services.Services
                 Status = t.Status,
                 CreatedAt = t.CreatedAt,
                 UpdatedAt = t.UpdatedAt,
-                ResolvedAt = t.ResolvedAt
+                ResolvedAt = t.ResolvedAt,
+
+                Farmer = t.Farmer == null ? null : new FarmerViewTicketModel
+                {
+                    Id = t.Farmer.Id,
+                    FarmLocation = t.Farmer.FarmLocation,
+                    FarmSize = t.Farmer.FarmSize,
+                    CropTypes = t.Farmer.CropTypes,
+                    FarmingExperienceYears = t.Farmer.FarmingExperienceYears,
+                    CreatedAt = t.Farmer.CreatedAt,
+                    UpdatedAt = t.Farmer.UpdatedAt,
+                    User = t.Farmer.User == null ? null : new UserViewTicketModel
+                    {
+                        Id = t.Farmer.User.Id,
+                        UserName = t.Farmer.User.UserName,
+                        Email = t.Farmer.User.Email,
+                        Address = t.Farmer.User.Address,
+                        PhoneNumber = t.Farmer.User.PhoneNumber,
+                        CreatedAt = t.Farmer.User.CreatedAt,
+                        UpdatedAt = t.Farmer.User.UpdatedAt,
+                        IsActive = t.Farmer.User.IsActive
+                    }
+                },
+
+                AssignedEngineer = t.AssignedEngineer == null ? null : new EngineerViewTicketModel
+                {
+                    Id = t.AssignedEngineer.Id,
+                    Specialization = t.AssignedEngineer.Specialization,
+                    ExperienceYears = t.AssignedEngineer.ExperienceYears,
+                    Certification = t.AssignedEngineer.Certification,
+                    Bio = t.AssignedEngineer.Bio,
+                    CreatedAt = t.AssignedEngineer.CreatedAt,
+                    UpdatedAt = t.AssignedEngineer.UpdatedAt,
+                    User = t.AssignedEngineer.User == null ? null : new UserViewTicketModel
+                    {
+                        Id = t.AssignedEngineer.User.Id,
+                        UserName = t.AssignedEngineer.User.UserName,
+                        Email = t.AssignedEngineer.User.Email,
+                        Address = t.AssignedEngineer.User.Address,
+                        PhoneNumber = t.AssignedEngineer.User.PhoneNumber,
+                        CreatedAt = t.AssignedEngineer.User.CreatedAt,
+                        UpdatedAt = t.AssignedEngineer.User.UpdatedAt,
+                        IsActive = t.AssignedEngineer.User.IsActive
+                    }
+                }
             };
         }
 
@@ -126,11 +170,11 @@ namespace AgricultureSmart.Services.Services
             }
         }
 
-        public async Task<ServiceResponse<bool>> UpdateAsync(UpdateTicketModel model)
+        public async Task<ServiceResponse<bool>> UpdateAsync(int id, UpdateTicketModel model)
         {
             try
             {
-                var ticket = await _ticketRepo.GetByIdAsync(model.Id);
+                var ticket = await _ticketRepo.GetByIdAsync(id);
                 if (ticket == null)
                 {
                     return new ServiceResponse<bool>
@@ -203,11 +247,11 @@ namespace AgricultureSmart.Services.Services
                 };
             }
         }
-        public async Task<ServiceResponse<TicketViewModel>> UpdateStatusAsync(UpdateTicketStatusModel model)
+        public async Task<ServiceResponse<TicketViewModel>> UpdateStatusAsync(int id, UpdateTicketStatusModel model)
         {
             try
             {
-                var ticket = await _ticketRepo.GetByIdAsync(model.Id);
+                var ticket = await _ticketRepo.GetByIdAsync(id);
                 if (ticket == null)
                 {
                     return new ServiceResponse<TicketViewModel>
@@ -237,7 +281,7 @@ namespace AgricultureSmart.Services.Services
                     };
                 }
 
-                // Validate assigned engineer when status is "assigned"
+                /*// Validate assigned engineer when status is "assigned"
                 if (model.Status == TicketStatusConstants.Assigned && !model.AssignedEngineerId.HasValue)
                 {
                     return new ServiceResponse<TicketViewModel>
@@ -245,18 +289,18 @@ namespace AgricultureSmart.Services.Services
                         Success = false,
                         Message = "AssignedEngineerId is required when status is 'assigned'"
                     };
-                }
+                }*/
 
                 // Update ticket properties
                 var oldStatus = ticket.Status;
                 ticket.Status = model.Status;
                 ticket.UpdatedAt = DateTime.UtcNow;
 
-                // Set assigned engineer if provided
+                /*// Set assigned engineer if provided
                 if (model.AssignedEngineerId.HasValue)
                 {
                     ticket.AssignedEngineerId = model.AssignedEngineerId.Value;
-                }
+                }*/
 
                 // Set resolved date if status is resolved
                 if (model.Status == TicketStatusConstants.Resolved && oldStatus != TicketStatusConstants.Resolved)
@@ -343,33 +387,29 @@ namespace AgricultureSmart.Services.Services
             }
         }
 
-        public async Task<IEnumerable<TicketFarmerViewModel>> GetByUserIdAsync(
-    int userId)
+        public async Task<IEnumerable<TicketFarmerViewModel>> GetByUserIdAsync(int userId)
         {
-            var tickets = await _ticketRepo.GetAllAsync();
+            var tickets = await _repo.GetTicketsByUserIdAsync(userId); 
 
-            var userTickets = tickets
-                .Where(t => t.FarmerId == userId)
-                .OrderByDescending(t => t.CreatedAt)
-                .Select(t => new TicketFarmerViewModel
-                {
-                    Id = t.Id,
-                    Title = t.Title,
-                    Category = t.Category,
-                    CropType = t.CropType,
-                    Location = t.Location,
-                    Description = t.Description,
-                    Priority = t.Priority,
-                    ContactMethod = t.ContactMethod,
-                    PhoneNumber = t.PhoneNumber,
-                    ImageUrl = t.ImageUrl,
-                    Status = t.Status,
-                    CreatedAt = t.CreatedAt,
-                    UpdatedAt = t.UpdatedAt,
-                    ResolvedAt = t.ResolvedAt
-                });
+            var result = tickets.Select(t => new TicketFarmerViewModel
+            {
+                Id = t.Id,
+                Title = t.Title,
+                Category = t.Category,
+                CropType = t.CropType,
+                Location = t.Location,
+                Description = t.Description,
+                Priority = t.Priority,
+                ContactMethod = t.ContactMethod,
+                PhoneNumber = t.PhoneNumber,
+                ImageUrl = t.ImageUrl,
+                Status = t.Status,
+                CreatedAt = t.CreatedAt,
+                UpdatedAt = t.UpdatedAt,
+                ResolvedAt = t.ResolvedAt
+            });
 
-            return userTickets;
+            return result;
         }
 
         public async Task<PagedListResponse<TicketViewModel>> SearchAsync(
@@ -377,10 +417,11 @@ namespace AgricultureSmart.Services.Services
         int pageSize,
         string? title,
         string? farmerName,
-        string? assignedEngineerName)
+        string? assignedEngineerName,
+        string? priority)
         {
             var (entities, totalCount) = await _repo.SearchAsync(
-                pageNumber, pageSize, title, farmerName, assignedEngineerName);
+                pageNumber, pageSize, title, farmerName, assignedEngineerName, priority);
 
             var items = entities.Select(t => new TicketViewModel
             {
@@ -397,11 +438,55 @@ namespace AgricultureSmart.Services.Services
                 PhoneNumber = t.PhoneNumber,
                 ContactMethod = t.ContactMethod,
 
-                FarmerId = t.FarmerId,
+                /*FarmerId = t.FarmerId,
                 FarmerName = t.Farmer?.User?.UserName,
 
                 AssignedEngineerId = t.AssignedEngineerId,
-                EngineerName = t.AssignedEngineer?.User?.UserName
+                EngineerName = t.AssignedEngineer?.User?.UserName,*/
+
+                Farmer = t.Farmer == null ? null : new FarmerViewTicketModel
+                {
+                    Id = t.Farmer.Id,
+                    FarmLocation = t.Farmer.FarmLocation,
+                    FarmSize = t.Farmer.FarmSize,
+                    CropTypes = t.Farmer.CropTypes,
+                    FarmingExperienceYears = t.Farmer.FarmingExperienceYears,
+                    CreatedAt = t.Farmer.CreatedAt,
+                    UpdatedAt = t.Farmer.UpdatedAt,
+                    User = t.Farmer.User == null ? null : new UserViewTicketModel
+                    {
+                        Id = t.Farmer.User.Id,
+                        UserName = t.Farmer.User.UserName,
+                        Email = t.Farmer.User.Email,
+                        Address = t.Farmer.User.Address,
+                        PhoneNumber = t.Farmer.User.PhoneNumber,
+                        CreatedAt = t.Farmer.User.CreatedAt,
+                        UpdatedAt = t.Farmer.User.UpdatedAt,
+                        IsActive = t.Farmer.User.IsActive
+                    }
+                },
+
+                AssignedEngineer = t.AssignedEngineer == null ? null : new EngineerViewTicketModel
+                {
+                    Id = t.AssignedEngineer.Id,
+                    Specialization = t.AssignedEngineer.Specialization,
+                    ExperienceYears = t.AssignedEngineer.ExperienceYears,
+                    Certification = t.AssignedEngineer.Certification,
+                    Bio = t.AssignedEngineer.Bio,
+                    CreatedAt = t.AssignedEngineer.CreatedAt,
+                    UpdatedAt = t.AssignedEngineer.UpdatedAt,
+                    User = t.AssignedEngineer.User == null ? null : new UserViewTicketModel
+                    {
+                        Id = t.AssignedEngineer.User.Id,
+                        UserName = t.AssignedEngineer.User.UserName,
+                        Email = t.AssignedEngineer.User.Email,
+                        Address = t.AssignedEngineer.User.Address,
+                        PhoneNumber = t.AssignedEngineer.User.PhoneNumber,
+                        CreatedAt = t.AssignedEngineer.User.CreatedAt,
+                        UpdatedAt = t.AssignedEngineer.User.UpdatedAt,
+                        IsActive = t.AssignedEngineer.User.IsActive
+                    }
+                }
 
             }).ToList();
 
@@ -414,5 +499,27 @@ namespace AgricultureSmart.Services.Services
             };
         }
 
+        public async Task<IEnumerable<TicketEngineerViewModel>> GetByEngineerIdAsync(int userId)
+        {
+            var tickets = await _repo.GetTicketsByEngineerIdAsync(userId); 
+
+            return tickets.Select(t => new TicketEngineerViewModel
+            {
+                Id = t.Id,
+                Title = t.Title,
+                Category = t.Category,
+                CropType = t.CropType,
+                Location = t.Location,
+                Description = t.Description,
+                Priority = t.Priority,
+                ContactMethod = t.ContactMethod,
+                PhoneNumber = t.PhoneNumber,
+                ImageUrl = t.ImageUrl,
+                Status = t.Status,
+                CreatedAt = t.CreatedAt,
+                UpdatedAt = t.UpdatedAt,
+                ResolvedAt = t.ResolvedAt
+            });
+        }
     }
 }

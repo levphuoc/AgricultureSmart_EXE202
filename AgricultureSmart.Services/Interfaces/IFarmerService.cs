@@ -19,7 +19,7 @@ namespace AgricultureSmart.Services.Interfaces
         string? cropTypes);
         Task<FarmerViewModel?> GetByIdAsync(int id);
         Task<ServiceResponse<FarmerViewModel>> CreateAsync(CreateFarmerModel model);
-        Task<ServiceResponse<bool>> UpdateAsync(UpdateFarmerModel model);
+        Task<ServiceResponse<bool>> UpdateAsync(int id, UpdateFarmerModel model);
         Task<ServiceResponse<bool>> DeleteAsync(int id);
     }
 }
