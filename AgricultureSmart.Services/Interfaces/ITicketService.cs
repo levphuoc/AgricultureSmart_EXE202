@@ -13,9 +13,9 @@ namespace AgricultureSmart.Services.Interfaces
         Task<IEnumerable<TicketViewModel>> GetAllAsync(int pageIndex, int pageSize);
         Task<TicketViewModel?> GetByIdAsync(int id);
         Task<ServiceResponse<TicketViewModel>> CreateAsync(CreateTicketModel model);
-        Task<ServiceResponse<bool>> UpdateAsync(UpdateTicketModel model);
+        Task<ServiceResponse<bool>> UpdateAsync(int id, UpdateTicketModel model);
         Task<ServiceResponse<bool>> DeleteAsync(int id);
-        Task<ServiceResponse<TicketViewModel>> UpdateStatusAsync(UpdateTicketStatusModel model);
+        Task<ServiceResponse<TicketViewModel>> UpdateStatusAsync(int id, UpdateTicketStatusModel model);
         Task<ServiceResponse<TicketViewModel>> CreateForFarmerAsync(
         int farmerId,
         CreateTicketForFarmerModel model);
@@ -26,6 +26,7 @@ namespace AgricultureSmart.Services.Interfaces
         int pageSize,
         string? title,
         string? farmerId,
-        string? assignedEngineerId);
+        string? assignedEngineerId,
+        string? priority);
     }
 }

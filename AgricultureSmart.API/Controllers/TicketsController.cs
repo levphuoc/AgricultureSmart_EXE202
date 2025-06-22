@@ -59,10 +59,7 @@ namespace AgricultureSmart.API.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            if (id != model.Id)
-                return BadRequest(new { Message = "ID mismatch." });
-
-            var result = await _ticketService.UpdateAsync(model);
+            var result = await _ticketService.UpdateAsync(id, model);
             if (!result.Success)
                 return NotFound(result);
 
@@ -98,10 +95,7 @@ namespace AgricultureSmart.API.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            if (id != model.Id)
-                return BadRequest(new { Message = "ID mismatch." });
-
-            var result = await _ticketService.UpdateStatusAsync(model);
+            var result = await _ticketService.UpdateStatusAsync(id, model);
             if (!result.Success)
             {
                 if (result.Message.Contains("not found"))
@@ -174,19 +168,15 @@ namespace AgricultureSmart.API.Controllers
         [FromQuery] int pageSize = 10,
         [FromQuery] string? title = null,
         [FromQuery] string? farmerName = null,
-        [FromQuery] string? assignedEngineerName = null)
+        [FromQuery] string? assignedEngineerName = null,
+        [FromQuery] string? priority = null)
         {
             try
             {
                 var result = await _ticketService.SearchAsync(
-                    pageNumber, pageSize, title, farmerName, assignedEngineerName);
+                    pageNumber, pageSize, title, farmerName, assignedEngineerName, priority);
 
-                return Ok(new
-                {
-                    success = true,
-                    message = "Tickets retrieved successfully.",
-                    data = result
-                });
+                return Ok(result);
             }
             catch (Exception ex)
             {

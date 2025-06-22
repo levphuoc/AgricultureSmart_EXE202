@@ -14,6 +14,8 @@ namespace AgricultureSmart.Repositories.Repositories.Interfaces
             int pageSize,
             string? title,
             string? farmerName,
-            string? assignedEngineerName);
+            string? assignedEngineerName,
+            string? priority);
+        Task<Ticket?> GetByIdAsync(int id);
     }
 }

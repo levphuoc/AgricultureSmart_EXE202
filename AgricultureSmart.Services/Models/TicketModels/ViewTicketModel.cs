@@ -26,10 +26,13 @@ namespace AgricultureSmart.Services.Models.TicketModels
         public DateTime UpdatedAt { get; set; }
         public DateTime? ResolvedAt { get; set; }
 
-        public int FarmerId { get; set; }
+        /*public int FarmerId { get; set; }
         public string? FarmerName { get; set; }
 
         public int? AssignedEngineerId { get; set; }
-        public string? EngineerName { get; set; }
+        public string? EngineerName { get; set; }*/
+
+        public FarmerViewTicketModel Farmer { get; set; }
+        public EngineerViewTicketModel AssignedEngineer { get; set; }
     }
 }
