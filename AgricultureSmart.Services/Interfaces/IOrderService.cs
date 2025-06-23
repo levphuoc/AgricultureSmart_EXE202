@@ -1,4 +1,5 @@
 using AgricultureSmart.Services.Models.OrderModels;
+using AgricultureSmart.Services.Models.PagedListResponseModels;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -22,5 +23,8 @@ namespace AgricultureSmart.Services.Interfaces
         
         // Method to get order without user check (for payment callbacks)
         Task<OrderDto?> GetOrderByIdWithoutUserCheckAsync(int orderId);
+
+        Task<PagedListResponse<OrderDto>> GetFilteredOrdersAsync(string? status, string? paymentStatus, int pageNumber, int pageSize);
+
     }
 } 

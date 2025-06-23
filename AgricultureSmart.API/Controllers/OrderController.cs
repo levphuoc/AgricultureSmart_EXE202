@@ -1,6 +1,7 @@
 using AgricultureSmart.Services.Extension;
 using AgricultureSmart.Services.Interfaces;
 using AgricultureSmart.Services.Models.OrderModels;
+using AgricultureSmart.Services.Models.PagedListResponseModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -11,7 +12,7 @@ namespace AgricultureSmart.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Roles = "Farmer")]
+    /*[Authorize(Roles = "Farmer")]*/
     public class OrderController : ControllerBase
     {
         private readonly IOrderService _orderService;
@@ -116,13 +117,18 @@ namespace AgricultureSmart.API.Controllers
 
         // Admin endpoints (should be protected with proper authorization)
         // GET: api/Order/admin/all
-        [HttpGet("admin/all")]
+        [HttpGet("admin/filtered")]
         [Authorize(Roles = "Admin")]
-        public async Task<ActionResult<IEnumerable<OrderDto>>> GetAllOrders()
+        public async Task<ActionResult<PagedListResponse<OrderDto>>> GetFilteredOrders(
+        [FromQuery] string? status,
+        [FromQuery] string? paymentStatus,
+        [FromQuery] int pageNumber = 1,
+        [FromQuery] int pageSize = 10)
         {
-            var orders = await _orderService.GetAllOrdersAsync();
-            return Ok(orders);
+            var result = await _orderService.GetFilteredOrdersAsync(status, paymentStatus, pageNumber, pageSize);
+            return Ok(result);
         }
+
 
         // GET: api/Order/admin/status/{status}
         [HttpGet("admin/status/{status}")]

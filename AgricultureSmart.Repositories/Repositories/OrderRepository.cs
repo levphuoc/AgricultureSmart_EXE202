@@ -51,5 +51,31 @@ namespace AgricultureSmart.Repositories.Repositories
                 .OrderByDescending(o => o.CreatedAt)
                 .ToListAsync();
         }
+
+        public async Task<(List<Order> Items, int TotalCount)> GetFilteredOrdersAsync(string? status, string? paymentStatus, int pageNumber, int pageSize)
+        {
+            var query = _context.Orders
+                .Include(o => o.OrderItems)
+                    .ThenInclude(oi => oi.Product)
+                        .ThenInclude(p => p.Category) 
+                .AsQueryable();
+
+
+            if (!string.IsNullOrEmpty(status))
+                query = query.Where(o => o.Status == status);
+
+            if (!string.IsNullOrEmpty(paymentStatus))
+                query = query.Where(o => o.PaymentStatus == paymentStatus);
+
+            var totalCount = await query.CountAsync();
+
+            var items = await query
+                .OrderByDescending(o => o.CreatedAt)
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            return (items, totalCount);
+        }
     }
 }

@@ -2,6 +2,7 @@ using AgricultureSmart.Repositories.Entities;
 using AgricultureSmart.Repositories.Repositories.Interfaces;
 using AgricultureSmart.Services.Interfaces;
 using AgricultureSmart.Services.Models.OrderModels;
+using AgricultureSmart.Services.Models.PagedListResponseModels;
 using AutoMapper;
 using Microsoft.Extensions.Logging;
 using System;
@@ -453,6 +454,35 @@ namespace AgricultureSmart.Services.Services
             var random = new Random();
             var randomNumber = random.Next(1000, 9999);
             return $"ORD-{dateString}-{randomNumber}";
+        }
+
+        public async Task<PagedListResponse<OrderDto>> GetFilteredOrdersAsync(string? status, string? paymentStatus, int pageNumber, int pageSize)
+        {
+            var (orders, totalCount) = await _orderRepository.GetFilteredOrdersAsync(status, paymentStatus, pageNumber, pageSize);
+
+            var orderDtos = new List<OrderDto>();
+
+            foreach (var order in orders)
+            {
+                var user = await _userRepository.GetByIdAsync(order.UserId);
+                var dto = _mapper.Map<OrderDto>(order);
+
+                if (user != null)
+                {
+                    dto.UserName = user.UserName;
+                    dto.UserEmail = user.Email;
+                }
+
+                orderDtos.Add(dto);
+            }
+
+            return new PagedListResponse<OrderDto>
+            {
+                Items = orderDtos,
+                TotalCount = totalCount,
+                PageNumber = pageNumber,
+                PageSize = pageSize
+            };
         }
     }
 } 
