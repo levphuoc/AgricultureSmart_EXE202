@@ -11,5 +11,7 @@ namespace AgricultureSmart.Repositories.Repositories.Interfaces
         Task<Order?> GetOrderWithItemsByIdAsync(int orderId);
         Task<IEnumerable<Order>> GetOrdersByUserIdAsync(int userId);
         Task<IEnumerable<Order>> GetOrdersByStatusAsync(string status);
+        Task<(List<Order> Items, int TotalCount)> GetFilteredOrdersAsync(string? status, string? paymentStatus, int pageNumber, int pageSize);
+
     }
 } 
