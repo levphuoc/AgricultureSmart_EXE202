@@ -75,15 +75,22 @@ namespace AgricultureSmart.API.Controllers
         [EnableCors("AllowAll")]
         public async Task<IActionResult> PaymentCallback()
         {
+            string frontendUrl = _configuration["FrontendUrl"] ?? "https://agriculture-smart-fe.vercel.app";
+
             try
             {
+                _logger?.LogInformation("Received VnPay callback with {Count} parameters", Request.Query.Count);
+
                 if (Request.Query.Count == 0)
                 {
-                    return BadRequest("No payment information received");
+                    _logger?.LogWarning("No payment information received in callback");
+                    return Redirect($"{frontendUrl}/payment/error?message=No payment information received");
                 }
 
                 var response = _vnPayService.PaymentExcute(Request.Query);
-                string frontendUrl = _configuration["FrontendUrl"] ?? "http://localhost:3000";
+
+                _logger?.LogInformation("VnPay response: Success={Success}, OrderId={OrderId}, TransactionId={TransactionId}",
+                    response.Success, response.OrderId, response.TransactionId);
                 
                 if (response.Success)
                 {
@@ -162,7 +169,7 @@ namespace AgricultureSmart.API.Controllers
             }
             catch (Exception ex)
             {
-                string frontendUrl = _configuration["FrontendUrl"] ?? "http://localhost:3000";
+                _logger?.LogError(ex, "Error processing VnPay callback");
                 return Redirect($"{frontendUrl}/payment/error?message={WebUtility.UrlEncode(ex.Message)}");
             }
         }
