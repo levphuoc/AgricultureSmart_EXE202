@@ -9,18 +9,17 @@ namespace AgricultureSmart.Services.Models.FarmerModels
 {
     public class CreateFarmerModel
     {
-        [Required]
-        public int UserId { get; set; }
+        // User fields
+        public string Username { get; set; } = default!;
+        public string Email { get; set; } = default!;
+        public string Password { get; set; } = default!;
+        public string Address { get; set; } = default!;
+        public string PhoneNumber { get; set; } = default!;
 
-        [StringLength(255)]
-        public string FarmLocation { get; set; }
-
-        [Range(0.01, 10000)]
+        // Farmer fields
+        public string FarmLocation { get; set; } = default!;
         public decimal FarmSize { get; set; }
-
-        public string CropTypes { get; set; }
-
-        [Range(0, 100)]
+        public string CropTypes { get; set; } = default!;
         public int FarmingExperienceYears { get; set; }
     }
 }

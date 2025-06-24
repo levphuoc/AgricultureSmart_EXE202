@@ -456,9 +456,15 @@ namespace AgricultureSmart.Services.Services
             return $"ORD-{dateString}-{randomNumber}";
         }
 
-        public async Task<PagedListResponse<OrderDto>> GetFilteredOrdersAsync(string? status, string? paymentStatus, int pageNumber, int pageSize)
+        public async Task<PagedListResponse<OrderDto>> GetFilteredOrdersAsync(
+        string? status,
+        string? paymentStatus,
+        string? orderNumber,
+        int pageNumber,
+        int pageSize)
         {
-            var (orders, totalCount) = await _orderRepository.GetFilteredOrdersAsync(status, paymentStatus, pageNumber, pageSize);
+            var (orders, totalCount) = await _orderRepository
+                .GetFilteredOrdersAsync(status, paymentStatus, orderNumber, pageNumber, pageSize);
 
             var orderDtos = new List<OrderDto>();
 

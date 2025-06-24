@@ -9,7 +9,27 @@ namespace AgricultureSmart.Services.Models.EngineerModel
 {
     public class UpdateEngineerModel
     {
+        // User info
+        [Required]
+        [StringLength(100)]
+        public string Username { get; set; }
 
+        [Required]
+        [EmailAddress]
+        public string Email { get; set; }
+
+        [Required]
+        [Phone]
+        public string PhoneNumber { get; set; }
+
+        [Required]
+        [StringLength(255)]
+        public string Address { get; set; }
+
+        [Required]
+        public string Password { get; set; }
+
+        // Engineer info
         [StringLength(255)]
         public string Specialization { get; set; }
 

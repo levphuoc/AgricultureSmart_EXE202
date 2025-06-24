@@ -9,7 +9,27 @@ namespace AgricultureSmart.Services.Models.FarmerModels
 {
     public class UpdateFarmerModel
     {
+        // User fields
+        [Required]
+        [StringLength(100)]
+        public string Username { get; set; }
 
+        [Required]
+        [EmailAddress]
+        public string Email { get; set; }
+
+        [Required]
+        [StringLength(100)]
+        public string Address { get; set; }
+
+        [Required]
+        [Phone]
+        public string PhoneNumber { get; set; }
+
+        [Required]
+        public string Password { get; set; } 
+
+        // Farmer fields
         [StringLength(255)]
         public string FarmLocation { get; set; }
 

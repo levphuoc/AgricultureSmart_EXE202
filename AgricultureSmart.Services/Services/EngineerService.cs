@@ -8,6 +8,7 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -18,16 +19,19 @@ namespace AgricultureSmart.Services.Services
         private readonly IGenericRepository<Engineer> _engineerRepo;
         private readonly IGenericRepository<Users> _userRepo;
         private readonly IEngineerRepository _repo;
+        private readonly IUserRoleRepository _roleRepo;
         private readonly ILogger<EngineerService> _logger;
-
+        private readonly IEngineerFarmerAssignmentRepository _assignmentRepo;
 
         public EngineerService(IGenericRepository<Engineer> engineerRepo, IGenericRepository<Users> userRepo, IEngineerRepository repo,
-                           ILogger<EngineerService> logger)
+                           ILogger<EngineerService> logger, IUserRoleRepository roleRepo, IEngineerFarmerAssignmentRepository assignmentRepo)
         {
             _engineerRepo = engineerRepo;
             _userRepo = userRepo;
             _repo = repo;
             _logger = logger;
+            _roleRepo = roleRepo;
+            _assignmentRepo = assignmentRepo;
         }
 
         public async Task<PagedListResponse<EngineerViewModel>> SearchAsync(
@@ -102,32 +106,58 @@ namespace AgricultureSmart.Services.Services
         {
             try
             {
-                // Check if user exists
-                var user = await _userRepo.GetByIdAsync(model.UserId);
-                if (user == null)
+                // Check if username/email already exists
+                var existingUser = await _userRepo.FirstOrDefaultAsync(u =>
+                    u.UserName == model.Username || u.Email == model.Email);
+                if (existingUser != null)
                 {
                     return new ServiceResponse<EngineerViewModel>
                     {
                         Success = false,
-                        Message = "User not found."
+                        Message = "Username or email already exists."
                     };
                 }
 
-                // Check if user is already an engineer
-                var engineers = await _engineerRepo.GetAllAsync();
-                var existingEngineer = engineers.FirstOrDefault(e => e.UserId == model.UserId);
-                if (existingEngineer != null)
+                // Check email must be Gmail
+                if (!model.Email.EndsWith("@gmail.com", StringComparison.OrdinalIgnoreCase))
                 {
                     return new ServiceResponse<EngineerViewModel>
                     {
                         Success = false,
-                        Message = "User is already registered as an engineer."
+                        Message = "Only Gmail addresses are allowed."
                     };
                 }
 
+                // Create new User
+                var user = new Users
+                {
+                    UserName = model.Username,
+                    Email = model.Email,
+                    Password = HashPassword(model.Password),
+                    Address = model.Address,
+                    PhoneNumber = model.PhoneNumber,
+                    CreatedAt = DateTime.UtcNow,
+                    UpdatedAt = DateTime.UtcNow,
+                    IsActive = true
+                };
+
+                await _userRepo.AddAsync(user);
+
+                // Assign "Engineer" role
+                var role = await _roleRepo.GetByNameAsync("Engineer");
+                if (role != null)
+                {
+                    await _roleRepo.AddAsync(new UserRole
+                    {
+                        UserId = user.Id,
+                        RoleId = role.Id
+                    });
+                }
+
+                // Create Engineer
                 var engineer = new Engineer
                 {
-                    UserId = model.UserId,
+                    UserId = user.Id,
                     Specialization = model.Specialization,
                     ExperienceYears = model.ExperienceYears,
                     Certification = model.Certification,
@@ -138,12 +168,14 @@ namespace AgricultureSmart.Services.Services
 
                 await _engineerRepo.AddAsync(engineer);
 
+                // Return result
                 var viewModel = await GetByIdAsync(engineer.Id);
 
                 return new ServiceResponse<EngineerViewModel>
                 {
+                    Success = true,
                     Data = viewModel,
-                    Message = "Engineer created successfully."
+                    Message = "Engineer and account created successfully."
                 };
             }
             catch (Exception ex)
@@ -154,6 +186,13 @@ namespace AgricultureSmart.Services.Services
                     Message = $"Error creating engineer: {ex.Message}"
                 };
             }
+        }
+
+        private string HashPassword(string password)
+        {
+            using var sha256 = SHA256.Create();
+            var hashedBytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(password));
+            return Convert.ToBase64String(hashedBytes);
         }
 
         public async Task<ServiceResponse<bool>> UpdateAsync(int id, UpdateEngineerModel model)
@@ -170,18 +209,60 @@ namespace AgricultureSmart.Services.Services
                     };
                 }
 
+                var user = await _userRepo.GetByIdAsync(engineer.UserId);
+                if (user == null)
+                {
+                    return new ServiceResponse<bool>
+                    {
+                        Success = false,
+                        Message = "Associated user not found."
+                    };
+                }
+
+                // Check email must be Gmail
+                if (!model.Email.EndsWith("@gmail.com", StringComparison.OrdinalIgnoreCase))
+                {
+                    return new ServiceResponse<bool>
+                    {
+                        Success = false,
+                        Message = "Only Gmail addresses are allowed."
+                    };
+                }
+
+                // Check trùng username/email/phone với người khác
+                var duplicateUser = await _userRepo.FirstOrDefaultAsync(u =>
+                    (u.UserName == model.Username || u.Email == model.Email || u.PhoneNumber == model.PhoneNumber)
+                    && u.Id != user.Id);
+
+                if (duplicateUser != null)
+                {
+                    return new ServiceResponse<bool>
+                    {
+                        Success = false,
+                        Message = "Username, email or phone number is already used by another user."
+                    };
+                }
+
+                user.UserName = model.Username;
+                user.Email = model.Email;
+                user.PhoneNumber = model.PhoneNumber;
+                user.Address = model.Address;
+                user.Password = HashPassword(model.Password); 
+                user.UpdatedAt = DateTime.UtcNow;
+                await _userRepo.UpdateAsync(user);
+
                 engineer.Specialization = model.Specialization;
                 engineer.ExperienceYears = model.ExperienceYears;
                 engineer.Certification = model.Certification;
                 engineer.Bio = model.Bio;
                 engineer.UpdatedAt = DateTime.UtcNow;
-
                 await _engineerRepo.UpdateAsync(engineer);
 
                 return new ServiceResponse<bool>
                 {
+                    Success = true,
                     Data = true,
-                    Message = "Engineer updated successfully."
+                    Message = "Engineer and account information updated successfully."
                 };
             }
             catch (Exception ex)
@@ -208,10 +289,8 @@ namespace AgricultureSmart.Services.Services
                     };
                 }
 
-                // Check if engineer has related records
-                var assignments = await _engineerRepo.GetAllAsync();
-                var hasAssignments = assignments.Any(a => a.Id == id);
-
+                // Kiểm tra có assignment không (nếu có ràng buộc với bảng trung gian như EngineerFarmerAssignment)
+                var hasAssignments = await _assignmentRepo.AnyAsync(a => a.EngineerId == id); // bạn cần truyền _assignmentRepo nếu chưa có
                 if (hasAssignments)
                 {
                     return new ServiceResponse<bool>
@@ -221,12 +300,28 @@ namespace AgricultureSmart.Services.Services
                     };
                 }
 
+                // Lấy user liên kết
+                var user = await _userRepo.GetByIdAsync(engineer.UserId);
+                if (user == null)
+                {
+                    return new ServiceResponse<bool>
+                    {
+                        Success = false,
+                        Message = "Associated user not found."
+                    };
+                }
+
+                // Xóa Engineer
                 await _engineerRepo.DeleteAsync(id);
+
+                // Xóa User
+                await _userRepo.DeleteAsync(user.Id);
 
                 return new ServiceResponse<bool>
                 {
+                    Success = true,
                     Data = true,
-                    Message = "Engineer deleted successfully."
+                    Message = "Engineer and associated user deleted successfully."
                 };
             }
             catch (Exception ex)

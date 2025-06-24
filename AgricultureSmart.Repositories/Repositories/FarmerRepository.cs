@@ -44,5 +44,7 @@ namespace AgricultureSmart.Repositories.Repositories
 
             return (items, totalCount);
         }
+
+        
     }
 }

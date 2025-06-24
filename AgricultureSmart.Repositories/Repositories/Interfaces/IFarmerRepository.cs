@@ -15,5 +15,7 @@ namespace AgricultureSmart.Repositories.Repositories.Interfaces
             string? farmLocation,
             decimal? farmSize,
             string? cropTypes);
+
+        
     }
 }

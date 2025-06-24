@@ -143,7 +143,8 @@ namespace AgricultureSmart.API
             services.AddScoped<IEngineerRepository, EngineerRepository>();
             services.AddScoped<IFarmerRepository, FarmerRepository>();
             services.AddScoped<ITicketRepository, TicketRepository>();
-
+            services.AddScoped<IUserRoleRepository, UserRoleRepository>();
+            services.AddScoped<IEngineerFarmerAssignmentRepository, EngineerFarmerAssignmentRepository>();
 
             // Register Services
             services.AddScoped<IAuthServices, AuthService>();

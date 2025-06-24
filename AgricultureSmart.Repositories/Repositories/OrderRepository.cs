@@ -52,7 +52,7 @@ namespace AgricultureSmart.Repositories.Repositories
                 .ToListAsync();
         }
 
-        public async Task<(List<Order> Items, int TotalCount)> GetFilteredOrdersAsync(string? status, string? paymentStatus, int pageNumber, int pageSize)
+        public async Task<(List<Order> Items, int TotalCount)> GetFilteredOrdersAsync(string? status, string? paymentStatus, string? orderNumber, int pageNumber, int pageSize)
         {
             var query = _context.Orders
                 .Include(o => o.OrderItems)
@@ -66,6 +66,9 @@ namespace AgricultureSmart.Repositories.Repositories
 
             if (!string.IsNullOrEmpty(paymentStatus))
                 query = query.Where(o => o.PaymentStatus == paymentStatus);
+
+            if (!string.IsNullOrEmpty(orderNumber))
+                query = query.Where(o => o.OrderNumber.Contains(orderNumber));
 
             var totalCount = await query.CountAsync();
 

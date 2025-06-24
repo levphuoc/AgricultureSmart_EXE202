@@ -24,7 +24,7 @@ namespace AgricultureSmart.Services.Interfaces
         // Method to get order without user check (for payment callbacks)
         Task<OrderDto?> GetOrderByIdWithoutUserCheckAsync(int orderId);
 
-        Task<PagedListResponse<OrderDto>> GetFilteredOrdersAsync(string? status, string? paymentStatus, int pageNumber, int pageSize);
+        Task<PagedListResponse<OrderDto>> GetFilteredOrdersAsync(string? status, string? paymentStatus, string? orderNumber, int pageNumber, int pageSize);
 
     }
 } 
