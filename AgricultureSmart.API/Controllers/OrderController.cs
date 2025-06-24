@@ -122,10 +122,11 @@ namespace AgricultureSmart.API.Controllers
         public async Task<ActionResult<PagedListResponse<OrderDto>>> GetFilteredOrders(
         [FromQuery] string? status,
         [FromQuery] string? paymentStatus,
+        [FromQuery] string? orderNumber,
         [FromQuery] int pageNumber = 1,
         [FromQuery] int pageSize = 10)
         {
-            var result = await _orderService.GetFilteredOrdersAsync(status, paymentStatus, pageNumber, pageSize);
+            var result = await _orderService.GetFilteredOrdersAsync(status, paymentStatus, orderNumber, pageNumber, pageSize);
             return Ok(result);
         }
 

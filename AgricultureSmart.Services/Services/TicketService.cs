@@ -272,7 +272,7 @@ namespace AgricultureSmart.Services.Services
                     };
                 }
 
-                /*// Validate assigned engineer when status is "assigned"
+                // Validate assigned engineer when status is "assigned"
                 if (model.Status == TicketStatusConstants.Assigned && !model.AssignedEngineerId.HasValue)
                 {
                     return new ServiceResponse<TicketViewModel>
@@ -280,18 +280,18 @@ namespace AgricultureSmart.Services.Services
                         Success = false,
                         Message = "AssignedEngineerId is required when status is 'assigned'"
                     };
-                }*/
+                }
 
                 // Update ticket properties
                 var oldStatus = ticket.Status;
                 ticket.Status = model.Status;
                 ticket.UpdatedAt = DateTime.UtcNow;
 
-                /*// Set assigned engineer if provided
+                // Set assigned engineer if provided
                 if (model.AssignedEngineerId.HasValue)
                 {
                     ticket.AssignedEngineerId = model.AssignedEngineerId.Value;
-                }*/
+                }
 
                 // Set resolved date if status is resolved
                 if (model.Status == TicketStatusConstants.Resolved && oldStatus != TicketStatusConstants.Resolved)

@@ -88,7 +88,7 @@ namespace AgricultureSmart.API.Controllers
         /// <param name="model">Farmer creation model</param>
         /// <returns>Created farmer details</returns>
         [HttpPost]
-        public async Task<IActionResult> CreateFarmer([FromBody] CreateFarmerModel model)
+        public async Task<IActionResult> CreateFarmerWithAccount([FromBody] CreateFarmerModel model)
         {
             try
             {
@@ -97,37 +97,38 @@ namespace AgricultureSmart.API.Controllers
                     return BadRequest(new
                     {
                         success = false,
-                        message = "Invalid model data.",
+                        message = "Invalid input.",
                         errors = ModelState
                     });
                 }
 
-                var response = await _farmerService.CreateAsync(model);
-                if (!response.Success)
+                var result = await _farmerService.CreateAsync(model);
+                if (!result.Success)
                 {
                     return BadRequest(new
                     {
                         success = false,
-                        message = response.Message
+                        message = result.Message
                     });
                 }
 
-                return CreatedAtAction(nameof(GetFarmerById), new { id = response.Data.Id }, new
+                return Created("", new
                 {
                     success = true,
-                    message = response.Message,
-                    data = response.Data
+                    message = result.Message,
+                    data = result.Data
                 });
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
                 return BadRequest(new
                 {
                     success = false,
-                    message = $"Error creating farmer: {ex.Message}"
+                    message = $"Unexpected error: {ex.Message}"
                 });
             }
         }
+
 
         /// <summary>
         /// Update an existing farmer

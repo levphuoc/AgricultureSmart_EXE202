@@ -8,6 +8,7 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -18,14 +19,16 @@ namespace AgricultureSmart.Services.Services
         private readonly IGenericRepository<Farmer> _farmerRepo;
         private readonly IGenericRepository<Users> _userRepo;
         private readonly IFarmerRepository _repo;
+        private readonly IUserRoleRepository _roleRepo;
         private readonly ILogger<FarmerService> _logger;
 
-        public FarmerService(IGenericRepository<Farmer> farmerRepo, IGenericRepository<Users> userRepo, IFarmerRepository repo, ILogger<FarmerService> logger)
+        public FarmerService(IGenericRepository<Farmer> farmerRepo, IGenericRepository<Users> userRepo, IFarmerRepository repo, ILogger<FarmerService> logger, IUserRoleRepository roleRepo)
         {
             _farmerRepo = farmerRepo;
             _userRepo = userRepo;
             _repo = repo;
             _logger = logger;
+            _roleRepo = roleRepo;
         }
 
         public async Task<PagedListResponse<FarmerViewModel>> SearchAsync(
@@ -101,32 +104,49 @@ namespace AgricultureSmart.Services.Services
         {
             try
             {
-                // Check if user exists
-                var user = await _userRepo.GetByIdAsync(model.UserId);
-                if (user == null)
+                // Check if email or username already exists
+                var existingUser = await _userRepo.FirstOrDefaultAsync(u =>
+                    u.Email == model.Email || u.UserName == model.Username);
+                if (existingUser != null)
                 {
                     return new ServiceResponse<FarmerViewModel>
                     {
                         Success = false,
-                        Message = "User not found."
+                        Message = "Username or email already exists."
                     };
                 }
 
-                // Check if user is already a farmer
-                var farmers = await _farmerRepo.GetAllAsync();
-                var existingFarmer = farmers.FirstOrDefault(f => f.UserId == model.UserId);
-                if (existingFarmer != null)
+                // Create new user
+                var user = new Users
                 {
-                    return new ServiceResponse<FarmerViewModel>
+                    UserName = model.Username,
+                    Email = model.Email,
+                    Password = HashPassword(model.Password),
+                    Address = model.Address,
+                    PhoneNumber = model.PhoneNumber,
+                    CreatedAt = DateTime.UtcNow,
+                    UpdatedAt = DateTime.UtcNow,
+                    IsActive = true
+                };
+
+                await _userRepo.AddAsync(user);
+
+                // Assign "Farmer" role
+                var farmerRole = await _roleRepo.GetByNameAsync("Farmer");
+                if (farmerRole != null)
+                {
+                    var userRole = new UserRole
                     {
-                        Success = false,
-                        Message = "User is already registered as a farmer."
+                        UserId = user.Id,
+                        RoleId = farmerRole.Id
                     };
+                    await _roleRepo.AddAsync(userRole);
                 }
 
+                // Create farmer profile
                 var farmer = new Farmer
                 {
-                    UserId = model.UserId,
+                    UserId = user.Id,
                     FarmLocation = model.FarmLocation,
                     FarmSize = model.FarmSize,
                     CropTypes = model.CropTypes,
@@ -137,12 +157,14 @@ namespace AgricultureSmart.Services.Services
 
                 await _farmerRepo.AddAsync(farmer);
 
+                // Map to ViewModel
                 var viewModel = await GetByIdAsync(farmer.Id);
 
                 return new ServiceResponse<FarmerViewModel>
                 {
+                    Success = true,
                     Data = viewModel,
-                    Message = "Farmer created successfully."
+                    Message = "Farmer and account created successfully."
                 };
             }
             catch (Exception ex)
@@ -150,12 +172,19 @@ namespace AgricultureSmart.Services.Services
                 return new ServiceResponse<FarmerViewModel>
                 {
                     Success = false,
-                    Message = $"Error creating farmer: {ex.Message}"
+                    Message = $"Error creating farmer and account: {ex.Message}"
                 };
             }
         }
 
-        public async Task<ServiceResponse<bool>> UpdateAsync(int id, UpdateFarmerModel model)
+        private string HashPassword(string password)
+        {
+            using var sha256 = SHA256.Create();
+            var hashedBytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(password));
+            return Convert.ToBase64String(hashedBytes);
+        }
+
+        /*public async Task<ServiceResponse<bool>> UpdateAsync(int id, UpdateFarmerModel model)
         {
             try
             {
@@ -191,6 +220,88 @@ namespace AgricultureSmart.Services.Services
                     Message = $"Error updating farmer: {ex.Message}"
                 };
             }
+        }*/
+
+        public async Task<ServiceResponse<bool>> UpdateAsync(int id, UpdateFarmerModel model)
+        {
+            try
+            {
+                var farmer = await _farmerRepo.GetByIdAsync(id);
+                if (farmer == null)
+                {
+                    return new ServiceResponse<bool>
+                    {
+                        Success = false,
+                        Message = "Farmer not found."
+                    };
+                }
+
+                // Update User info
+                var user = await _userRepo.GetByIdAsync(farmer.UserId);
+                if (user == null)
+                {
+                    return new ServiceResponse<bool>
+                    {
+                        Success = false,
+                        Message = "Associated user not found."
+                    };
+                }
+
+                /*if (!model.Email.EndsWith("@gmail.com", StringComparison.OrdinalIgnoreCase))
+                {
+                    return new ServiceResponse<bool>
+                    {
+                        Success = false,
+                        Message = "Only Gmail addresses are allowed."
+                    };
+                }*/
+
+                // Kiểm tra username/email đã bị người khác dùng chưa
+                var duplicateUser = await _userRepo.FirstOrDefaultAsync(u =>
+                    (u.UserName == model.Username || u.Email == model.Email) && u.Id != user.Id);
+
+                if (duplicateUser != null)
+                {
+                    return new ServiceResponse<bool>
+                    {
+                        Success = false,
+                        Message = "Username or email is already taken by another user."
+                    };
+                }
+
+                user.UserName = model.Username;
+                user.Email = model.Email;
+                user.Address = model.Address;
+                user.PhoneNumber = model.PhoneNumber;
+                user.Password = HashPassword(model.Password); // SHA256 hoặc BCrypt
+                user.UpdatedAt = DateTime.UtcNow;
+
+                await _userRepo.UpdateAsync(user);
+
+                // Update Farmer info
+                farmer.FarmLocation = model.FarmLocation;
+                farmer.FarmSize = model.FarmSize;
+                farmer.CropTypes = model.CropTypes;
+                farmer.FarmingExperienceYears = model.FarmingExperienceYears;
+                farmer.UpdatedAt = DateTime.UtcNow;
+
+                await _farmerRepo.UpdateAsync(farmer);
+
+                return new ServiceResponse<bool>
+                {
+                    Success = true,
+                    Data = true,
+                    Message = "Farmer and user information updated successfully."
+                };
+            }
+            catch (Exception ex)
+            {
+                return new ServiceResponse<bool>
+                {
+                    Success = false,
+                    Message = $"Error updating farmer: {ex.Message}"
+                };
+            }
         }
 
         public async Task<ServiceResponse<bool>> DeleteAsync(int id)
@@ -207,12 +318,27 @@ namespace AgricultureSmart.Services.Services
                     };
                 }
 
+                // Lấy User liên quan
+                var user = await _userRepo.GetByIdAsync(farmer.UserId);
+                if (user == null)
+                {
+                    return new ServiceResponse<bool>
+                    {
+                        Success = false,
+                        Message = "Associated user not found."
+                    };
+                }
+
+                // Xóa Farmer trước (nếu có ràng buộc FK cascade thì có thể bỏ qua bước này)
                 await _farmerRepo.DeleteAsync(id);
+
+                // Xóa User (có thể dùng id: await _userRepo.DeleteAsync(user.Id);)
+                await _userRepo.DeleteAsync(user.Id);
 
                 return new ServiceResponse<bool>
                 {
                     Data = true,
-                    Message = "Farmer deleted successfully."
+                    Message = "Farmer and associated user deleted successfully."
                 };
             }
             catch (Exception ex)
@@ -220,7 +346,7 @@ namespace AgricultureSmart.Services.Services
                 return new ServiceResponse<bool>
                 {
                     Success = false,
-                    Message = $"Error deleting farmer: {ex.Message}"
+                    Message = $"Error deleting farmer and user: {ex.Message}"
                 };
             }
         }
