@@ -103,14 +103,32 @@ namespace AgricultureSmart.Repositories.Repositories
                 .ToListAsync();
         }
 
-        public async Task<IEnumerable<Ticket>> GetTicketsByEngineerIdAsync(int userId)
+        public async Task<(IEnumerable<Ticket> Items, int TotalCount)>
+        GetByEngineerIdAsync(int userId, int pageNumber, int pageSize)
         {
-            return await _context.Tickets
+            var query = _context.Tickets
+                .Include(t => t.Farmer)            
+                    .ThenInclude(f => f.User)
                 .Include(t => t.AssignedEngineer)
                     .ThenInclude(e => e.User)
-                .Where(t => t.AssignedEngineer != null && t.AssignedEngineer.UserId == userId)
-                .OrderByDescending(t => t.CreatedAt)
+                .Where(t => t.AssignedEngineer != null &&
+                            t.AssignedEngineer.UserId == userId);
+
+            // Giữ nguyên thứ tự ưu tiên + mới nhất
+            query = query.OrderBy(t =>
+                        t.Priority == "urgent" ? 0 :
+                        t.Priority == "high" ? 1 :
+                        t.Priority == "medium" ? 2 : 3)
+                         .ThenByDescending(t => t.CreatedAt);
+
+            var total = await query.CountAsync();
+
+            var items = await query
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
                 .ToListAsync();
+
+            return (items, total);
         }
 
         public async Task<Dictionary<string, int>> GetTicketStatusCountsAsync()

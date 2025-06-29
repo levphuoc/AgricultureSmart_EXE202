@@ -190,18 +190,20 @@ namespace AgricultureSmart.API.Controllers
         }
 
         [HttpGet("engineer")]
-        [Authorize] 
-        public async Task<IActionResult> GetByEngineerId()
+        [Authorize]
+        public async Task<IActionResult> GetTicketsByEngineer(
+        [FromQuery] int pageNumber = 1,
+        [FromQuery] int pageSize = 10)
         {
             int userId = User.GetUserId();
             if (userId == 0) return Unauthorized();
 
-            var tickets = await _ticketService.GetByEngineerIdAsync(userId);
+            var result = await _ticketService.GetByEngineerIdAsync(userId, pageNumber, pageSize);
 
-            if (!tickets.Any())
-                return NotFound(new { Message = $"No tickets found for engineer with userId = {userId}." });
+            if (!result.Items.Any())
+                return NotFound(new { message = $"No tickets found for engineerId = {userId}." });
 
-            return Ok(tickets);
+            return Ok(result);                   
         }
 
         [HttpGet("statistics/status")]

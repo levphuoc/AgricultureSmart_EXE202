@@ -482,28 +482,23 @@ namespace AgricultureSmart.Services.Services
             };
         }
 
-        public async Task<IEnumerable<TicketEngineerViewModel>> GetByEngineerIdAsync(int userId)
+        public async Task<PagedListResponse<TicketViewModel>> GetByEngineerIdAsync(
+        int userId, int pageNumber = 1, int pageSize = 10)
         {
-            var tickets = await _repo.GetTicketsByEngineerIdAsync(userId); 
+            var (entities, total) = await _repo.GetByEngineerIdAsync(
+                                                        userId, pageNumber, pageSize);
 
-            return tickets.Select(t => new TicketEngineerViewModel
+            var items = entities.Select(MapToTicketViewModel).ToList();
+
+            return new PagedListResponse<TicketViewModel>
             {
-                Id = t.Id,
-                Title = t.Title,
-                Category = t.Category,
-                CropType = t.CropType,
-                Location = t.Location,
-                Description = t.Description,
-                Priority = t.Priority,
-                ContactMethod = t.ContactMethod,
-                PhoneNumber = t.PhoneNumber,
-                ImageUrl = t.ImageUrl,
-                Status = t.Status,
-                CreatedAt = t.CreatedAt,
-                UpdatedAt = t.UpdatedAt,
-                ResolvedAt = t.ResolvedAt
-            });
+                Items = items,
+                TotalCount = total,
+                PageNumber = pageNumber,
+                PageSize = pageSize
+            };
         }
+
         public async Task<TicketStatusStatisticsResponse> GetTicketStatusStatisticsAsync()
         {
             var counts = await _repo.GetTicketStatusCountsAsync();
@@ -518,5 +513,53 @@ namespace AgricultureSmart.Services.Services
                 Closed = counts.GetValueOrDefault("closed", 0)
             };
         }
+
+        private static TicketViewModel MapToTicketViewModel(Ticket t) => new()
+        {
+            Id = t.Id,
+            Title = t.Title,
+            Priority = t.Priority,
+            Status = t.Status,
+            CreatedAt = t.CreatedAt,
+            ResolvedAt = t.ResolvedAt,
+            Category = t.Category,
+            CropType = t.CropType,
+            Description = t.Description,
+            Location = t.Location,
+            PhoneNumber = t.PhoneNumber,
+            ContactMethod = t.ContactMethod,
+
+            Farmer = t.Farmer == null ? null : new FarmerViewTicketModel
+            {
+                Id = t.Farmer.Id,
+                UserId = t.Farmer.User.Id,
+                UserName = t.Farmer.User.UserName,
+                Email = t.Farmer.User.Email,
+                PhoneNumber = t.Farmer.User.PhoneNumber,
+                Address = t.Farmer.User.Address,
+                FarmLocation = t.Farmer.FarmLocation,
+                FarmSize = t.Farmer.FarmSize,
+                CropTypes = t.Farmer.CropTypes,
+                FarmingExperienceYears = t.Farmer.FarmingExperienceYears,
+                CreatedAt = t.Farmer.CreatedAt,
+                UpdatedAt = t.Farmer.UpdatedAt
+            },
+
+            AssignedEngineer = t.AssignedEngineer == null ? null : new EngineerViewTicketModel
+            {
+                Id = t.AssignedEngineer.Id,
+                UserId = t.AssignedEngineer.User.Id,
+                UserName = t.AssignedEngineer.User.UserName,
+                Email = t.AssignedEngineer.User.Email,
+                PhoneNumber = t.AssignedEngineer.User.PhoneNumber,
+                Address = t.AssignedEngineer.User.Address,
+                Specialization = t.AssignedEngineer.Specialization,
+                ExperienceYears = t.AssignedEngineer.ExperienceYears,
+                Certification = t.AssignedEngineer.Certification,
+                Bio = t.AssignedEngineer.Bio,
+                CreatedAt = t.AssignedEngineer.CreatedAt,
+                UpdatedAt = t.AssignedEngineer.UpdatedAt
+            }
+        };
     }
 }

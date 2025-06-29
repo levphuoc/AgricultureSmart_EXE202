@@ -30,8 +30,9 @@ namespace AgricultureSmart.Services.Interfaces
         string? priority,
         string? status);
 
-        Task<IEnumerable<TicketEngineerViewModel>> GetByEngineerIdAsync(
-        int userId);
+        Task<PagedListResponse<TicketViewModel>> GetByEngineerIdAsync(int userId,
+                                                                 int pageNumber,
+                                                                 int pageSize);
 
         Task<TicketStatusStatisticsResponse> GetTicketStatusStatisticsAsync();
     }
