@@ -50,7 +50,7 @@ namespace AgricultureSmart.Services.Services
                 {
                     Id = e.Id,
                     UserId = e.UserId,
-                    UserName = e.User.UserName,
+                    Username = e.User.UserName,
                     Email = e.User.Email,
                     PhoneNumber = e.User.PhoneNumber,
                     Address = e.User.Address,
@@ -89,7 +89,7 @@ namespace AgricultureSmart.Services.Services
             {
                 Id = engineer.Id,
                 UserId = engineer.UserId,
-                UserName = user.UserName,
+                Username = user.UserName,
                 Email = user.Email,
                 PhoneNumber = user.PhoneNumber,
                 Address = user.Address,

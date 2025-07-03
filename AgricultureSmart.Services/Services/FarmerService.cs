@@ -48,7 +48,7 @@ namespace AgricultureSmart.Services.Services
                 {
                     Id = f.Id,
                     UserId = f.UserId,
-                    UserName = f.User.UserName,
+                    Username = f.User.UserName,
                     Email = f.User.Email,
                     PhoneNumber = f.User.PhoneNumber,
                     Address = f.User.Address,
@@ -87,7 +87,7 @@ namespace AgricultureSmart.Services.Services
             {
                 Id = farmer.Id,
                 UserId = farmer.UserId,
-                UserName = user.UserName,
+                Username = user.UserName,
                 Email = user.Email,
                 PhoneNumber = user.PhoneNumber,
                 Address = user.Address,
