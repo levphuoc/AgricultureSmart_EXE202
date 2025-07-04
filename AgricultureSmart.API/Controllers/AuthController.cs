@@ -206,7 +206,6 @@ namespace AgricultureSmart.API.Controllers
         {
             Response.Cookies.Append("refreshToken", token, BuildCookieOptions(expiration));
         }*/
-
         
         [HttpGet("my-infor")]
         [Authorize]
