@@ -34,10 +34,9 @@ services:
       - webapp
     networks:
       - appnet
-
-volumes:
-  sql_data:
-
 networks:
   appnet:
     driver: bridge
+
+volumes:
+  sql_data:
