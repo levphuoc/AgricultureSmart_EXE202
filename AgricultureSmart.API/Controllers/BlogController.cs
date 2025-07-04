@@ -202,7 +202,6 @@ namespace AgricultureSmart.API.Controllers
             }
         }
 
-
         // DELETE: api/Blog/5
         [Authorize]
         [HttpDelete("{id}")]
