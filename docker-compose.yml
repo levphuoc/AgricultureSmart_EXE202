@@ -4,12 +4,14 @@ services:
   webapp:
     image: ducminh1710/exe201:latest
     ports:
-      - "5146:5146" 
+      - "5146:5146"
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=AgricultureSmart;User=sa;Password=YourStrong!Passw0rd;TrustServerCertificate=true;
     depends_on:
       - sqlserver
+    networks:
+      - appnet
 
   sqlserver:
     image: mcr.microsoft.com/mssql/server:2022-latest
@@ -21,6 +23,21 @@ services:
       - SA_PASSWORD=YourStrong!Passw0rd
     volumes:
       - sql_data:/var/opt/mssql
+    networks:
+      - appnet
+
+  fe:
+    image: fe:latest
+    ports:
+      - "3000:3000"
+    depends_on:
+      - webapp
+    networks:
+      - appnet
 
 volumes:
   sql_data:
+
+networks:
+  appnet:
+    driver: bridge
