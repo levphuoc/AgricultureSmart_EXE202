@@ -7,7 +7,7 @@ services:
       - "5146:5146"
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=AgricultureSmart;User=sa;Password=YourStrong!Passw0rd;TrustServerCertificate=true;
+      - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=AgricultureSmart;User=sa;Password=SecurePassword2025!;TrustServerCertificate=true;
     depends_on:
       - sqlserver
     networks:
@@ -20,7 +20,7 @@ services:
       - "1433:1433"
     environment:
       - ACCEPT_EULA=Y
-      - SA_PASSWORD=YourStrong!Passw0rd
+      - SA_PASSWORD=SecurePassword2025!
     volumes:
       - sql_data:/var/opt/mssql
     networks:
