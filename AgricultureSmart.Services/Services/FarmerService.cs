@@ -198,44 +198,6 @@ namespace AgricultureSmart.Services.Services
                     };
                 }
 
-                farmer.FarmLocation = model.FarmLocation;
-                farmer.FarmSize = model.FarmSize;
-                farmer.CropTypes = model.CropTypes;
-                farmer.FarmingExperienceYears = model.FarmingExperienceYears;
-                farmer.UpdatedAt = DateTime.UtcNow;
-
-                await _farmerRepo.UpdateAsync(farmer);
-
-                return new ServiceResponse<bool>
-                {
-                    Data = true,
-                    Message = "Farmer updated successfully."
-                };
-            }
-            catch (Exception ex)
-            {
-                return new ServiceResponse<bool>
-                {
-                    Success = false,
-                    Message = $"Error updating farmer: {ex.Message}"
-                };
-            }
-        }*/
-
-        public async Task<ServiceResponse<bool>> UpdateAsync(int id, UpdateFarmerModel model)
-        {
-            try
-            {
-                var farmer = await _farmerRepo.GetByIdAsync(id);
-                if (farmer == null)
-                {
-                    return new ServiceResponse<bool>
-                    {
-                        Success = false,
-                        Message = "Farmer not found."
-                    };
-                }
-
                 // Update User info
                 var user = await _userRepo.GetByIdAsync(farmer.UserId);
                 if (user == null)
@@ -247,14 +209,14 @@ namespace AgricultureSmart.Services.Services
                     };
                 }
 
-                /*if (!model.Email.EndsWith("@gmail.com", StringComparison.OrdinalIgnoreCase))
+                *//*if (!model.Email.EndsWith("@gmail.com", StringComparison.OrdinalIgnoreCase))
                 {
                     return new ServiceResponse<bool>
                     {
                         Success = false,
                         Message = "Only Gmail addresses are allowed."
                     };
-                }*/
+                }*//*
 
                 // Kiểm tra username/email đã bị người khác dùng chưa
                 var duplicateUser = await _userRepo.FirstOrDefaultAsync(u =>
@@ -302,7 +264,122 @@ namespace AgricultureSmart.Services.Services
                     Message = $"Error updating farmer: {ex.Message}"
                 };
             }
+        }*/
+
+        public async Task<ServiceResponse<bool>> UpdateAsync(int id, UpdateFarmerModel model)
+        {
+            try
+            {
+                /* ---------- LẤY DỮ LIỆU HIỆN CÓ ---------- */
+                var farmer = await _farmerRepo.GetByIdAsync(id);
+                if (farmer == null)
+                {
+                    return new ServiceResponse<bool>
+                    {
+                        Success = false,
+                        Data = false,
+                        Message = "Farmer not found."
+                    };
+                }
+
+                var user = await _userRepo.GetByIdAsync(farmer.UserId);
+                if (user == null)
+                {
+                    return new ServiceResponse<bool>
+                    {
+                        Success = false,
+                        Data = false,
+                        Message = "Associated user not found."
+                    };
+                }
+
+                /* ---------- KIỂM TRA TRÙNG USERNAME / EMAIL (nếu có cập nhật) ---------- */
+                if (!string.IsNullOrWhiteSpace(model.Username) &&
+                    !string.Equals(model.Username, user.UserName, StringComparison.OrdinalIgnoreCase))
+                {
+                    var userNameTaken = await _userRepo.FirstOrDefaultAsync(u =>
+                        u.UserName == model.Username && u.Id != user.Id);
+
+                    if (userNameTaken != null)
+                    {
+                        return new ServiceResponse<bool>
+                        {
+                            Success = false,
+                            Data = false,
+                            Message = "Username is already taken."
+                        };
+                    }
+
+                    user.UserName = model.Username;
+                }
+
+                if (!string.IsNullOrWhiteSpace(model.Email) &&
+                    !string.Equals(model.Email, user.Email, StringComparison.OrdinalIgnoreCase))
+                {
+                    var emailTaken = await _userRepo.FirstOrDefaultAsync(u =>
+                        u.Email == model.Email && u.Id != user.Id);
+
+                    if (emailTaken != null)
+                    {
+                        return new ServiceResponse<bool>
+                        {
+                            Success = false,
+                            Data = false,
+                            Message = "Email is already taken."
+                        };
+                    }
+
+                    user.Email = model.Email;
+                }
+
+                /* ---------- CẬP NHẬT USER (chỉ trường nào có giá trị) ---------- */
+                if (!string.IsNullOrWhiteSpace(model.Address))
+                    user.Address = model.Address;
+
+                if (!string.IsNullOrWhiteSpace(model.PhoneNumber))
+                    user.PhoneNumber = model.PhoneNumber;
+
+                if (!string.IsNullOrWhiteSpace(model.Password))
+                    user.Password = HashPassword(model.Password);          // SHA‑256 / BCrypt
+
+                user.UpdatedAt = DateTime.UtcNow;
+                await _userRepo.UpdateAsync(user);
+
+                /* ---------- CẬP NHẬT FARMER ---------- */
+                if (!string.IsNullOrWhiteSpace(model.FarmLocation))
+                    farmer.FarmLocation = model.FarmLocation;
+
+                if (model.FarmSize.HasValue)
+                    farmer.FarmSize = model.FarmSize.Value;
+
+                if (!string.IsNullOrWhiteSpace(model.CropTypes))
+                    farmer.CropTypes = model.CropTypes;
+
+                if (model.FarmingExperienceYears.HasValue)
+                    farmer.FarmingExperienceYears = model.FarmingExperienceYears.Value;
+
+                farmer.UpdatedAt = DateTime.UtcNow;
+                await _farmerRepo.UpdateAsync(farmer);
+
+                /* ---------- KẾT QUẢ ---------- */
+                return new ServiceResponse<bool>
+                {
+                    Success = true,
+                    Data = true,
+                    Message = "Farmer and user information updated successfully."
+                };
+            }
+            catch (Exception ex)
+            {
+                return new ServiceResponse<bool>
+                {
+                    Success = false,
+                    Data = false,
+                    Message = $"Error updating farmer: {ex.Message}"
+                };
+            }
         }
+
 
         public async Task<ServiceResponse<bool>> DeleteAsync(int id)
         {
