@@ -14,26 +14,31 @@ services:
       - appnet
 
   sqlserver:
-  image: mcr.microsoft.com/mssql/server:2022-latest
-  container_name: sqlserver
-  ports:
-    - "127.0.0.1:1433:1433"
-  environment:
-    - ACCEPT_EULA=Y
-    - SA_PASSWORD=SecurePassword2025!
-  volumes:
-    - sql_data:/var/opt/mssql
-  networks:
-    - appnet
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: sqlserver
+    ports:
+      - "127.0.0.1:1433:1433"
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=SecurePassword2025!
+    volumes:
+      - sql_data:/var/opt/mssql
+    networks:
+      - appnet
 
   fe:
     image: fe:latest
     ports:
       - "3000:3000"
-      
+    networks:
+      - appnet
+
 networks:
   appnet:
     driver: bridge
 
 volumes:
   sql_data:
+
+
+
