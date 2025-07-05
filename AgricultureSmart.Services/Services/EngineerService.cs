@@ -195,7 +195,7 @@ namespace AgricultureSmart.Services.Services
             return Convert.ToBase64String(hashedBytes);
         }
 
-        public async Task<ServiceResponse<bool>> UpdateAsync(int id, UpdateEngineerModel model)
+        /*public async Task<ServiceResponse<bool>> UpdateAsync(int id, UpdateEngineerModel model)
         {
             try
             {
@@ -258,6 +258,108 @@ namespace AgricultureSmart.Services.Services
                 engineer.UpdatedAt = DateTime.UtcNow;
                 await _engineerRepo.UpdateAsync(engineer);
 
+                return new ServiceResponse<bool>
+                {
+                    Success = true,
+                    Data = true,
+                    Message = "Engineer and account information updated successfully."
+                };
+            }
+            catch (Exception ex)
+            {
+                return new ServiceResponse<bool>
+                {
+                    Success = false,
+                    Message = $"Error updating engineer: {ex.Message}"
+                };
+            }
+        }*/
+
+        public async Task<ServiceResponse<bool>> UpdateAsync(int id, UpdateEngineerModel model)
+        {
+            try
+            {
+                /* ---------- LẤY HIỆN TRẠNG ---------- */
+                var engineer = await _engineerRepo.GetByIdAsync(id);
+                if (engineer == null)
+                {
+                    return new ServiceResponse<bool>
+                    {
+                        Success = false,
+                        Message = "Engineer not found."
+                    };
+                }
+
+                var user = await _userRepo.GetByIdAsync(engineer.UserId);
+                if (user == null)
+                {
+                    return new ServiceResponse<bool>
+                    {
+                        Success = false,
+                        Message = "Associated user not found."
+                    };
+                }
+
+                /* ---------- XÁC ĐỊNH TRƯỜNG CẦN ĐỔI ---------- */
+                bool wantUserName = !string.IsNullOrWhiteSpace(model.Username);
+                bool wantEmail = !string.IsNullOrWhiteSpace(model.Email);
+                bool wantPhone = !string.IsNullOrWhiteSpace(model.PhoneNumber);
+
+                /* ---------- EMAIL BẮT BUỘC @gmail.com (nếu có đổi) ---------- */
+                if (wantEmail && !model.Email!.EndsWith("@gmail.com", StringComparison.OrdinalIgnoreCase))
+                {
+                    return new ServiceResponse<bool>
+                    {
+                        Success = false,
+                        Message = "Only Gmail addresses are allowed."
+                    };
+                }
+
+                /* ---------- KIỂM TRA TRÙNG ---------- */
+                if (wantUserName || wantEmail || wantPhone)
+                {
+                    var duplicate = await _userRepo.FirstOrDefaultAsync(u =>
+                        (wantUserName && u.UserName == model.Username) ||
+                        (wantEmail && u.Email == model.Email) ||
+                        (wantPhone && u.PhoneNumber == model.PhoneNumber)
+                    && u.Id != user.Id);
+
+                    if (duplicate != null)
+                    {
+                        return new ServiceResponse<bool>
+                        {
+                            Success = false,
+                            Message = "Username, email or phone number is already used by another user."
+                        };
+                    }
+                }
+
+                /* ---------- CẬP NHẬT USER ---------- */
+                if (wantUserName) user.UserName = model.Username!;
+                if (wantEmail) user.Email = model.Email!;
+                if (wantPhone) user.PhoneNumber = model.PhoneNumber!;
+                if (!string.IsNullOrWhiteSpace(model.Address))
+                    user.Address = model.Address!;
+                if (!string.IsNullOrWhiteSpace(model.Password))
+                    user.Password = HashPassword(model.Password!);
+
+                user.UpdatedAt = DateTime.UtcNow;
+                await _userRepo.UpdateAsync(user);
+
+                /* ---------- CẬP NHẬT ENGINEER ---------- */
+                if (!string.IsNullOrWhiteSpace(model.Specialization))
+                    engineer.Specialization = model.Specialization!;
+                if (model.ExperienceYears.HasValue)
+                    engineer.ExperienceYears = model.ExperienceYears.Value;
+                if (!string.IsNullOrWhiteSpace(model.Certification))
+                    engineer.Certification = model.Certification!;
+                if (!string.IsNullOrWhiteSpace(model.Bio))
+                    engineer.Bio = model.Bio!;
+
+                engineer.UpdatedAt = DateTime.UtcNow;
+                await _engineerRepo.UpdateAsync(engineer);
+
+                /* ---------- KẾT QUẢ ---------- */
                 return new ServiceResponse<bool>
                 {
                     Success = true,
