@@ -30,10 +30,7 @@ services:
     image: fe:latest
     ports:
       - "3000:3000"
-    depends_on:
-      - webapp
-    networks:
-      - appnet
+      
 networks:
   appnet:
     driver: bridge

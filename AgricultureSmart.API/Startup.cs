@@ -74,9 +74,9 @@ namespace AgricultureSmart.API
             // Configure CORS if needed
             services.AddCors(options =>
             {
-                options.AddPolicy("AllowAll", builder =>
+                options.AddPolicy("AllowFrontend", builder =>
                 {
-                    builder.SetIsOriginAllowed(_ => true) // Allow any origin
+                    builder.WithOrigins("http://localhost:3000", "http://14.225.210.207:3000", "https://agriculture-smart-fe.vercel.app") // Allow any origin
                            .AllowAnyMethod()
                            .AllowAnyHeader()
                            .AllowCredentials();
@@ -181,7 +181,7 @@ namespace AgricultureSmart.API
             app.UseRouting();
             
             // Apply CORS before authentication and authorization
-            app.UseCors("AllowAll");
+            app.UseCors("AllowFrontend");
 
             // Add authentication middleware
             app.UseAuthentication();
