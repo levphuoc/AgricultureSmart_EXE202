@@ -7,7 +7,7 @@ services:
       - "5146:5146"
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=AgricultureSmart;User=appuser;Password=MyStr0ng!Password;TrustServerCertificate=true;
+      - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=AgricultureSmart;User=sa;Password=YourStrong!Passw0rd;TrustServerCertificate=true;
     depends_on:
       - sqlserver
     networks:
@@ -16,26 +16,11 @@ services:
   sqlserver:
     image: mcr.microsoft.com/mssql/server:2022-latest
     container_name: sqlserver
-    ports:
-      - "1433:1433"
     environment:
       - ACCEPT_EULA=Y
       - SA_PASSWORD=YourStrong!Passw0rd
     volumes:
       - sql_data:/var/opt/mssql
-      - ./init-db.sql:/init-db.sql
-    command: >
-      /bin/bash -c "
-        /opt/mssql/bin/sqlservr &
-        pid=\$!;
-        echo 'Waiting for SQL Server to start...';
-        until /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P 'YourStrong!Passw0rd' -Q 'SELECT 1' > /dev/null 2>&1; do
-          sleep 1;
-        done;
-        echo 'Running init-db.sql...';
-        /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P 'YourStrong!Passw0rd' -i /init-db.sql;
-        wait \$pid
-      "
     networks:
       - appnet
 
@@ -43,7 +28,7 @@ services:
     image: fe:latest
     ports:
       - "3000:3000"
-
+      
 networks:
   appnet:
     driver: bridge
