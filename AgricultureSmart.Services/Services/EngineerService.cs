@@ -106,19 +106,16 @@ namespace AgricultureSmart.Services.Services
         {
             try
             {
-                // Check if username/email already exists
-                var existingUser = await _userRepo.FirstOrDefaultAsync(u =>
-                    u.UserName == model.Username || u.Email == model.Email);
-                if (existingUser != null)
+                /* ---------- VALIDATION CƠ BẢN ---------- */
+                if (model.ExperienceYears <= 0)
                 {
                     return new ServiceResponse<EngineerViewModel>
                     {
                         Success = false,
-                        Message = "Username or email already exists."
+                        Message = "Experience years must be greater than 0."
                     };
                 }
 
-                // Check email must be Gmail
                 if (!model.Email.EndsWith("@gmail.com", StringComparison.OrdinalIgnoreCase))
                 {
                     return new ServiceResponse<EngineerViewModel>
@@ -128,7 +125,20 @@ namespace AgricultureSmart.Services.Services
                     };
                 }
 
-                // Create new User
+                /* ---------- KIỂM TRA USERNAME / EMAIL ĐÃ TỒN TẠI ---------- */
+                var existingUser = await _userRepo.FirstOrDefaultAsync(u =>
+                    u.UserName == model.Username || u.Email == model.Email);
+
+                if (existingUser != null)
+                {
+                    return new ServiceResponse<EngineerViewModel>
+                    {
+                        Success = false,
+                        Message = "Username or email already exists."
+                    };
+                }
+
+                /* ---------- TẠO USER ---------- */
                 var user = new Users
                 {
                     UserName = model.Username,
@@ -140,10 +150,9 @@ namespace AgricultureSmart.Services.Services
                     UpdatedAt = DateTime.UtcNow,
                     IsActive = true
                 };
-
                 await _userRepo.AddAsync(user);
 
-                // Assign "Engineer" role
+                /* ---------- GÁN ROLE “Engineer” ---------- */
                 var role = await _roleRepo.GetByNameAsync("Engineer");
                 if (role != null)
                 {
@@ -154,7 +163,7 @@ namespace AgricultureSmart.Services.Services
                     });
                 }
 
-                // Create Engineer
+                /* ---------- TẠO ENGINEER ---------- */
                 var engineer = new Engineer
                 {
                     UserId = user.Id,
@@ -165,10 +174,9 @@ namespace AgricultureSmart.Services.Services
                     CreatedAt = DateTime.UtcNow,
                     UpdatedAt = DateTime.UtcNow
                 };
-
                 await _engineerRepo.AddAsync(engineer);
 
-                // Return result
+                /* ---------- VIEWMODEL KẾT QUẢ ---------- */
                 var viewModel = await GetByIdAsync(engineer.Id);
 
                 return new ServiceResponse<EngineerViewModel>
@@ -281,31 +289,62 @@ namespace AgricultureSmart.Services.Services
             {
                 /* ---------- LẤY HIỆN TRẠNG ---------- */
                 var engineer = await _engineerRepo.GetByIdAsync(id);
-                if (engineer == null)
-                {
-                    return new ServiceResponse<bool>
-                    {
-                        Success = false,
-                        Message = "Engineer not found."
-                    };
-                }
+                if (engineer is null)
+                    return new ServiceResponse<bool> { Success = false, Message = "Engineer not found." };
 
                 var user = await _userRepo.GetByIdAsync(engineer.UserId);
-                if (user == null)
+                if (user is null)
+                    return new ServiceResponse<bool> { Success = false, Message = "Associated user not found." };
+
+                /* ---------- XÁC ĐỊNH CÓ THAY ĐỔI THẬT SỰ ---------- */
+                bool wantUserName = !string.IsNullOrWhiteSpace(model.Username) &&
+                                    !string.Equals(model.Username, user.UserName, StringComparison.Ordinal);
+
+                bool wantEmail = !string.IsNullOrWhiteSpace(model.Email) &&
+                                    !string.Equals(model.Email, user.Email, StringComparison.OrdinalIgnoreCase);
+
+                bool wantPhone = !string.IsNullOrWhiteSpace(model.PhoneNumber) &&
+                                    !string.Equals(model.PhoneNumber, user.PhoneNumber, StringComparison.Ordinal);
+
+                bool wantAddress = !string.IsNullOrWhiteSpace(model.Address) &&
+                                    !string.Equals(model.Address, user.Address, StringComparison.Ordinal);
+
+                bool wantPassword = !string.IsNullOrWhiteSpace(model.Password);
+
+                bool wantSpec = !string.IsNullOrWhiteSpace(model.Specialization) &&
+                                    !string.Equals(model.Specialization, engineer.Specialization, StringComparison.Ordinal);
+
+                bool wantYears = model.ExperienceYears.HasValue &&
+                                    model.ExperienceYears.Value != engineer.ExperienceYears;
+
+                bool wantCert = !string.IsNullOrWhiteSpace(model.Certification) &&
+                                    !string.Equals(model.Certification, engineer.Certification, StringComparison.Ordinal);
+
+                bool wantBio = !string.IsNullOrWhiteSpace(model.Bio) &&
+                                    !string.Equals(model.Bio, engineer.Bio, StringComparison.Ordinal);
+
+                /* ---------- KHÔNG CÓ GÌ THAY ĐỔI ---------- */
+                if (!(wantUserName || wantEmail || wantPhone || wantAddress || wantPassword ||
+                      wantSpec || wantYears || wantCert || wantBio))
+                {
+                    return new ServiceResponse<bool>
+                    {
+                        Success = true,
+                        Data = false,
+                        Message = "No actual changes detected."
+                    };
+                }
+
+                /* ---------- VALIDATION BỔ SUNG ---------- */
+                if (wantYears && model.ExperienceYears!.Value <= 0)
                 {
                     return new ServiceResponse<bool>
                     {
                         Success = false,
-                        Message = "Associated user not found."
+                        Message = "Experience years must be greater than 0."
                     };
                 }
 
-                /* ---------- XÁC ĐỊNH TRƯỜNG CẦN ĐỔI ---------- */
-                bool wantUserName = !string.IsNullOrWhiteSpace(model.Username);
-                bool wantEmail = !string.IsNullOrWhiteSpace(model.Email);
-                bool wantPhone = !string.IsNullOrWhiteSpace(model.PhoneNumber);
-
-                /* ---------- EMAIL BẮT BUỘC @gmail.com (nếu có đổi) ---------- */
                 if (wantEmail && !model.Email!.EndsWith("@gmail.com", StringComparison.OrdinalIgnoreCase))
                 {
                     return new ServiceResponse<bool>
@@ -319,12 +358,12 @@ namespace AgricultureSmart.Services.Services
                 if (wantUserName || wantEmail || wantPhone)
                 {
                     var duplicate = await _userRepo.FirstOrDefaultAsync(u =>
-                        (wantUserName && u.UserName == model.Username) ||
-                        (wantEmail && u.Email == model.Email) ||
-                        (wantPhone && u.PhoneNumber == model.PhoneNumber)
-                    && u.Id != user.Id);
+                            (wantUserName && u.UserName == model.Username) ||
+                            (wantEmail && u.Email == model.Email) ||
+                            (wantPhone && u.PhoneNumber == model.PhoneNumber)
+                         && u.Id != user.Id);
 
-                    if (duplicate != null)
+                    if (duplicate is not null)
                     {
                         return new ServiceResponse<bool>
                         {
@@ -338,33 +377,32 @@ namespace AgricultureSmart.Services.Services
                 if (wantUserName) user.UserName = model.Username!;
                 if (wantEmail) user.Email = model.Email!;
                 if (wantPhone) user.PhoneNumber = model.PhoneNumber!;
-                if (!string.IsNullOrWhiteSpace(model.Address))
-                    user.Address = model.Address!;
-                if (!string.IsNullOrWhiteSpace(model.Password))
-                    user.Password = HashPassword(model.Password!);
+                if (wantAddress) user.Address = model.Address!;
+                if (wantPassword) user.Password = HashPassword(model.Password!);
 
-                user.UpdatedAt = DateTime.UtcNow;
-                await _userRepo.UpdateAsync(user);
+                if (wantUserName || wantEmail || wantPhone || wantAddress || wantPassword)
+                {
+                    user.UpdatedAt = DateTime.UtcNow;
+                    await _userRepo.UpdateAsync(user);
+                }
 
                 /* ---------- CẬP NHẬT ENGINEER ---------- */
-                if (!string.IsNullOrWhiteSpace(model.Specialization))
-                    engineer.Specialization = model.Specialization!;
-                if (model.ExperienceYears.HasValue)
-                    engineer.ExperienceYears = model.ExperienceYears.Value;
-                if (!string.IsNullOrWhiteSpace(model.Certification))
-                    engineer.Certification = model.Certification!;
-                if (!string.IsNullOrWhiteSpace(model.Bio))
-                    engineer.Bio = model.Bio!;
+                if (wantSpec) engineer.Specialization = model.Specialization!;
+                if (wantYears) engineer.ExperienceYears = model.ExperienceYears!.Value;
+                if (wantCert) engineer.Certification = model.Certification!;
+                if (wantBio) engineer.Bio = model.Bio!;
 
-                engineer.UpdatedAt = DateTime.UtcNow;
-                await _engineerRepo.UpdateAsync(engineer);
+                if (wantSpec || wantYears || wantCert || wantBio)
+                {
+                    engineer.UpdatedAt = DateTime.UtcNow;
+                    await _engineerRepo.UpdateAsync(engineer);
+                }
 
-                /* ---------- KẾT QUẢ ---------- */
                 return new ServiceResponse<bool>
                 {
                     Success = true,
                     Data = true,
-                    Message = "Engineer and account information updated successfully."
+                    Message = "Update successful."
                 };
             }
             catch (Exception ex)

@@ -104,9 +104,29 @@ namespace AgricultureSmart.Services.Services
         {
             try
             {
-                // Check if email or username already exists
+                /* ---------- VALIDATION ĐƠN GIẢN ---------- */
+                if (model.FarmSize <= 0)
+                {
+                    return new ServiceResponse<FarmerViewModel>
+                    {
+                        Success = false,
+                        Message = "Farm size must be greater than 0."
+                    };
+                }
+
+                if (model.FarmingExperienceYears <= 0)
+                {
+                    return new ServiceResponse<FarmerViewModel>
+                    {
+                        Success = false,
+                        Message = "Farming experience years must be greater than 0."
+                    };
+                }
+
+                /* ---------- KIỂM TRA USERNAME / EMAIL ĐÃ TỒN TẠI ---------- */
                 var existingUser = await _userRepo.FirstOrDefaultAsync(u =>
                     u.Email == model.Email || u.UserName == model.Username);
+
                 if (existingUser != null)
                 {
                     return new ServiceResponse<FarmerViewModel>
@@ -116,7 +136,7 @@ namespace AgricultureSmart.Services.Services
                     };
                 }
 
-                // Create new user
+                /* ---------- TẠO USER ---------- */
                 var user = new Users
                 {
                     UserName = model.Username,
@@ -128,22 +148,20 @@ namespace AgricultureSmart.Services.Services
                     UpdatedAt = DateTime.UtcNow,
                     IsActive = true
                 };
-
                 await _userRepo.AddAsync(user);
 
-                // Assign "Farmer" role
+                /* ---------- GÁN ROLE “Farmer” ---------- */
                 var farmerRole = await _roleRepo.GetByNameAsync("Farmer");
                 if (farmerRole != null)
                 {
-                    var userRole = new UserRole
+                    await _roleRepo.AddAsync(new UserRole
                     {
                         UserId = user.Id,
                         RoleId = farmerRole.Id
-                    };
-                    await _roleRepo.AddAsync(userRole);
+                    });
                 }
 
-                // Create farmer profile
+                /* ---------- TẠO FARMER PROFILE ---------- */
                 var farmer = new Farmer
                 {
                     UserId = user.Id,
@@ -154,10 +172,9 @@ namespace AgricultureSmart.Services.Services
                     CreatedAt = DateTime.UtcNow,
                     UpdatedAt = DateTime.UtcNow
                 };
-
                 await _farmerRepo.AddAsync(farmer);
 
-                // Map to ViewModel
+                /* ---------- TRẢ VỀ VIEWMODEL ---------- */
                 var viewModel = await GetByIdAsync(farmer.Id);
 
                 return new ServiceResponse<FarmerViewModel>
@@ -176,6 +193,7 @@ namespace AgricultureSmart.Services.Services
                 };
             }
         }
+
 
         private string HashPassword(string password)
         {
@@ -270,103 +288,106 @@ namespace AgricultureSmart.Services.Services
         {
             try
             {
-                /* ---------- LẤY DỮ LIỆU HIỆN CÓ ---------- */
+                /* ---------- LẤY HIỆN TRẠNG ---------- */
                 var farmer = await _farmerRepo.GetByIdAsync(id);
-                if (farmer == null)
-                {
-                    return new ServiceResponse<bool>
-                    {
-                        Success = false,
-                        Data = false,
-                        Message = "Farmer not found."
-                    };
-                }
+                if (farmer is null)
+                    return new ServiceResponse<bool> { Success = false, Message = "Farmer not found." };
 
                 var user = await _userRepo.GetByIdAsync(farmer.UserId);
-                if (user == null)
+                if (user is null)
+                    return new ServiceResponse<bool> { Success = false, Message = "Associated user not found." };
+
+                /* ---------- XÁC ĐỊNH CÓ THAY ĐỔI THẬT SỰ ---------- */
+                bool wantUserName = !string.IsNullOrWhiteSpace(model.Username) &&
+                                    !string.Equals(model.Username, user.UserName, StringComparison.Ordinal);
+
+                bool wantEmail = !string.IsNullOrWhiteSpace(model.Email) &&
+                                    !string.Equals(model.Email, user.Email, StringComparison.OrdinalIgnoreCase);
+
+                bool wantPhone = !string.IsNullOrWhiteSpace(model.PhoneNumber) &&
+                                    !string.Equals(model.PhoneNumber, user.PhoneNumber, StringComparison.Ordinal);
+
+                bool wantAddress = !string.IsNullOrWhiteSpace(model.Address) &&
+                                    !string.Equals(model.Address, user.Address, StringComparison.Ordinal);
+
+                bool wantPassword = !string.IsNullOrWhiteSpace(model.Password);
+
+                bool wantLocation = !string.IsNullOrWhiteSpace(model.FarmLocation) &&
+                                    !string.Equals(model.FarmLocation, farmer.FarmLocation, StringComparison.Ordinal);
+
+                bool wantSize = model.FarmSize.HasValue &&
+                                    model.FarmSize.Value != farmer.FarmSize;
+
+                bool wantCrops = !string.IsNullOrWhiteSpace(model.CropTypes) &&
+                                    !string.Equals(model.CropTypes, farmer.CropTypes, StringComparison.Ordinal);
+
+                bool wantExpYears = model.FarmingExperienceYears.HasValue &&
+                                    model.FarmingExperienceYears.Value != farmer.FarmingExperienceYears;
+
+                /* ---------- KHÔNG CÓ GÌ ĐỔI ---------- */
+                if (!(wantUserName || wantEmail || wantPhone || wantAddress || wantPassword ||
+                      wantLocation || wantSize || wantCrops || wantExpYears))
                 {
                     return new ServiceResponse<bool>
                     {
-                        Success = false,
+                        Success = true,
                         Data = false,
-                        Message = "Associated user not found."
+                        Message = "No actual changes detected."
                     };
                 }
 
-                /* ---------- KIỂM TRA TRÙNG USERNAME / EMAIL (nếu có cập nhật) ---------- */
-                if (!string.IsNullOrWhiteSpace(model.Username) &&
-                    !string.Equals(model.Username, user.UserName, StringComparison.OrdinalIgnoreCase))
+                /* ---------- KIỂM TRA GIÁ TRỊ MỚI HỢP LỆ ---------- */
+                if (wantEmail && !model.Email!.EndsWith("@gmail.com", StringComparison.OrdinalIgnoreCase))
+                    return new ServiceResponse<bool> { Success = false, Message = "Only Gmail addresses are allowed." };
+
+                if (wantSize && model.FarmSize!.Value <= 0)
+                    return new ServiceResponse<bool> { Success = false, Message = "Farm size must be greater than 0." };
+
+                if (wantExpYears && model.FarmingExperienceYears!.Value <= 0)
+                    return new ServiceResponse<bool> { Success = false, Message = "Farming experience years must be greater than 0." };
+
+                if (wantUserName || wantEmail || wantPhone)
                 {
-                    var userNameTaken = await _userRepo.FirstOrDefaultAsync(u =>
-                        u.UserName == model.Username && u.Id != user.Id);
+                    var duplicate = await _userRepo.FirstOrDefaultAsync(u =>
+                            (wantUserName && u.UserName == model.Username) ||
+                            (wantEmail && u.Email == model.Email) ||
+                            (wantPhone && u.PhoneNumber == model.PhoneNumber)
+                         && u.Id != user.Id);
 
-                    if (userNameTaken != null)
-                    {
-                        return new ServiceResponse<bool>
-                        {
-                            Success = false,
-                            Data = false,
-                            Message = "Username is already taken."
-                        };
-                    }
-
-                    user.UserName = model.Username;
+                    if (duplicate is not null)
+                        return new ServiceResponse<bool> { Success = false, Message = "Username, email or phone number is already used by another user." };
                 }
 
-                if (!string.IsNullOrWhiteSpace(model.Email) &&
-                    !string.Equals(model.Email, user.Email, StringComparison.OrdinalIgnoreCase))
+                /* ---------- CẬP NHẬT USER ---------- */
+                if (wantUserName) user.UserName = model.Username!;
+                if (wantEmail) user.Email = model.Email!;
+                if (wantPhone) user.PhoneNumber = model.PhoneNumber!;
+                if (wantAddress) user.Address = model.Address!;
+                if (wantPassword) user.Password = HashPassword(model.Password!);
+
+                if (wantUserName || wantEmail || wantPhone || wantAddress || wantPassword)
                 {
-                    var emailTaken = await _userRepo.FirstOrDefaultAsync(u =>
-                        u.Email == model.Email && u.Id != user.Id);
-
-                    if (emailTaken != null)
-                    {
-                        return new ServiceResponse<bool>
-                        {
-                            Success = false,
-                            Data = false,
-                            Message = "Email is already taken."
-                        };
-                    }
-
-                    user.Email = model.Email;
+                    user.UpdatedAt = DateTime.UtcNow;
+                    await _userRepo.UpdateAsync(user);
                 }
-
-                /* ---------- CẬP NHẬT USER (chỉ trường nào có giá trị) ---------- */
-                if (!string.IsNullOrWhiteSpace(model.Address))
-                    user.Address = model.Address;
-
-                if (!string.IsNullOrWhiteSpace(model.PhoneNumber))
-                    user.PhoneNumber = model.PhoneNumber;
-
-                if (!string.IsNullOrWhiteSpace(model.Password))
-                    user.Password = HashPassword(model.Password);          // SHA‑256 / BCrypt
-
-                user.UpdatedAt = DateTime.UtcNow;
-                await _userRepo.UpdateAsync(user);
 
                 /* ---------- CẬP NHẬT FARMER ---------- */
-                if (!string.IsNullOrWhiteSpace(model.FarmLocation))
-                    farmer.FarmLocation = model.FarmLocation;
+                if (wantLocation) farmer.FarmLocation = model.FarmLocation!;
+                if (wantSize) farmer.FarmSize = model.FarmSize!.Value;
+                if (wantCrops) farmer.CropTypes = model.CropTypes!;
+                if (wantExpYears) farmer.FarmingExperienceYears = model.FarmingExperienceYears!.Value;
 
-                if (model.FarmSize.HasValue)
-                    farmer.FarmSize = model.FarmSize.Value;
+                if (wantLocation || wantSize || wantCrops || wantExpYears)
+                {
+                    farmer.UpdatedAt = DateTime.UtcNow;
+                    await _farmerRepo.UpdateAsync(farmer);
+                }
 
-                if (!string.IsNullOrWhiteSpace(model.CropTypes))
-                    farmer.CropTypes = model.CropTypes;
-
-                if (model.FarmingExperienceYears.HasValue)
-                    farmer.FarmingExperienceYears = model.FarmingExperienceYears.Value;
-
-                farmer.UpdatedAt = DateTime.UtcNow;
-                await _farmerRepo.UpdateAsync(farmer);
-
-                /* ---------- KẾT QUẢ ---------- */
                 return new ServiceResponse<bool>
                 {
                     Success = true,
                     Data = true,
-                    Message = "Farmer and user information updated successfully."
+                    Message = "Update successful."
                 };
             }
             catch (Exception ex)
@@ -374,12 +395,10 @@ namespace AgricultureSmart.Services.Services
                 return new ServiceResponse<bool>
                 {
                     Success = false,
-                    Data = false,
                     Message = $"Error updating farmer: {ex.Message}"
                 };
             }
         }
-
 
         public async Task<ServiceResponse<bool>> DeleteAsync(int id)
         {
