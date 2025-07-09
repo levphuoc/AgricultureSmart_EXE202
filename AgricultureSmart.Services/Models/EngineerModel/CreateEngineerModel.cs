@@ -32,7 +32,7 @@ namespace AgricultureSmart.Services.Models.EngineerModel
         [StringLength(255)]
         public string Specialization { get; set; }
 
-        [Range(0, 100)]
+        [Range(0, 10000)]
         public int ExperienceYears { get; set; }
 
         public string Certification { get; set; }
