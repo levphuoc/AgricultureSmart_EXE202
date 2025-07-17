@@ -29,21 +29,14 @@ services:
     networks:
       - appnet
     restart: unless-stopped
-    deploy:
-      resources:
-        limits:
-          memory: 2G
 
   fe:
     image: fe:latest
     ports:
       - "3000:3000"
     environment:
-      # API connection (internal Docker network URL)
       - NEXT_PUBLIC_API_BASE_URL=http://webapp:5146
-      # Production environment for Next.js
       - NODE_ENV=production
-      # Additional environment variables as needed
       - NEXT_PUBLIC_SITE_URL=http://14.225.212.92:3000
     networks:
       - appnet
@@ -57,6 +50,3 @@ networks:
 
 volumes:
   sql_data:
-
-
-
