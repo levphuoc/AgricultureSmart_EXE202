@@ -23,9 +23,17 @@ namespace AgricultureSmart.API
 
         public void ConfigureServices(IServiceCollection services)
         {
-            // Add DbContext
+            // Add DbContext with retry logic for transient SQL connection failures
             services.AddDbContext<AgricultureSmartDbContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"),
+                    sqlServerOptionsAction: sqlOptions =>
+                    {
+                        sqlOptions.EnableRetryOnFailure(
+                            maxRetryCount: 5,
+                            maxRetryDelay: TimeSpan.FromSeconds(30),
+                            errorNumbersToAdd: null);
+                        sqlOptions.CommandTimeout(30); // Set command timeout to 30 seconds
+                    }));
 
             // Add JWT Authentication
             services.AddAuthentication(options =>

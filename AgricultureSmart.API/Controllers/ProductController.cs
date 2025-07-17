@@ -16,10 +16,12 @@ namespace AgricultureSmart.API.Controllers
     public class ProductController : ControllerBase
     {
         private readonly IProductService _productService;
+        private readonly ILogger<ProductController> _logger;
 
-        public ProductController(IProductService productService)
+        public ProductController(IProductService productService, ILogger<ProductController> logger)
         {
             _productService = productService;
+            _logger = logger;
         }
 
         // GET: api/Product
@@ -208,22 +210,55 @@ namespace AgricultureSmart.API.Controllers
         [HttpGet("public")]
         public async Task<ActionResult<ProductListResponse>> GetPublicProducts([FromQuery] ProductFilterRequest request)
         {
-            if (!ModelState.IsValid)
+            try
             {
-                return BadRequest(ModelState);
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+
+                // Validate request parameters
+                if (request.PageNumber < 1)
+                {
+                    request.PageNumber = 1;
+                }
+
+                if (request.PageSize < 1)
+                {
+                    request.PageSize = 10;
+                }
+
+                // Log request details
+                _logger.LogInformation("Processing GetPublicProducts request: {@Request}", new
+                {
+                    request.PageNumber,
+                    request.PageSize,
+                    request.Name,
+                    request.Description,
+                    request.CategoryName,
+                    request.SortByDiscountPrice
+                });
+
+                // Force IsActive to true for public endpoint
+                var products = await _productService.GetFilteredProductsAsync(
+                    request.PageNumber,
+                    request.PageSize,
+                    request.Name,
+                    request.Description,
+                    request.CategoryName,
+                    isActive: true,
+                    request.SortByDiscountPrice);
+
+                _logger.LogInformation("Successfully retrieved {Count} products for public API", 
+                    products.Items?.Count ?? 0);
+
+                return Ok(products);
             }
-
-            // Force IsActive to true for public endpoint
-            var products = await _productService.GetFilteredProductsAsync(
-                request.PageNumber,
-                request.PageSize,
-                request.Name,
-                request.Description,
-                request.CategoryName,
-                isActive: true,
-                request.SortByDiscountPrice);
-
-            return Ok(products);
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error in GetPublicProducts: {ErrorMessage}", ex.Message);
+                return StatusCode(500, new { error = "An error occurred while retrieving products. Please try again later." });
+            }
         }
 
         /// <summary>

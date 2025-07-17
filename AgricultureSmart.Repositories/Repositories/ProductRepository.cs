@@ -84,54 +84,66 @@ namespace AgricultureSmart.Repositories.Repositories
             bool? isActive = null,
             bool sortByDiscountPrice = false)
         {
-            IQueryable<Product> query = _dbSet.Include(p => p.Category);
-
-            // Apply filters
-            if (!string.IsNullOrWhiteSpace(name))
+            try
             {
-                query = query.Where(p => p.Name.Contains(name));
-            }
+                IQueryable<Product> query = _dbSet.Include(p => p.Category);
 
-            if (!string.IsNullOrWhiteSpace(description))
+                // Apply filters
+                if (!string.IsNullOrWhiteSpace(name))
+                {
+                    query = query.Where(p => p.Name.Contains(name));
+                }
+
+                if (!string.IsNullOrWhiteSpace(description))
+                {
+                    query = query.Where(p => p.Description.Contains(description));
+                }
+
+                if (!string.IsNullOrWhiteSpace(categoryName))
+                {
+                    query = query.Where(p => p.Category.Name.Contains(categoryName));
+                }
+
+                if (isActive.HasValue)
+                {
+                    query = query.Where(p => p.IsActive == isActive.Value);
+                }
+
+                // Get total count before pagination
+                int totalCount = await query.CountAsync();
+
+                // Apply sorting - with additional null checks
+                if (sortByDiscountPrice)
+                {
+                    // First prioritize products with discount prices, then sort by those prices
+                    query = query
+                        .OrderByDescending(p => p.DiscountPrice.HasValue) // Products with discount prices first
+                        .ThenByDescending(p => p.DiscountPrice ?? 0)      // Then by discount price (or 0 if null)
+                        .ThenByDescending(p => p.Price);                  // Finally by regular price
+                }
+                else
+                {
+                    query = query
+                        .OrderByDescending(p => p.CreatedAt); 
+                }
+
+                // Apply pagination with validation
+                if (pageNumber < 1) pageNumber = 1;
+                if (pageSize < 1) pageSize = 10;
+                if (pageSize > 100) pageSize = 100;
+
+                var products = await query
+                    .Skip((pageNumber - 1) * pageSize)
+                    .Take(pageSize)
+                    .ToListAsync();
+
+                return (products, totalCount);
+            }
+            catch (Exception ex)
             {
-                query = query.Where(p => p.Description.Contains(description));
+                // Since ILogger is not available in repository, we'll just re-throw with more context
+                throw new Exception($"Error in GetFilteredProductsAsync: {ex.Message}\nParameters: pageNumber={pageNumber}, pageSize={pageSize}, name={name}, description={description}, categoryName={categoryName}, isActive={isActive}, sortByDiscountPrice={sortByDiscountPrice}", ex);
             }
-
-            if (!string.IsNullOrWhiteSpace(categoryName))
-            {
-                query = query.Where(p => p.Category.Name.Contains(categoryName));
-            }
-
-            if (isActive.HasValue)
-            {
-                query = query.Where(p => p.IsActive == isActive.Value);
-            }
-
-            // Get total count before pagination
-            int totalCount = await query.CountAsync();
-
-            // Apply sorting
-            if (sortByDiscountPrice)
-            {
-                // Don't filter out null discount prices, just order them last
-                query = query
-                    .OrderByDescending(p => p.DiscountPrice != null) // Non-null discount prices first
-                    .ThenByDescending(p => p.DiscountPrice)         // Then by discount price value
-                    .ThenByDescending(p => p.Price);               // Finally by regular price
-            }
-            else
-            {
-                query = query
-                    .OrderByDescending(p => p.CreatedAt); 
-            }
-
-            // Apply pagination
-            var products = await query
-                .Skip((pageNumber - 1) * pageSize)
-                .Take(pageSize)
-                .ToListAsync();
-
-            return (products, totalCount);
         }
     }
 } 
