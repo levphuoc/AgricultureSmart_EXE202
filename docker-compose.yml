@@ -6,15 +6,16 @@ services:
     ports:
       - "5146:5146"
     environment:
-      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_ENVIRONMENT=Production
       - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=AgricultureSmart;User=sa;Password=NewPass2025!ExeSmart;TrustServerCertificate=true;
     depends_on:
       - sqlserver
     networks:
       - appnet
+    restart: unless-stopped
 
   sqlserver:
-    image: mcr.microsoft.com/mssql/server:2019-latest
+    image: mcr.microsoft.com/mssql/server:2022-latest
     container_name: sqlserver
     ports:
       - "1433:1433"
@@ -22,14 +23,19 @@ services:
       - ACCEPT_EULA=Y
       - SA_PASSWORD=NewPass2025!ExeSmart
       - MSSQL_PID=Express
+      - MSSQL_AGENT_ENABLED=true
     volumes:
       - sql_data:/var/opt/mssql
     networks:
       - appnet
     restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 2G
 
   fe:
-    image: fe:latest
+    image: ducminh1710/exe201-fe:latest
     ports:
       - "3000:3000"
     environment:
