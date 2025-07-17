@@ -84,7 +84,7 @@ namespace AgricultureSmart.API
             {
                 options.AddPolicy("AllowFrontend", builder =>
                 {
-                    builder.WithOrigins("http://localhost:3000", "http://14.225.212.92:3000", "https://agriculture-smart-fe.vercel.app") // Allow any origin
+                    builder.WithOrigins("http://localhost:3000", "http://14.225.212.92:3000", "http://14.225.212.92:5146", "https://agriculture-smart-fe.vercel.app") // Allow any origin
                            .AllowAnyMethod()
                            .AllowAnyHeader()
                            .AllowCredentials();
