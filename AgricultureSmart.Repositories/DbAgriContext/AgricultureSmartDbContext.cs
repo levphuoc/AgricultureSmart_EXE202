@@ -13,7 +13,7 @@ namespace AgricultureSmart.Repositories.DbAgriContext
         public AgricultureSmartDbContext(DbContextOptions<AgricultureSmartDbContext> options)
             : base(options)
         {
-            Database.Migrate();
+            //Database.Migrate();
         }
 
         // User Management DbSets
