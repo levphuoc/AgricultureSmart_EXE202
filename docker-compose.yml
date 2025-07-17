@@ -14,7 +14,7 @@ services:
       - appnet
 
   sqlserver:
-    image: mcr.microsoft.com/mssql/server:2022-latest
+    image: mcr.microsoft.com/azure-sql-edge
     container_name: sqlserver
     ports:
       - "1433:1433"
