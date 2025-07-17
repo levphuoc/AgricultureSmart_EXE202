@@ -79,15 +79,26 @@ namespace AgricultureSmart.API
 
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
-            // Configure CORS if needed
+            // Configure CORS policy to allow frontend access
             services.AddCors(options =>
             {
                 options.AddPolicy("AllowFrontend", builder =>
                 {
-                    builder.WithOrigins("http://localhost:3000", "http://14.225.212.92:3000", "http://14.225.212.92:5146", "https://agriculture-smart-fe.vercel.app") // Allow any origin
-                           .AllowAnyMethod()
-                           .AllowAnyHeader()
-                           .AllowCredentials();
+                    // When using AllowCredentials, we should use SetIsOriginAllowed instead of WithOrigins
+                    builder.SetIsOriginAllowed(origin => 
+                        {
+                            string[] allowedOrigins = new[] 
+                            {
+                                "http://localhost:3000",
+                                "http://14.225.212.92:3000",
+                                "http://14.225.212.92:5146", 
+                                "https://agriculture-smart-fe.vercel.app"
+                            };
+                            return allowedOrigins.Contains(origin);
+                        })
+                        .AllowAnyMethod()
+                        .AllowAnyHeader()
+                        .AllowCredentials();
                 });
             });
 
@@ -180,15 +191,11 @@ namespace AgricultureSmart.API
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Agriculture Smart API v1"));
             }
-
-            //if (!env.IsProduction())
-            //{
-            //    app.UseHttpsRedirection();
-            //}
+          
             app.UseHttpsRedirection();
             app.UseRouting();
             
-            // Apply CORS before authentication and authorization
+            // IMPORTANT: Apply CORS before authentication and authorization
             app.UseCors("AllowFrontend");
 
             // Add authentication middleware
