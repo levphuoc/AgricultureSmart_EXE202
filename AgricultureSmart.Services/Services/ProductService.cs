@@ -336,9 +336,11 @@ namespace AgricultureSmart.Services.Services
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error getting filtered products: {ErrorMessage}, Stack trace: {StackTrace}", 
-                ex.Message, ex.StackTrace);
-            throw;
+            _logger.LogError(ex, "Error getting filtered products: {ErrorMessage}, Inner Exception: {InnerException}, Stack trace: {StackTrace}", 
+                ex.Message, ex.InnerException?.Message, ex.StackTrace);
+                
+            // Rethrow with more context but preserve the original exception
+            throw new Exception($"Failed to retrieve filtered products: {ex.Message}", ex);
         }
         }
     }

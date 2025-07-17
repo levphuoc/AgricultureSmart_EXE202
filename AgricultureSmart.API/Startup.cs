@@ -79,26 +79,18 @@ namespace AgricultureSmart.API
 
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
-            // Configure CORS policy to allow frontend access
+            // Configure CORS policy with a more permissive configuration
             services.AddCors(options =>
             {
                 options.AddPolicy("AllowFrontend", builder =>
                 {
-                    // When using AllowCredentials, we should use SetIsOriginAllowed instead of WithOrigins
-                    builder.SetIsOriginAllowed(origin => 
-                        {
-                            string[] allowedOrigins = new[] 
-                            {
-                                "http://localhost:3000",
-                                "http://14.225.212.92:3000",
-                                "http://14.225.212.92:5146", 
-                                "https://agriculture-smart-fe.vercel.app"
-                            };
-                            return allowedOrigins.Contains(origin);
-                        })
-                        .AllowAnyMethod()
-                        .AllowAnyHeader()
-                        .AllowCredentials();
+                    // Allow any origin for testing purposes
+                    builder.AllowAnyOrigin()
+                           .AllowAnyMethod()
+                           .AllowAnyHeader();
+                    
+                    // Note: AllowAnyOrigin and AllowCredentials cannot be used together
+                    // If you need to allow credentials, you must specify specific origins
                 });
             });
 

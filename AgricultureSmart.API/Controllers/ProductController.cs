@@ -254,9 +254,17 @@ namespace AgricultureSmart.API.Controllers
 
                 return Ok(products);
             }
+            catch (InvalidOperationException ex) when (ex.Message.Contains("connection") || ex.Message.Contains("database"))
+            {
+                // Handle database connection issues
+                _logger.LogError(ex, "Database connection error in GetPublicProducts: {ErrorMessage}, Inner: {InnerError}", 
+                    ex.Message, ex.InnerException?.Message);
+                return StatusCode(503, new { error = "Database connection error. The service is currently unavailable. Please try again later." });
+            }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error in GetPublicProducts: {ErrorMessage}", ex.Message);
+                _logger.LogError(ex, "Error in GetPublicProducts: {ErrorMessage}, Inner: {InnerError}, Stack: {StackTrace}", 
+                    ex.Message, ex.InnerException?.Message, ex.StackTrace);
                 return StatusCode(500, new { error = "An error occurred while retrieving products. Please try again later." });
             }
         }

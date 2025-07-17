@@ -139,10 +139,20 @@ namespace AgricultureSmart.Repositories.Repositories
 
                 return (products, totalCount);
             }
+            catch (DbUpdateException dbEx)
+            {
+                // Handle database-specific exceptions
+                throw new Exception($"Database error in GetFilteredProductsAsync: {dbEx.Message}\nInner Exception: {dbEx.InnerException?.Message}\nParameters: pageNumber={pageNumber}, pageSize={pageSize}, name={name}, description={description}, categoryName={categoryName}, isActive={isActive}, sortByDiscountPrice={sortByDiscountPrice}", dbEx);
+            }
+            catch (InvalidOperationException ioEx)
+            {
+                // Handle SQL connection issues
+                throw new Exception($"Connection error in GetFilteredProductsAsync: {ioEx.Message}\nInner Exception: {ioEx.InnerException?.Message}\nParameters: pageNumber={pageNumber}, pageSize={pageSize}, name={name}, description={description}, categoryName={categoryName}, isActive={isActive}, sortByDiscountPrice={sortByDiscountPrice}", ioEx);
+            }
             catch (Exception ex)
             {
                 // Since ILogger is not available in repository, we'll just re-throw with more context
-                throw new Exception($"Error in GetFilteredProductsAsync: {ex.Message}\nParameters: pageNumber={pageNumber}, pageSize={pageSize}, name={name}, description={description}, categoryName={categoryName}, isActive={isActive}, sortByDiscountPrice={sortByDiscountPrice}", ex);
+                throw new Exception($"Error in GetFilteredProductsAsync: {ex.Message}\nInner Exception: {ex.InnerException?.Message}\nStack Trace: {ex.StackTrace}\nParameters: pageNumber={pageNumber}, pageSize={pageSize}, name={name}, description={description}, categoryName={categoryName}, isActive={isActive}, sortByDiscountPrice={sortByDiscountPrice}", ex);
             }
         }
     }
