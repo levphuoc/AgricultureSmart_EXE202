@@ -7,7 +7,7 @@ services:
       - "5146:5146"
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
-      - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=AgricultureSmart;User=sa;Password=NewPass2025!ExeSmart;TrustServerCertificate=true;
+      - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=AgricultureSmart;User=sa;Password=MyNewSecure@2025!EXE;TrustServerCertificate=true;
     depends_on:
       - sqlserver
     networks:
@@ -21,7 +21,7 @@ services:
       - "1433:1433"
     environment:
       - ACCEPT_EULA=Y
-      - SA_PASSWORD=NewPass2025!ExeSmart
+      - SA_PASSWORD=MyNewSecure@2025!EXE
       - MSSQL_PID=Express
       - MSSQL_AGENT_ENABLED=true
     volumes:
