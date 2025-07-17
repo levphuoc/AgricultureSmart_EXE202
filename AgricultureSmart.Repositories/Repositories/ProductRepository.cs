@@ -113,10 +113,11 @@ namespace AgricultureSmart.Repositories.Repositories
             // Apply sorting
             if (sortByDiscountPrice)
             {
+                // Don't filter out null discount prices, just order them last
                 query = query
-                    .Where(p => p.DiscountPrice != null) 
-                    .OrderByDescending(p => p.DiscountPrice)
-                    .ThenByDescending(p => p.Price);
+                    .OrderByDescending(p => p.DiscountPrice != null) // Non-null discount prices first
+                    .ThenByDescending(p => p.DiscountPrice)         // Then by discount price value
+                    .ThenByDescending(p => p.Price);               // Finally by regular price
             }
             else
             {
