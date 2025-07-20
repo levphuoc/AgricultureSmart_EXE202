@@ -86,7 +86,8 @@ namespace AgricultureSmart.API
                 {
                     builder.WithOrigins("http://localhost:3000", "http://14.225.212.92:3000", "https://agriculture-smart-fe.vercel.app") // Allow any origin
                            .AllowAnyMethod()
-                           .AllowAnyHeader();
+                           .AllowAnyHeader()
+                           .AllowCredentials();
                     
                     // Note: AllowAnyOrigin and AllowCredentials cannot be used together
                     // If you need to allow credentials, you must specify specific origins
