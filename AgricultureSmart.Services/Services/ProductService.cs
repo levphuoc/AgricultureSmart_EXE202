@@ -298,39 +298,50 @@ namespace AgricultureSmart.Services.Services
             }
         }
 
-        public async Task<ProductListResponse> GetFilteredProductsAsync(
-            int pageNumber,
-            int pageSize,
-            string? name = null,
-            string? description = null,
-            string? categoryName = null,
-            bool? isActive = null,
-            bool sortByDiscountPrice = false)
+    public async Task<ProductListResponse> GetFilteredProductsAsync(
+        int pageNumber,
+        int pageSize,
+        string? name = null,
+        string? description = null,
+        string? categoryName = null,
+        bool? isActive = null,
+        bool sortByDiscountPrice = false)
+    {
+        try
         {
-            try
-            {
-                var (products, totalCount) = await _repository.GetFilteredProductsAsync(
-                    pageNumber,
-                    pageSize,
-                    name,
-                    description,
-                    categoryName,
-                    isActive,
-                    sortByDiscountPrice);
+            _logger.LogInformation("Getting filtered products with parameters: PageNumber={PageNumber}, PageSize={PageSize}, Name={Name}, Description={Description}, CategoryName={CategoryName}, IsActive={IsActive}, SortByDiscountPrice={SortByDiscountPrice}", 
+                pageNumber, pageSize, name ?? "null", description ?? "null", categoryName ?? "null", isActive.HasValue ? isActive.ToString() : "null", sortByDiscountPrice);
+            
+            var (products, totalCount) = await _repository.GetFilteredProductsAsync(
+                pageNumber,
+                pageSize,
+                name,
+                description,
+                categoryName,
+                isActive,
+                sortByDiscountPrice);
 
-                return new ProductListResponse
-                {
-                    Items = _mapper.Map<List<ProductDto>>(products),
-                    TotalCount = totalCount,
-                    PageNumber = pageNumber,
-                    PageSize = pageSize
-                };
-            }
-            catch (Exception ex)
+            _logger.LogInformation("Retrieved {Count} products out of {TotalCount} total", products?.Count() ?? 0, totalCount);
+
+            var productDtos = _mapper.Map<List<ProductDto>>(products);
+            _logger.LogInformation("Mapped {Count} products to DTOs", productDtos.Count);
+
+            return new ProductListResponse
             {
-                _logger.LogError(ex, "Error getting filtered products");
-                throw;
-            }
+                Items = productDtos,
+                TotalCount = totalCount,
+                PageNumber = pageNumber,
+                PageSize = pageSize
+            };
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error getting filtered products: {ErrorMessage}, Inner Exception: {InnerException}, Stack trace: {StackTrace}", 
+                ex.Message, ex.InnerException?.Message, ex.StackTrace);
+                
+            // Rethrow with more context but preserve the original exception
+            throw new Exception($"Failed to retrieve filtered products: {ex.Message}", ex);
+        }
         }
     }
 } 

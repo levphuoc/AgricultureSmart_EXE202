@@ -6,12 +6,13 @@ services:
     ports:
       - "5146:5146"
     environment:
-      - ASPNETCORE_ENVIRONMENT=Development
-      - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=AgricultureSmart;User=sa;Password=NewPass2025!ExeSmart;TrustServerCertificate=true;
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=AgricultureSmart;User=sa;Password=MyNewSecure@2025!EXE;TrustServerCertificate=true;
     depends_on:
       - sqlserver
     networks:
       - appnet
+    restart: unless-stopped
 
   sqlserver:
     image: mcr.microsoft.com/mssql/server:2022-latest
@@ -20,18 +21,28 @@ services:
       - "1433:1433"
     environment:
       - ACCEPT_EULA=Y
-      - SA_PASSWORD=NewPass2025!ExeSmart
+      - SA_PASSWORD=MyNewSecure@2025!EXE
+      - MSSQL_PID=Express
+      - MSSQL_AGENT_ENABLED=true
     volumes:
       - sql_data:/var/opt/mssql
     networks:
       - appnet
+    restart: unless-stopped
 
   fe:
     image: fe:latest
     ports:
       - "3000:3000"
+    environment:
+      - NEXT_PUBLIC_API_BASE_URL=http://webapp:5146
+      - NODE_ENV=production
+      - NEXT_PUBLIC_SITE_URL=http://14.225.212.92:3000
     networks:
       - appnet
+    restart: unless-stopped
+    depends_on:
+      - webapp
 
 networks:
   appnet:
@@ -39,6 +50,3 @@ networks:
 
 volumes:
   sql_data:
-
-
-

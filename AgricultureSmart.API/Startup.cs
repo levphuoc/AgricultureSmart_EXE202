@@ -23,9 +23,17 @@ namespace AgricultureSmart.API
 
         public void ConfigureServices(IServiceCollection services)
         {
-            // Add DbContext
+            // Add DbContext with retry logic for transient SQL connection failures
             services.AddDbContext<AgricultureSmartDbContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"),
+                    sqlServerOptionsAction: sqlOptions =>
+                    {
+                        sqlOptions.EnableRetryOnFailure(
+                            maxRetryCount: 5,
+                            maxRetryDelay: TimeSpan.FromSeconds(30),
+                            errorNumbersToAdd: null);
+                        sqlOptions.CommandTimeout(30); // Set command timeout to 30 seconds
+                    }));
 
             // Add JWT Authentication
             services.AddAuthentication(options =>
@@ -71,15 +79,22 @@ namespace AgricultureSmart.API
 
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
-            // Configure CORS if needed
+            // Configure CORS policy with a more permissive configuration
             services.AddCors(options =>
             {
                 options.AddPolicy("AllowFrontend", builder =>
                 {
+<<<<<<< HEAD
                     builder.WithOrigins("http://localhost:3000", "https://14.225.212.92:3000", "https://agriculture-smart-fe.vercel.app") // Allow any origin
+=======
+                    // Allow any origin for testing purposes
+                    builder.AllowAnyOrigin()
+>>>>>>> d063f298b6ad5a67303ee7656d9df071cc124162
                            .AllowAnyMethod()
-                           .AllowAnyHeader()
-                           .AllowCredentials();
+                           .AllowAnyHeader();
+                    
+                    // Note: AllowAnyOrigin and AllowCredentials cannot be used together
+                    // If you need to allow credentials, you must specify specific origins
                 });
             });
 
@@ -172,15 +187,11 @@ namespace AgricultureSmart.API
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Agriculture Smart API v1"));
             }
-
-            //if (!env.IsProduction())
-            //{
-            //    app.UseHttpsRedirection();
-            //}
+          
             app.UseHttpsRedirection();
             app.UseRouting();
             
-            // Apply CORS before authentication and authorization
+            // IMPORTANT: Apply CORS before authentication and authorization
             app.UseCors("AllowFrontend");
 
             // Add authentication middleware
