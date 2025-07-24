@@ -9,6 +9,10 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
 using System.Security.Claims;
+using AgricultureSmart.Services.Models.PayOSModels;
+using Microsoft.Extensions.Options;
+using Net.payOS;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace AgricultureSmart.API
 {
@@ -74,6 +78,21 @@ namespace AgricultureSmart.API
                 };
             });
 
+            //add payos service
+            services.Configure<PayOSSettings>(
+             Configuration.GetSection("PayOSSettings"));
+            services.AddSingleton(sp =>
+            {
+                var settings = sp.GetRequiredService<IOptions<PayOSSettings>>().Value;
+                if (string.IsNullOrEmpty(settings.ClientId) ||
+                    string.IsNullOrEmpty(settings.ApiKey) ||
+                    string.IsNullOrEmpty(settings.ChecksumKey))
+                {
+                    throw new InvalidOperationException("PayOS configuration is missing or incomplete");
+                }
+                return new PayOS(settings.ClientId, settings.ApiKey, settings.ChecksumKey);
+            });
+
             // Add controllers
             services.AddControllers();
 
@@ -88,7 +107,7 @@ namespace AgricultureSmart.API
                            .AllowAnyMethod()
                            .AllowAnyHeader()
                            .AllowCredentials();
-                    
+
                     // Note: AllowAnyOrigin and AllowCredentials cannot be used together
                     // If you need to allow credentials, you must specify specific origins
                 });
@@ -100,8 +119,7 @@ namespace AgricultureSmart.API
                 {
                     builder.AllowAnyOrigin()
                            .AllowAnyMethod()
-                           .AllowAnyHeader()
-                           .AllowCredentials();
+                           .AllowAnyHeader();
                 });
             });*/
 
@@ -171,8 +189,9 @@ namespace AgricultureSmart.API
             services.AddScoped<IOrderService, OrderService>();
             services.AddScoped<INewsCategoryService, NewsCategoryService>();
             services.AddScoped<INewsService, NewsService>();
-            services.AddScoped<IReviewService, ReviewService>(); 
+            services.AddScoped<IReviewService, ReviewService>();
             services.AddScoped<IVnPayService, VnPayService>();
+            services.AddScoped<IPayOSService, PayOSService>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -183,12 +202,13 @@ namespace AgricultureSmart.API
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Agriculture Smart API v1"));
             }
-          
+
             app.UseHttpsRedirection();
             app.UseRouting();
-            
+
             // IMPORTANT: Apply CORS before authentication and authorization
             app.UseCors("AllowFrontend");
+            /*app.UseCors("AllowAll");*/
 
             // Add authentication middleware
             app.UseAuthentication();

@@ -26,5 +26,10 @@ namespace AgricultureSmart.Services.Interfaces
 
         Task<PagedListResponse<OrderDto>> GetFilteredOrdersAsync(string? status, string? paymentStatus, string? orderNumber, int pageNumber, int pageSize);
 
+
+        // <-- THÊM CÁC PH??NG TH?C NÀY CHO WEBHOOK -->
+        Task<bool> UpdateOrderStatusToCancelledAsync(int orderId);
+        Task<bool> UpdateOrderStatusToExpiredAsync(int orderId);
+        Task<bool> UpdateOrderStatusToPendingAsync(int orderId); 
     }
 } 

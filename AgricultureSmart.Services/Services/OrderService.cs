@@ -490,5 +490,126 @@ namespace AgricultureSmart.Services.Services
                 PageSize = pageSize
             };
         }
+
+        // <-- TRIỂN KHAI CÁC PHƯƠNG THỨC MỚI CHO WEBHOOK -->
+        public async Task<bool> UpdateOrderStatusToCancelledAsync(int orderId)
+        {
+            try
+            {
+                var order = await _orderRepository.GetByIdAsync(orderId);
+                if (order == null)
+                {
+                    _logger.LogWarning("Order with ID {OrderId} not found for cancellation.", orderId);
+                    return false;
+                }
+
+                if (order.Status == "cancelled")
+                {
+                    _logger.LogInformation("Order {OrderId} is already cancelled.", orderId);
+                    return true; // Đã ở trạng thái cancelled, coi như thành công
+                }
+
+                order.Status = "cancelled";
+                order.PaymentStatus = "failed"; // Hoặc "cancelled" tùy theo logic của bạn
+                order.UpdatedAt = DateTime.UtcNow;
+                await _orderRepository.UpdateAsync(order);
+
+                // Hoàn lại số lượng sản phẩm vào kho nếu cần
+                var orderItems = await _orderItemRepository.GetOrderItemsByOrderIdAsync(orderId);
+                foreach (var orderItem in orderItems)
+                {
+                    var product = await _productRepository.GetByIdAsync(orderItem.ProductId);
+                    if (product != null)
+                    {
+                        product.Stock += orderItem.Quantity;
+                        await _productRepository.UpdateAsync(product);
+                    }
+                }
+
+                _logger.LogInformation("Order {OrderId} successfully updated to 'cancelled'.", orderId);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error updating order {OrderId} to 'cancelled'.", orderId);
+                throw;
+            }
+        }
+
+        public async Task<bool> UpdateOrderStatusToExpiredAsync(int orderId)
+        {
+            try
+            {
+                var order = await _orderRepository.GetByIdAsync(orderId);
+                if (order == null)
+                {
+                    _logger.LogWarning("Order with ID {OrderId} not found for expiration.", orderId);
+                    return false;
+                }
+
+                if (order.Status == "expired")
+                {
+                    _logger.LogInformation("Order {OrderId} is already expired.", orderId);
+                    return true; // Đã ở trạng thái expired, coi như thành công
+                }
+
+                order.Status = "expired";
+                order.PaymentStatus = "failed"; // Hoặc "expired" tùy theo logic của bạn
+                order.UpdatedAt = DateTime.UtcNow;
+                await _orderRepository.UpdateAsync(order);
+
+                // Hoàn lại số lượng sản phẩm vào kho nếu cần (tương tự như cancelled)
+                var orderItems = await _orderItemRepository.GetOrderItemsByOrderIdAsync(orderId);
+                foreach (var orderItem in orderItems)
+                {
+                    var product = await _productRepository.GetByIdAsync(orderItem.ProductId);
+                    if (product != null)
+                    {
+                        product.Stock += orderItem.Quantity;
+                        await _productRepository.UpdateAsync(product);
+                    }
+                }
+
+                _logger.LogInformation("Order {OrderId} successfully updated to 'expired'.", orderId);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error updating order {OrderId} to 'expired'.", orderId);
+                throw;
+            }
+        }
+
+        public async Task<bool> UpdateOrderStatusToPendingAsync(int orderId)
+        {
+            try
+            {
+                var order = await _orderRepository.GetByIdAsync(orderId);
+                if (order == null)
+                {
+                    _logger.LogWarning("Order with ID {OrderId} not found for pending status update.", orderId);
+                    return false;
+                }
+
+                if (order.Status == "pending")
+                {
+                    _logger.LogInformation("Order {OrderId} is already pending.", orderId);
+                    return true; // Đã ở trạng thái pending, coi như thành công
+                }
+
+                order.Status = "pending";
+                // Giữ nguyên PaymentStatus nếu nó đã là "pending" hoặc "unpaid"
+                order.UpdatedAt = DateTime.UtcNow;
+                await _orderRepository.UpdateAsync(order);
+
+                _logger.LogInformation("Order {OrderId} successfully updated to 'pending'.", orderId);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error updating order {OrderId} to 'pending'.", orderId);
+                throw;
+            }
+        }
     }
 } 
