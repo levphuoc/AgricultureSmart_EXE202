@@ -11,7 +11,7 @@ namespace AgricultureSmart.Services.Models.TicketModels
     {
         public int Id { get; set; }          // Farmer.Id
         public int UserId { get; set; }      // Users.Id
-        public string UserName { get; set; }
+        public string Username { get; set; }
         public string Email { get; set; }
         public string PhoneNumber { get; set; }
         public string Address { get; set; }
@@ -30,7 +30,7 @@ namespace AgricultureSmart.Services.Models.TicketModels
     {
         public int Id { get; set; }          // Engineer.Id
         public int UserId { get; set; }      // Users.Id
-        public string UserName { get; set; }
+        public string Username { get; set; }
         public string Email { get; set; }
         public string PhoneNumber { get; set; }
         public string Address { get; set; }
