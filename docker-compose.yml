@@ -35,9 +35,9 @@ services:
     ports:
       - "3000:3000"
     environment:
-      - NEXT_PUBLIC_API_BASE_URL=http://14.225.212.92:5146
+      - NEXT_PUBLIC_API_BASE_URL=http://160.30.113.224:5146
       - NODE_ENV=production
-      - NEXT_PUBLIC_SITE_URL=http://14.225.212.92:3000
+      - NEXT_PUBLIC_SITE_URL=http://160.30.113.224:3000
     networks:
       - appnet
     restart: unless-stopped
