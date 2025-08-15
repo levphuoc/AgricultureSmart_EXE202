@@ -86,7 +86,7 @@ namespace AgricultureSmart.Services.Services
                 {
                     Id = t.Farmer.Id,
                     UserId = t.Farmer.User.Id,
-                    UserName = t.Farmer.User.UserName,
+                    Username = t.Farmer.User.UserName,
                     Email = t.Farmer.User.Email,
                     PhoneNumber = t.Farmer.User.PhoneNumber,
                     Address = t.Farmer.User.Address,
@@ -104,7 +104,7 @@ namespace AgricultureSmart.Services.Services
                 {
                     Id = t.AssignedEngineer.Id,
                     UserId = t.AssignedEngineer.User.Id,
-                    UserName = t.AssignedEngineer.User.UserName,
+                    Username = t.AssignedEngineer.User.UserName,
                     Email = t.AssignedEngineer.User.Email,
                     PhoneNumber = t.AssignedEngineer.User.PhoneNumber,
                     Address = t.AssignedEngineer.User.Address,
@@ -440,7 +440,7 @@ namespace AgricultureSmart.Services.Services
                 {
                     Id = t.Farmer.Id,
                     UserId = t.Farmer.User.Id,
-                    UserName = t.Farmer.User.UserName,
+                    Username = t.Farmer.User.UserName,
                     Email = t.Farmer.User.Email,
                     PhoneNumber = t.Farmer.User.PhoneNumber,
                     Address = t.Farmer.User.Address,
@@ -458,7 +458,7 @@ namespace AgricultureSmart.Services.Services
                 {
                     Id = t.AssignedEngineer.Id,
                     UserId = t.AssignedEngineer.User.Id,
-                    UserName = t.AssignedEngineer.User.UserName,
+                    Username = t.AssignedEngineer.User.UserName,
                     Email = t.AssignedEngineer.User.Email,
                     PhoneNumber = t.AssignedEngineer.User.PhoneNumber,
                     Address = t.AssignedEngineer.User.Address,
@@ -533,7 +533,7 @@ namespace AgricultureSmart.Services.Services
             {
                 Id = t.Farmer.Id,
                 UserId = t.Farmer.User.Id,
-                UserName = t.Farmer.User.UserName,
+                Username = t.Farmer.User.UserName,
                 Email = t.Farmer.User.Email,
                 PhoneNumber = t.Farmer.User.PhoneNumber,
                 Address = t.Farmer.User.Address,
@@ -549,7 +549,7 @@ namespace AgricultureSmart.Services.Services
             {
                 Id = t.AssignedEngineer.Id,
                 UserId = t.AssignedEngineer.User.Id,
-                UserName = t.AssignedEngineer.User.UserName,
+                Username = t.AssignedEngineer.User.UserName,
                 Email = t.AssignedEngineer.User.Email,
                 PhoneNumber = t.AssignedEngineer.User.PhoneNumber,
                 Address = t.AssignedEngineer.User.Address,
