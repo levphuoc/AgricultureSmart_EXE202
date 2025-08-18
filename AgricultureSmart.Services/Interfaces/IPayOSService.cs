@@ -16,7 +16,7 @@ namespace AgricultureSmart.Services.Interfaces
 
         WebhookData VerifyPaymentWebhookData(WebhookType webhookBody);*/
 
-        Task<string> CreatePaymentLink(int orderID);
+        Task<PaymentLinkResponse> CreatePaymentLink(int orderID);
         Task HandlePaymentWebhook(WebhookType webhookData);
         Task<string> ConfirmWebhook(WebhookURL body);
 

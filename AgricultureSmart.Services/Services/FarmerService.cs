@@ -77,16 +77,16 @@ namespace AgricultureSmart.Services.Services
 
         public async Task<FarmerViewModel?> GetByIdAsync(int id)
         {
-            var farmer = await _farmerRepo.GetByIdAsync(id);
+            var farmer = await _farmerRepo.FirstOrDefaultAsync(f => f.UserId == id);
             if (farmer == null) return null;
 
-            var user = await _userRepo.GetByIdAsync(farmer.UserId);
+            var user = await _userRepo.GetByIdAsync(id);
             if (user == null) return null;
 
             return new FarmerViewModel
             {
-                Id = farmer.Id,
-                UserId = farmer.UserId,
+                Id = user.Id,
+                UserId = user.Id,
                 Username = user.UserName,
                 Email = user.Email,
                 PhoneNumber = user.PhoneNumber,
@@ -95,8 +95,8 @@ namespace AgricultureSmart.Services.Services
                 FarmSize = farmer.FarmSize,
                 CropTypes = farmer.CropTypes,
                 FarmingExperienceYears = farmer.FarmingExperienceYears,
-                CreatedAt = farmer.CreatedAt,
-                UpdatedAt = farmer.UpdatedAt
+                CreatedAt = user.CreatedAt,
+                UpdatedAt = user.UpdatedAt
             };
         }
 
