@@ -79,8 +79,9 @@ namespace AgricultureSmart.Services.Services
 
         public async Task<EngineerViewModel?> GetByIdAsync(int id)
         {
-            var engineer = await _engineerRepo.GetByIdAsync(id);
+            var engineer = await _engineerRepo.FirstOrDefaultAsync(e => e.UserId == id);
             if (engineer == null) return null;
+
 
             var user = await _userRepo.GetByIdAsync(engineer.UserId);
             if (user == null) return null;
