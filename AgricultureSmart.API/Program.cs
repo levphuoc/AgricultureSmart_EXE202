@@ -8,7 +8,7 @@ namespace AgricultureSmart.API
         public static void Main(string[] args)
         {
             var host = CreateHostBuilder(args).Build();
-            //heloo
+            
             // Apply database migrations
             using (var scope = host.Services.CreateScope())
             {

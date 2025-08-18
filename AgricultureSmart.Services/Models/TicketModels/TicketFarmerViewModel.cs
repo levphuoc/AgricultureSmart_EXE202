@@ -9,6 +9,7 @@ namespace AgricultureSmart.Services.Models.TicketModels
     public class TicketFarmerViewModel
     {
         public int Id { get; set; }
+        public string Username { get; set; } = string.Empty;
 
         public string Title { get; set; }
         public string Category { get; set; }

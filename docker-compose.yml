@@ -2,7 +2,9 @@ version: '3.8'
 
 services:
   webapp:
-    image: ducminh1710/exe201:latest
+    build: 
+      context: .
+      dockerfile: Dockerfile
     ports:
       - "5146:5146"
     environment:
@@ -31,7 +33,9 @@ services:
     restart: unless-stopped
 
   fe:
-    image: fe:latest
+    build:
+      context: ./Agriculture_Smart_FE
+      dockerfile: Dockerfile
     ports:
       - "3000:3000"
     environment:
