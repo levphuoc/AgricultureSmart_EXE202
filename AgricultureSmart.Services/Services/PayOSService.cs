@@ -41,7 +41,7 @@ namespace AgricultureSmart.Services.Services
             _context = context;
         }
 
-        public async Task<string> CreatePaymentLink(int orderID)
+        public async Task<PaymentLinkResponse> CreatePaymentLink(int orderID)
         {
             var strategy = _context.Database.CreateExecutionStrategy();
 
@@ -58,9 +58,8 @@ namespace AgricultureSmart.Services.Services
                         throw new ArgumentException("Order not found");
                     }
 
-                    // Tạo orderCode và dùng luôn cho mô tả
                     long orderCode = long.Parse(DateTimeOffset.Now.ToString("ffffff"));
-                    var description = $"Thanh toán đơn hàng";
+                    var description = "Thanh toán đơn hàng";
 
                     ItemData item = new ItemData("Order Package", 1, (int)order.TotalAmount);
                     List<ItemData> items = new List<ItemData> { item };
@@ -84,7 +83,11 @@ namespace AgricultureSmart.Services.Services
                     await orderRepo.UpdateAsync(order);
 
                     await transaction.CommitAsync();
-                    return createPayment.checkoutUrl;
+
+                    return new PaymentLinkResponse
+                    {
+                        PaymentUrl = createPayment.checkoutUrl
+                    };
                 }
                 catch
                 {
@@ -94,7 +97,7 @@ namespace AgricultureSmart.Services.Services
             });
         }
 
-        public async Task HandlePaymentWebhook(WebhookType webhookData)
+    public async Task HandlePaymentWebhook(WebhookType webhookData)
         {
             var strategy = _context.Database.CreateExecutionStrategy();
 
