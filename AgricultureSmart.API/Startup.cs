@@ -103,7 +103,7 @@ namespace AgricultureSmart.API
             {
                 options.AddPolicy("AllowFrontend", builder =>
                 {
-                    builder.WithOrigins("http://localhost:3000", "http://168.30.113.224:3000", "https://agriculture-smart-fe.vercel.app") // Allow any origin
+                    builder.WithOrigins("http://localhost:3000", "http://160.30.113.224:3000", "http://168.30.113.224:3000", "https://agriculture-smart-fe.vercel.app") // Allow any origin
                            .AllowAnyMethod()
                            .AllowAnyHeader()
                            .AllowCredentials();
@@ -199,9 +199,11 @@ namespace AgricultureSmart.API
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Agriculture Smart API v1"));
             }
+
+            // Enable Swagger in all environments for API documentation
+            app.UseSwagger();
+            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Agriculture Smart API v1"));
 
             app.UseHttpsRedirection();
             app.UseRouting();
