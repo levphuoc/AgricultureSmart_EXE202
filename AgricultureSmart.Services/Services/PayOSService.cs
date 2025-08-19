@@ -65,8 +65,11 @@ namespace AgricultureSmart.Services.Services
                     List<ItemData> items = new List<ItemData> { item };
 
                     var baseUrl = _configuration["FrontendUrl"];
-                    var returnSuccessUrl = $"{baseUrl}/success?orderCode={orderCode}";
-                    var returnCancelledUrl = $"{baseUrl}/cancel?orderCode={orderCode}";
+                    /*var returnSuccessUrl = $"{baseUrl}/success?orderCode={orderCode}";
+                    var returnCancelledUrl = $"{baseUrl}/cancel?orderCode={orderCode}";*/
+                    var returnSuccessUrl = $"{_configuration["FrontendUrl_Success"]}?orderCode={orderCode}";
+                    var returnCancelledUrl = $"{_configuration["FrontendUrl_Cancel"]}?orderCode={orderCode}";
+
 
                     PaymentData paymentData = new PaymentData(
                         orderCode,
